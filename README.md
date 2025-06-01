@@ -71,7 +71,4 @@ For production deployment:
 3. Set up proper error handling and logging
 4. Configure the `/login` endpoint backend
 
-## License
-
-© 2024 globalworming.today
 ```
