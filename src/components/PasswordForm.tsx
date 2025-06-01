@@ -11,34 +11,18 @@ interface PasswordFormProps {
 const PasswordForm = ({ language, onHintClick, onLanguageToggle }: PasswordFormProps) => {
   const [password, setPassword] = useState('');
   
-  const texts = {
-    de: {
-      label: 'Hast du das Passwort?',
-      placeholder: 'Passwort eingeben...',
-      submit: 'Anmelden',
-      hint: 'Probleme?',
-      langButton: 'EN',
-      errors: {
-        invalid_password: 'Ungültiges Passwort',
-        rate_limit_exceeded: 'Zu viele Versuche. Bitte versuchen Sie es später erneut.',
-        unknown_error: 'Ein unbekannter Fehler ist aufgetreten'
-      }
-    },
-    en: {
-      label: 'Do you have the password?',
-      placeholder: 'Enter password...',
-      submit: 'Login',
-      hint: 'Problems?',
-      langButton: 'DE',
-      errors: {
-        invalid_password: 'Invalid password',
-        rate_limit_exceeded: 'Too many attempts. Please try again later.',
-        unknown_error: 'An unknown error occurred'
-      }
+  const t = {
+    label: 'Hast du das Passwort?',
+    placeholder: 'Passwort eingeben...',
+    submit: 'Anmelden',
+    hint: 'Probleme?',
+    langButton: 'EN ' + (language === 'en' ? '< -' : '- >') + ' DE',
+    errors: {
+      invalid_password: 'Ungültiges Passwort',
+      rate_limit_exceeded: 'Zu viele Versuche. Bitte versuchen Sie es später erneut.',
+      unknown_error: 'Ein unbekannter Fehler ist aufgetreten'
     }
-  };
-
-  const t = texts[language];
+  }
   
   // Get error from URL query parameters
   const urlParams = new URLSearchParams(window.location.search);

@@ -12,27 +12,13 @@ const Index = () => {
   };
 
   const handleLanguageToggle = () => {
-    const newLanguage = language === 'de' ? 'en' : 'de';
+    setShowChat(true);
+    setLanguage(language === 'de' ? 'en' : 'de');
     const message = language === 'de' 
-      ? 'Bitte die Seite auf English umstellen'
-      : 'Diese Seite bitte auf Deutsch übersetzen';
-    
-    // If chat is open, send the language request message
-    if (showChat) {
-      // This would trigger the chat to send the message
-      console.log('Language request:', message);
-    }
-    
-    // Toggle language after a short delay to simulate processing
-    setTimeout(() => {
-      setLanguage(newLanguage);
-    }, 1000);
-  };
-
-  const handleLanguageRequest = (message: string) => {
-    console.log('Language request from chat:', message);
-    handleLanguageToggle();
-  };
+      ? 'please translate this page to English'
+      : 'Seite bitte auf Deutsch übersetzen';
+    // FIXME: send chat message
+    };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col items-center justify-center p-4">
@@ -45,9 +31,7 @@ const Index = () => {
         
         {showChat && (
           <ChatSection
-            language={language}
-            onLanguageRequest={handleLanguageRequest}
-          />
+          />  
         )}
       </div>
     </div>

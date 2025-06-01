@@ -10,40 +10,23 @@ interface Message {
 }
 
 interface ChatSectionProps {
-  language: 'de' | 'en';
-  onLanguageRequest: (message: string) => void;
 }
 
-const ChatSection = ({ language, onLanguageRequest }: ChatSectionProps) => {
+const ChatSection = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const texts = {
-    de: {
-      placeholder: 'Ihre Nachricht...',
-      send: 'Senden',
-      agentWelcome: 'Wie kann ich helfen?',
-      userProblem: 'Ich habe Probleme',
-      languageRequest: 'Bitte die Seite auf English umstellen',
-      errorGeneric: 'Entschuldigung, es gab ein Problem. Bitte versuchen Sie es erneut.',
-      errorRateLimit: 'Zu viele Nachrichten. Bitte warten Sie einen Moment.',
-      typing: 'Agent tippt...'
-    },
-    en: {
-      placeholder: 'Your message...',
-      send: 'Send',
-      agentWelcome: 'How can I help?',
-      userProblem: 'I have problems',
-      languageRequest: 'Diese Seite bitte auf Deutsch übersetzen',
-      errorGeneric: 'Sorry, there was a problem. Please try again.',
-      errorRateLimit: 'Too many messages. Please wait a moment.',
-      typing: 'Agent typing...'
-    }
+  const t = {
+    placeholder: 'Ihre Nachricht...',
+    send: 'Senden',
+    agentWelcome: 'Wie kann ich helfen?',
+    userProblem: 'Ich habe Probleme',
+    errorGeneric: 'Entschuldigung, es gab ein Problem. Bitte versuchen Sie es erneut.',
+    errorRateLimit: 'Zu viele Nachrichten. Bitte warten Sie einen Moment.',
+    typing: 'Agent tippt...'
   };
-
-  const t = texts[language];
 
   useEffect(() => {
     // Initialize chat with welcome message
@@ -54,15 +37,8 @@ const ChatSection = ({ language, onLanguageRequest }: ChatSectionProps) => {
       timestamp: new Date()
     };
     
-    const problemMessage: Message = {
-      id: '2',
-      text: t.userProblem,
-      sender: 'user',
-      timestamp: new Date()
-    };
-
-    setMessages([welcomeMessage, problemMessage]);
-  }, [t.agentWelcome, t.userProblem]);
+    setMessages([welcomeMessage]);
+  }, [t.agentWelcome]);
 
   useEffect(() => {
     scrollToBottom();
@@ -111,12 +87,6 @@ const ChatSection = ({ language, onLanguageRequest }: ChatSectionProps) => {
 
     const messageText = inputValue.trim();
     setInputValue('');
-
-    // Check if this is a language request
-    if (messageText === t.languageRequest) {
-      onLanguageRequest(messageText);
-      return;
-    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
