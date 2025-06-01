@@ -1,73 +1,77 @@
-# Welcome to your Lovable project
 
-## Project info
+# globalworming.today
 
-**URL**: https://lovable.dev/projects/93827ce6-80ea-4cbe-a538-713b365292b7
+A minimalistic single-page application for password authentication with integrated chat support.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Password Authentication**: Simple form with placeholder `/login` endpoint
+- **Error Handling**: URL query parameter based error display
+- **Chat Support**: Integrated customer support chat with Gemini AI
+- **Language Toggle**: Switch between German and English
+- **Responsive Design**: Mobile-friendly interface
 
-**Use Lovable**
+## Error Codes
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/93827ce6-80ea-4cbe-a538-713b365292b7) and start prompting.
+The application handles these error query parameters:
 
-Changes made via Lovable will be committed automatically to this repo.
+- `invalid_password` - Invalid password error
+- `rate_limit_exceeded` - Too many login attempts  
+- `unknown_error` - Generic error message
 
-**Use your preferred IDE**
+Example: `/?error=invalid_password`
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Chat Integration
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+The chat system includes:
 
-Follow these steps:
+- Automatic welcome message and problem reporting
+- Integration with Gemini Flash API
+- MCP (Model Context Protocol) support placeholder
+- Rate limiting and error handling
+- Language-aware responses
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Language Support
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- German (default): `de`
+- English: `en`
 
-# Step 3: Install the necessary dependencies.
-npm i
+Language switching sends automatic messages to the chat agent to request translation.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+## Testing
+
+Gherkin feature files are included in the `/features` directory covering:
+
+- Password form functionality
+- Hint link behavior  
+- Chat interactions
+- Language toggle features
+
+## Deployment
+
+This application is designed to be hosted as a GitHub Page:
+
+1. Build the application: `npm run build`
+2. Deploy the `dist` folder to GitHub Pages
+3. Configure any necessary redirects for the `/login` endpoint
+
+## Development
+
+```bash
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Production Configuration
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+For production deployment:
 
-**Use GitHub Codespaces**
+1. Replace the mock Gemini API call with actual API integration
+2. Implement the MCP processing logic
+3. Set up proper error handling and logging
+4. Configure the `/login` endpoint backend
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## License
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/93827ce6-80ea-4cbe-a538-713b365292b7) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+© 2024 globalworming.today
+```
