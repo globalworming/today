@@ -1,6 +1,6 @@
-
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Send, Loader2 } from 'lucide-react';
+import mcpTools from '../utils/mcpTools';
 
 interface Message {
   id: string;
@@ -12,7 +12,11 @@ interface Message {
 interface ChatSectionProps {
 }
 
-const ChatSection = () => {
+interface ChatSectionRef {
+  sendMessage: (message: string) => void;
+}
+
+const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +31,19 @@ const ChatSection = () => {
     errorRateLimit: 'Zu viele Nachrichten. Bitte warten Sie einen Moment.',
     typing: 'Agent tippt...'
   };
+
+  useImperativeHandle(ref, () => ({
+    sendMessage: (message: string) => {
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        text: message,
+        sender: 'user',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, userMessage]);
+      handleAgentResponse([...messages, userMessage]);
+    }
+  }));
 
   useEffect(() => {
     // Initialize chat with welcome message
@@ -46,6 +63,21 @@ const ChatSection = () => {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const processMCPCalls = async (response: string): Promise<string> => {
+    const { calls, cleanText } = mcpTools.extractMCPCalls(response);
+    
+    // Execute all MCP calls
+    for (const call of calls) {
+      try {
+        await mcpTools.executeMCPCall(call);
+      } catch (error) {
+        console.error('Failed to execute MCP call:', error);
+      }
+    }
+    
+    return cleanText;
   };
 
   const callGeminiAPI = async (messageHistory: Message[]): Promise<string> => {
@@ -74,33 +106,12 @@ const ChatSection = () => {
     return mockResponses[Math.floor(Math.random() * mockResponses.length)];
   };
 
-  const processMCPCalls = (response: string): string => {
-    // Check for MCP calls and process them
-    // This is a placeholder for the MCP implementation
-    console.log('Processing potential MCP calls in response:', response);
-    return response;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputValue.trim() || isLoading) return;
-
-    const messageText = inputValue.trim();
-    setInputValue('');
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text: messageText,
-      sender: 'user',
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
+  const handleAgentResponse = async (messageHistory: Message[]) => {
     setIsLoading(true);
 
     try {
-      const response = await callGeminiAPI([...messages, userMessage]);
-      const processedResponse = processMCPCalls(response);
+      const response = await callGeminiAPI(messageHistory);
+      const processedResponse = await processMCPCalls(response);
       
       const agentMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -128,6 +139,24 @@ const ChatSection = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputValue.trim() || isLoading) return;
+
+    const messageText = inputValue.trim();
+    setInputValue('');
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: messageText,
+      sender: 'user',
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    handleAgentResponse([...messages, userMessage]);
   };
 
   return (
@@ -194,6 +223,8 @@ const ChatSection = () => {
       </div>
     </div>
   );
-};
+});
+
+ChatSection.displayName = 'ChatSection';
 
 export default ChatSection;
