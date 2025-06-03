@@ -11,9 +11,13 @@ interface ChatSectionProps {
 const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) => {
   const { messages, isLoading, sendMessage } = useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useImperativeHandle(ref, () => ({
-    sendMessage
+    sendMessage,
+    focus: () => {
+      inputRef.current?.focus();
+    }
   }));
 
   useEffect(() => {
@@ -35,7 +39,8 @@ const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) =>
         
         <ChatInput 
           onSendMessage={sendMessage} 
-          isLoading={isLoading} 
+          isLoading={isLoading}
+          inputRef={inputRef}
         />
       </div>
     </div>

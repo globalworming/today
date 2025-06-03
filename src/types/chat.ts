@@ -8,6 +8,7 @@ export interface Message {
 
 export interface ChatSectionRef {
   sendMessage: (message: string) => void;
+  focus: () => void;
 }
 
 export const chatTranslations = {

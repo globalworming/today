@@ -1,15 +1,21 @@
 
 import React, { useState, useRef } from 'react';
+import { ChatSectionRef } from '../types/chat';
 import PasswordForm from '../components/PasswordForm';
 import ChatSection from '../components/ChatSection';
 
 const Index = () => {
   const [language, setLanguage] = useState<'de' | 'en'>('de');
   const [showChat, setShowChat] = useState(false);
-  const chatRef = useRef<{ sendMessage: (message: string) => void }>(null);
+  const chatRef = useRef<ChatSectionRef>(null);
 
   const handleHintClick = () => {
     setShowChat(true);
+    
+    // Focus the chat input after a short delay to ensure the component is mounted
+    setTimeout(() => {
+      chatRef.current?.focus();
+    }, 100);
   };
 
   const handleLanguageToggle = () => {

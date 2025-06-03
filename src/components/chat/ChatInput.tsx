@@ -1,15 +1,20 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Send } from 'lucide-react';
 import { chatTranslations } from '../../types/chat';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
   isLoading: boolean;
+  inputRef?: React.RefObject<HTMLInputElement>;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, inputRef }) => {
   const [inputValue, setInputValue] = useState('');
+  const localInputRef = useRef<HTMLInputElement>(null);
+  
+  // Use the provided ref or fall back to local ref
+  const actualInputRef = inputRef || localInputRef;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +29,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
     <form onSubmit={handleSubmit} className="p-4 border-t border-gray-700">
       <div className="flex space-x-2">
         <input
+          ref={actualInputRef}
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
