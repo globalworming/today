@@ -3,7 +3,6 @@ import { Send, Loader2 } from 'lucide-react';
 import mcpTools from '../utils/mcpTools';
 
 interface Message {
-  id: string;
   text: string;
   sender: 'user' | 'agent';
   timestamp: Date;
@@ -35,7 +34,6 @@ const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) =>
   useImperativeHandle(ref, () => ({
     sendMessage: (message: string) => {
       const userMessage: Message = {
-        id: Date.now().toString(),
         text: message,
         sender: 'user',
         timestamp: new Date()
@@ -48,7 +46,6 @@ const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) =>
   useEffect(() => {
     // Initialize chat with welcome message
     const welcomeMessage: Message = {
-      id: '1',
       text: t.agentWelcome,
       sender: 'agent',
       timestamp: new Date()
@@ -81,29 +78,19 @@ const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) =>
   };
 
   const callGeminiAPI = async (messageHistory: Message[]): Promise<string> => {
-    // Mock Gemini API call for development
-    // In production, this would call the actual Gemini API
-    const mockResponses = [
-      'Ich verstehe Ihr Problem. Können Sie mir mehr Details geben?',
-      'Lassen Sie mich Ihnen dabei helfen.',
-      'Das ist ein bekanntes Problem. Hier ist die Lösung...',
-    ];
-    
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
-    
-    // Simulate occasional errors
-    if (Math.random() < 0.1) {
-      throw new Error('API Error');
-    }
-    
-    if (Math.random() < 0.05) {
-      const error = new Error('Rate limit exceeded');
-      (error as any).status = 429;
-      throw error;
-    }
-    
-    return mockResponses[Math.floor(Math.random() * mockResponses.length)];
+    // fetch, POST https://chat-598109592614.europe-west1.run.app with body
+    const response = await fetch('https://chat-598109592614.europe-west1.run.app', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer AIzaSyCeQaGPWswIuWYCT6ELXc9nvDKn-egonb1`
+      },
+      body: JSON.stringify({
+        messageHistory,
+        htmlb64: btoa(document.body.innerHTML)
+      })
+    });
+    return response.text();
   };
 
   const handleAgentResponse = async (messageHistory: Message[]) => {
@@ -114,7 +101,6 @@ const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) =>
       const processedResponse = await processMCPCalls(response);
       
       const agentMessage: Message = {
-        id: (Date.now() + 1).toString(),
         text: processedResponse,
         sender: 'agent',
         timestamp: new Date()
@@ -129,7 +115,6 @@ const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) =>
       }
 
       const errorAgentMessage: Message = {
-        id: (Date.now() + 1).toString(),
         text: errorMessage,
         sender: 'agent',
         timestamp: new Date()
@@ -149,7 +134,6 @@ const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) =>
     setInputValue('');
 
     const userMessage: Message = {
-      id: Date.now().toString(),
       text: messageText,
       sender: 'user',
       timestamp: new Date()
@@ -169,7 +153,7 @@ const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) =>
         <div className="h-80 overflow-y-auto p-4 space-y-4">
           {messages.map((message) => (
             <div
-              key={message.id}
+              key={message.timestamp.getTime()}
               className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
