@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Message, chatTranslations } from '../types/chat';
 import mcpTools from '../utils/mcpTools';
+import { Base64 } from 'js-base64';
 
 export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -10,6 +11,7 @@ export const useChat = () => {
   useEffect(() => {
     // Initialize chat with welcome message
     const welcomeMessage: Message = {
+      id: '0',
       text: chatTranslations.agentWelcome,
       sender: 'model',
       timestamp: new Date()
@@ -43,7 +45,7 @@ export const useChat = () => {
       },
       body: JSON.stringify({
         messageHistory,
-        htmlb64: btoa(document.body.innerHTML)
+        htmlb64: Base64.encode(document.body.innerHTML)
       })
     });
     return response.text();
@@ -57,6 +59,7 @@ export const useChat = () => {
       const processedResponse = await processMCPCalls(response);
       
       const agentMessage: Message = {
+        id: (messageHistory.length + 1).toString(),
         text: processedResponse,
         sender: 'model',
         timestamp: new Date()
@@ -71,6 +74,7 @@ export const useChat = () => {
       }
 
       const errorAgentMessage: Message = {
+        id: (messageHistory.length + 1).toString(),
         text: errorMessage,
         sender: 'model',
         timestamp: new Date()
@@ -84,6 +88,7 @@ export const useChat = () => {
 
   const sendMessage = (messageText: string) => {
     const userMessage: Message = {
+      id: (messages.length + 1).toString(),
       text: messageText,
       sender: 'user',
       timestamp: new Date()

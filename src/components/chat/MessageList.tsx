@@ -14,7 +14,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, messages
     <div className="h-80 overflow-y-auto p-4 space-y-4">
       {messages.map((message) => (
         <div
-          key={message.timestamp.getTime()}
+          key={message.id}
           className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
         >
           <div
