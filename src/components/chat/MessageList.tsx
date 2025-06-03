@@ -11,11 +11,20 @@ interface MessageListProps {
 
 const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, messagesEndRef }) => {
   return (
-    <div className="h-80 overflow-y-auto p-4 space-y-4">
+    <div 
+      className="h-80 overflow-y-auto p-4 space-y-4" 
+      role="log" 
+      aria-live="polite" 
+      aria-relevant="additions"
+      aria-label="Chat message history"
+      tabIndex={0}
+    >
       {messages.map((message) => (
         <div
           key={message.id}
           className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+          role="article"
+          aria-label={`${message.sender === 'user' ? 'You' : 'Assistant'} said`}
         >
           <div
             className={`max-w-xs px-4 py-2 rounded-lg ${
@@ -25,25 +34,29 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, messages
             }`}
           >
             <p className="text-sm">{message.text}</p>
-            <p className="text-xs mt-1 opacity-60">
+            <time 
+              className="text-xs mt-1 opacity-60"
+              dateTime={message.timestamp.toISOString()}
+              aria-label={`Sent at ${message.timestamp.toLocaleTimeString()}`}
+            >
               {message.timestamp.toLocaleTimeString()}
-            </p>
+            </time>
           </div>
         </div>
       ))}
       
       {isLoading && (
-        <div className="flex justify-start">
+        <div className="flex justify-start" role="status" aria-live="assertive">
           <div className="bg-gray-700 text-gray-100 px-4 py-2 rounded-lg">
             <div className="flex items-center space-x-2">
-              <Loader2 size={16} className="animate-spin" />
+              <Loader2 size={16} className="animate-spin" aria-hidden="true" />
               <span className="text-sm">{chatTranslations.typing}</span>
             </div>
           </div>
         </div>
       )}
       
-      <div ref={messagesEndRef} />
+      <div ref={messagesEndRef} aria-hidden="true" />
     </div>
   );
 };

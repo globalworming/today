@@ -7,9 +7,10 @@ interface ChatInputProps {
   onSendMessage: (message: string) => void;
   isLoading: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
+  'aria-label'?: string;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, inputRef }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, inputRef, 'aria-label': ariaLabel }) => {
   const [inputValue, setInputValue] = useState('');
   const localInputRef = useRef<HTMLInputElement>(null);
   
@@ -26,8 +27,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, inputRe
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border-t border-gray-700">
-      <div className="flex space-x-2">
+    <form 
+      onSubmit={handleSubmit} 
+      className="p-4 border-t border-gray-700" 
+      aria-label="Chat message form"
+    >
+      <div className="flex space-x-2" role="group">
         <input
           ref={actualInputRef}
           type="text"
@@ -36,16 +41,30 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, inputRe
           placeholder={chatTranslations.placeholder}
           className="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
           disabled={isLoading}
+          aria-label={ariaLabel || "Message input"}
+          aria-required="true"
+          aria-disabled={isLoading}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              if (inputValue.trim() && !isLoading) {
+                handleSubmit(e as unknown as React.FormEvent);
+              }
+            }
+          }}
         />
         <button
           type="submit"
           disabled={isLoading || !inputValue.trim()}
           className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          aria-label="Send message"
+          aria-disabled={isLoading || !inputValue.trim()}
         >
-          <Send size={16} />
+          <Send size={16} aria-hidden="true" />
+          <span className="sr-only">Send</span>
         </button>
       </div>
-      <p className="text-xs text-gray-400 mt-2 text-center">{chatTranslations.disclaimer}</p>
+      <p className="text-xs text-gray-400 mt-2 text-center" aria-live="polite">{chatTranslations.disclaimer}</p>
     </form>
   );
 };
