@@ -1,7 +1,7 @@
 
 export interface Message {
   text: string;
-  sender: 'user' | 'agent';
+  sender: 'user' | 'model';
   timestamp: Date;
 }
 
@@ -16,6 +16,6 @@ export const chatTranslations = {
   userProblem: 'Ich habe Probleme',
   errorGeneric: 'Entschuldigung, es gab ein Problem. Bitte versuchen Sie es erneut.',
   errorRateLimit: 'Zu viele Nachrichten. Bitte warten Sie einen Moment.',
-  typing: 'Agent tippt...',
-  disclaimer: 'Generierte Nachrichten können falsch und schädlich sein, bitte verwenden Sie sie mit Vorsicht'
+  typing: '...',
+  disclaimer: 'Generierte Nachrichten können falsch und schädlich sein, bitte verwenden Sie sie mit Vorsicht. Bitte teile keine persönlichen Daten mit dem Chatbot.'
 };

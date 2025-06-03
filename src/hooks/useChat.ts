@@ -11,7 +11,7 @@ export const useChat = () => {
     // Initialize chat with welcome message
     const welcomeMessage: Message = {
       text: chatTranslations.agentWelcome,
-      sender: 'agent',
+      sender: 'model',
       timestamp: new Date()
     };
     
@@ -58,7 +58,7 @@ export const useChat = () => {
       
       const agentMessage: Message = {
         text: processedResponse,
-        sender: 'agent',
+        sender: 'model',
         timestamp: new Date()
       };
 
@@ -72,7 +72,7 @@ export const useChat = () => {
 
       const errorAgentMessage: Message = {
         text: errorMessage,
-        sender: 'agent',
+        sender: 'model',
         timestamp: new Date()
       };
 

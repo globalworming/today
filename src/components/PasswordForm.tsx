@@ -29,11 +29,6 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle }: PasswordFormP
   const errorKey = urlParams.get('error') as keyof typeof t.errors | null;
   const errorMessage = errorKey ? t.errors[errorKey] : null;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Redirect to placeholder login endpoint
-    window.location.href = `/login?password=${encodeURIComponent(password)}`;
-  };
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -48,7 +43,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle }: PasswordFormP
           </button>
         </div>
         
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form method="post" action="https://login-598109592614.europe-west1.run.app/login" className="space-y-6">
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
               {t.label}
@@ -56,6 +51,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle }: PasswordFormP
             <input
               type="password"
               id="password"
+              name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={t.placeholder}
