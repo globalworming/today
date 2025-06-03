@@ -28,7 +28,8 @@ const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) =>
     userProblem: 'Ich habe Probleme',
     errorGeneric: 'Entschuldigung, es gab ein Problem. Bitte versuchen Sie es erneut.',
     errorRateLimit: 'Zu viele Nachrichten. Bitte warten Sie einen Moment.',
-    typing: 'Agent tippt...'
+    typing: 'Agent tippt...',
+    disclaimer: 'Generierte Nachrichten können falsch und schädlich sein, bitte verwenden Sie sie mit Vorsicht'
   };
 
   useImperativeHandle(ref, () => ({
@@ -203,6 +204,7 @@ const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) =>
               <Send size={16} />
             </button>
           </div>
+          <p className="text-xs text-gray-400 mt-2 text-center">{t.disclaimer}</p>
         </form>
       </div>
     </div>
