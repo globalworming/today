@@ -16,7 +16,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle }: PasswordFormP
     placeholder: 'Passwort eingeben...',
     submit: 'Anmelden',
     hint: 'Probleme?',
-    langButton: 'EN ' + (language === 'en' ? '< -' : '- >') + ' DE',
+    langButton: 'Sprache wechseln ' + (language === 'en' ? '🇩🇪' : '🇬🇧') + '',
     errors: {
       invalid_password: 'Ungültiges Passwort',
       rate_limit_exceeded: 'Zu viele Versuche. Bitte versuchen Sie es später erneut.',
@@ -37,7 +37,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle }: PasswordFormP
           <h1 className="text-2xl font-bold text-green-400">globalworming.today</h1>
           <button
             onClick={onLanguageToggle}
-            className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+            className="px-3 py-1 text-sm bg-transparent text-white rounded hover:bg-green-700 transition-colors"
           >
             {t.langButton}
           </button>
