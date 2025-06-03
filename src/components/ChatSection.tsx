@@ -25,7 +25,7 @@ const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) =>
   }, [messages, isLoading]);
 
   return (
-    <div className="w-full max-w-md mx-auto mt-6" role="region" aria-label="Chat interface">
+    <div className="w-full mt-6" role="region" aria-label="Chat interface">
       <div className="bg-gray-900 rounded-lg border border-green-500/20 shadow-2xl" role="log" aria-live="polite" aria-atomic="false">
         <header className="p-4 border-b border-gray-700" aria-labelledby="chat-title">
           <h3 id="chat-title" className="text-lg font-semibold text-green-400">Support Chat</h3>
