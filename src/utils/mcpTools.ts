@@ -11,6 +11,15 @@ interface MCPToolsHandler {
 
 const mcpTools: MCPToolsHandler = {
   extractMCPCalls: (text: string) => {
+    console.log('Extracting MCP calls from text:', text);
+    let hasCalls = false;
+    // if text contains <mcp:browser_js_env_call or <mcp:page_inner_html_base64
+    if (text.includes('<mcp:browser_js_env_call') || text.includes('<mcp:page_inner_html_base64')) {
+      hasCalls = true;
+    }
+
+
+
     // Look for MCP tool calls in the format: <mcp:tool_name param1="value1" param2="value2" />
     const mcpRegex = /<mcp:(\w+)([^>]*)\/>/g;
     const calls: MCPCall[] = [];
@@ -23,7 +32,8 @@ const mcpTools: MCPToolsHandler = {
 
       // Parse parameters from the attribute string
       const parameters: Record<string, any> = {};
-      const paramRegex = /(\w+)="([^"]*)"/g;
+      // Using a regex with the 's' flag to handle multi-line parameter values
+      const paramRegex = /(\w+)="([\s\S]*?)"/g;
       let paramMatch;
       while ((paramMatch = paramRegex.exec(paramString)) !== null) {
         parameters[paramMatch[1]] = paramMatch[2];
@@ -35,11 +45,13 @@ const mcpTools: MCPToolsHandler = {
       });
 
       // Remove the MCP call from the text
-      cleanText = cleanText.replace(match[0], '').trim();
+      cleanText = cleanText.replace(match[0], '🏗️').trim();
     }
 
     console.log('Extracted MCP calls:', calls);
-    console.log('Clean text after MCP extraction:', cleanText);
+    if (hasCalls && calls.length <= 0) {
+      throw new Error('No MCP calls found');
+    }
 
     return { calls, cleanText };
   },
