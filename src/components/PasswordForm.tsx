@@ -66,6 +66,8 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
               placeholder={t.placeholder}
               className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               required
+              minLength={8}
+              maxLength={256}
               aria-required="true"
               aria-labelledby="password-label"
               aria-invalid={errorMessage ? "true" : "false"}
