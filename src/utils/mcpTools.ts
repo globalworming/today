@@ -14,14 +14,14 @@ const mcpTools: MCPToolsHandler = {
     console.log('Extracting MCP calls from text:', text);
     let hasCalls = false;
     // if text contains <mcp:browser_js_env_call or <mcp:page_inner_html_base64
-    if (text.includes('<mcp:browser_js_env_call') || text.includes('<mcp:page_inner_html_base64')) {
+    if (text.includes('<mcp:')) {
       hasCalls = true;
     }
 
 
 
     // Look for MCP tool calls in the format: <mcp:tool_name param1="value1" param2="value2" />
-    const mcpRegex = /<mcp:(\w+)([^>]*)\/>/g;
+    const mcpRegex = /<mcp:(\w+) (.*) \/>/g;
     const calls: MCPCall[] = [];
     let cleanText = text;
 
