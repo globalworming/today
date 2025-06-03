@@ -33,7 +33,7 @@ const Index = () => {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col items-center justify-center p-4" role="main" aria-label="Login and chat interface">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-2xl">
         <PasswordForm
           language={language}
           onHintClick={handleHintClick}
