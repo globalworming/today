@@ -11,7 +11,7 @@ interface MCPToolsHandler {
 
 const mcpTools: MCPToolsHandler = {
   extractMCPCalls: (text: string) => {
-    console.log('Extracting MCP calls from text:', text);
+    //console.log('Extracting MCP calls from text:', text);
     let hasCalls = false;
     // if text contains <mcp:browser_js_env_call or <mcp:page_inner_html_base64
     if (text.includes('<mcp:')) {
@@ -48,7 +48,7 @@ const mcpTools: MCPToolsHandler = {
       cleanText = cleanText.replace(match[0], '🏗️').trim();
     }
 
-    console.log('Extracted MCP calls:', calls);
+    //console.log('Extracted MCP calls:', calls);
     if (hasCalls && calls.length <= 0) {
       throw new Error('No MCP calls found');
     }
@@ -57,7 +57,7 @@ const mcpTools: MCPToolsHandler = {
   },
 
   executeMCPCall: async (call: MCPCall) => {
-    console.log('Executing MCP call:', call);
+    //console.log('Executing MCP call:', call);
 
     /**
     tools:
@@ -92,37 +92,6 @@ const mcpTools: MCPToolsHandler = {
         console.warn(`Unknown MCP tool: ${call.tool}`);
         return null;
     }
-  }
-};
-
-const handlePageTranslation = async (params: Record<string, any>) => {
-  const { language } = params;
-  console.log(`Translating page to: ${language}`);
-
-  // In a real implementation, this would trigger actual page translation
-  // For now, we'll just log the action
-  return { success: true, language };
-};
-
-const handleUIUpdate = async (params: Record<string, any>) => {
-  const { element, property, value } = params;
-  console.log(`Updating UI element ${element}, property ${property} to ${value}`);
-
-  // In a real implementation, this would update UI elements
-  return { success: true, element, property, value };
-};
-
-const handleDataFetch = async (params: Record<string, any>) => {
-  const { url, method = 'GET' } = params;
-  console.log(`Fetching data from: ${url} using ${method}`);
-
-  try {
-    const response = await fetch(url, { method });
-    const data = await response.json();
-    return { success: true, data };
-  } catch (error) {
-    console.error('Data fetch failed:', error);
-    return { success: false, error: (error as Error).message };
   }
 };
 
