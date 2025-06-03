@@ -67,6 +67,7 @@ export const useChat = () => {
 
       setMessages(prev => [...prev, agentMessage]);
     } catch (error: any) {
+      console.error('Error in handleAgentResponse:', error);
       let errorMessage = chatTranslations.errorGeneric;
       
       if (error.status === 429) {

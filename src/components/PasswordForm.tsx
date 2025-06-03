@@ -16,7 +16,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle }: PasswordFormP
     placeholder: 'Passwort eingeben...',
     submit: 'Anmelden',
     hint: 'Probleme?',
-    langButton: 'Sprache wechseln ' + (language === 'en' ? '🇩🇪' : '🇬🇧') + '',
+    langButton: "Sprache: " + (language === 'en' ? '* EN / DE' : 'EN / * DE'),
     errors: {
       invalid_password: 'Ungültiges Passwort',
       rate_limit_exceeded: 'Zu viele Versuche. Bitte versuchen Sie es später erneut.',
