@@ -4,6 +4,9 @@ import { Message, chatTranslations } from '../types/chat';
 import mcpTools from '../utils/mcpTools';
 import { Base64 } from 'js-base64';
 
+// The API endpoint URL
+const API_URL = 'https://chat-598109592614.europe-west1.run.app';
+
 export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,8 +39,7 @@ export const useChat = () => {
   };
 
   const callGeminiAPI = async (messageHistory: Message[]): Promise<string> => {
-    // fetch, POST https://chat-598109592614.europe-west1.run.app with body
-    const response = await fetch('https://chat-598109592614.europe-west1.run.app', {
+    const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
