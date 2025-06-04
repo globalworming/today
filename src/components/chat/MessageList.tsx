@@ -12,7 +12,7 @@ interface MessageListProps {
 const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, messagesEndRef }) => {
   return (
     <div 
-      className="h-80 overflow-y-auto p-4 space-y-4" 
+      className="h-80 overflow-y-auto p-1 space-y-4" 
       role="log" 
       aria-live="polite" 
       aria-relevant="additions"

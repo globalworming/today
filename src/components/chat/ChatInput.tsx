@@ -29,7 +29,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, inputRe
   return (
     <form 
       onSubmit={handleSubmit} 
-      className="p-4 border-t border-gray-700" 
+      className="p-1 border-t border-gray-700" 
       aria-label="Chat message form"
     >
       <div className="flex space-x-2" role="group">

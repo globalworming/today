@@ -33,7 +33,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
 
   return (
     <div className="w-full" role="region" aria-labelledby={ariaLabelledBy || "form-title"}>
-      <div className="bg-gray-900 rounded-lg p-2 shadow-2xl border border-green-500/20">
+      <div className="bg-gray-900 rounded-lg p-1 shadow-2xl border border-green-500/20">
         <div className="flex justify-between items-center mb-6">
           <h1 id="form-title" className="text-2xl font-bold text-green-400">globalworming heute</h1>
           <button
@@ -95,7 +95,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
           </button>
         </form>
 
-        <div className="mt-6 text-center">
+        <div className="mt-2 text-center">
           <button
             onClick={onHintClick}
             className="text-green-400 hover:text-green-300 underline text-sm transition-colors"
