@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { AlertCircle } from 'lucide-react';
+import { spawn } from 'child_process';
 
 interface PasswordFormProps {
   language: 'de' | 'en';
@@ -17,7 +18,6 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
     placeholder: 'Passwort eingeben...',
     submit: 'Anmelden',
     hint: 'Probleme?',
-    langButton: "Sprache: " + (language === 'en' ? '* EN / DE' : 'EN / * DE'),
     errors: {
       invalid_password: 'Ungültiges Passwort',
       rate_limit_exceeded: 'Zu viele Versuche. Bitte versuchen Sie es später erneut.',
@@ -33,16 +33,16 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
 
   return (
     <div className="w-full" role="region" aria-labelledby={ariaLabelledBy || "form-title"}>
-      <div className="bg-gray-900 rounded-lg p-8 shadow-2xl border border-green-500/20">
+      <div className="bg-gray-900 rounded-lg p-2 shadow-2xl border border-green-500/20">
         <div className="flex justify-between items-center mb-6">
-          <h1 id="form-title" className="text-2xl font-bold text-green-400">globalworming.today</h1>
+          <h1 id="form-title" className="text-2xl font-bold text-green-400">globalworming heute</h1>
           <button
             onClick={onLanguageToggle}
             className="px-3 py-1 text-sm bg-transparent text-white rounded hover:bg-green-700 transition-colors"
             aria-label={`Change language to ${language === 'de' ? 'English' : 'German'}`}
             type="button"
           >
-            {t.langButton}
+            Sprache:<br />  {(language === 'en' ? <span><u>EN</u> / DE</span> : <span>EN / <u>DE</u></span>)}
           </button>
         </div>
         
