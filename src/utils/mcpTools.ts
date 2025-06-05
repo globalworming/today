@@ -85,7 +85,10 @@ const mcpTools: MCPToolsHandler = {
         return eval(call.parameters.script);
 
       case 'page_inner_html_base64':
-        // FIXME trigger Chat sendMessage, that will automatically use the latest base64 page in the request
+        // Trigger Chat sendMessage, that will automatically use the latest base64 page in the request
+        if (typeof window !== 'undefined' && typeof window.__triggerChatMessage === 'function') {
+          window.__triggerChatMessage('?');
+        }
         return null;
 
       default:

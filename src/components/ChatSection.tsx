@@ -10,6 +10,17 @@ interface ChatSectionProps {
 
 const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) => {
   const { messages, isLoading, sendMessage } = useChat();
+
+  // Expose sendMessage globally for mcpTools
+  React.useEffect(() => {
+    window.__triggerChatMessage = sendMessage;
+    return () => {
+      if (window.__triggerChatMessage === sendMessage) {
+        delete window.__triggerChatMessage;
+      }
+    };
+  }, [sendMessage]);
+  
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
