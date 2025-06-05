@@ -59,32 +59,11 @@ const mcpTools: MCPToolsHandler = {
   executeMCPCall: async (call: MCPCall) => {
     //console.log('Executing MCP call:', call);
 
-    /**
-    tools:
-      - name: browser_js_env_call
-        description: Runs code in the browser's JavaScript environment.
-        parameters:
-          type: object
-          properties:
-            script:
-              type: string
-              description: The JavaScript code to run in the browser's environment.
-              required: true
-          required:
-            - script
-    
-      - name: page_inner_html_base64
-        description: Returns the inner HTML of the current page as a base64 encoded string.
-        parameters:
-          type: object
-          properties: {}
-          required: []
-     */
     switch (call.tool) {
       case 'browser_js_env_call':
         return eval(call.parameters.script);
 
-      case 'page_inner_html_base64':
+      case 'page_outer_html_base64':
         // Trigger Chat sendMessage, that will automatically use the latest base64 page in the request
         if (typeof window !== 'undefined' && typeof window.__triggerChatMessage === 'function') {
           window.__triggerChatMessage('?');
