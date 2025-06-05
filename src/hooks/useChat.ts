@@ -2,8 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Message, chatTranslations } from '../types/chat';
 import mcpTools from '../utils/mcpTools';
-import { Base64 } from 'js-base64';
-
 // The API endpoint URL
 const API_URL = 'https://chat-598109592614.europe-west1.run.app';
 
@@ -91,7 +89,7 @@ export const useChat = () => {
 
   const sendMessage = (messageText: string) => {
     const userMessage: Message = {
-      id: (messages.length + 1).toString(),
+      id: Math.random().toString(36).substring(2, 15),
       text: messageText,
       sender: 'user',
       timestamp: new Date()

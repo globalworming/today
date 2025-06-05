@@ -66,7 +66,7 @@ const mcpTools: MCPToolsHandler = {
       case 'page_outer_html_base64':
         // Trigger Chat sendMessage, that will automatically use the latest base64 page in the request
         if (typeof window !== 'undefined' && typeof window.__triggerChatMessage === 'function') {
-          window.__triggerChatMessage('?');
+          window.__triggerChatMessage('👀');
         }
         return null;
 
