@@ -21,7 +21,7 @@ const mcpTools: MCPToolsHandler = {
 
 
     // Look for MCP tool calls in the format: <mcp:tool_name param1="value1" param2="value2" />
-    const mcpRegex = /<mcp:(\w+) (.*) \/>/g;
+    const mcpRegex = /<mcp:(\w+)(?: (.*?))? \/>/g;
     const calls: MCPCall[] = [];
     let cleanText = text;
 
