@@ -25,12 +25,6 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
     }
   }
   
-  // Get error from URL query parameters
-  const urlParams = new URLSearchParams(window.location.search);
-  const errorKey = urlParams.get('error') as keyof typeof t.errors | null;
-  const errorMessage = errorKey ? t.errors[errorKey] : null;
-
-
   return (
     <div
       id="login-section"
@@ -54,8 +48,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
           method="post" 
           action="https://login-598109592614.europe-west1.run.app/login" 
           className="space-y-6"
-          aria-label="Password login form"
-          role="form"
+          aria-label="hast du das passwort?"
         >
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2" id="password-label">
@@ -72,24 +65,9 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
               required
               minLength={8}
               maxLength={256}
-              aria-required="true"
-              aria-labelledby="password-label"
-              aria-invalid={errorMessage ? "true" : "false"}
               autoComplete="current-password"
             />
           </div>
-
-          {errorMessage && (
-            <div 
-              id="error-message"
-              className="flex items-center space-x-2 text-red-400 bg-red-900/20 p-3 rounded-lg border border-red-500/20"
-              role="alert"
-              aria-live="assertive"
-            >
-              <AlertCircle size={16} aria-hidden="true" />
-              <span className="text-sm">{errorMessage}</span>
-            </div>
-          )}
 
           <button
             type="submit"

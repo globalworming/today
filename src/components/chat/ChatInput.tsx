@@ -64,7 +64,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, inputRe
           aria-disabled={isLoading || !inputValue.trim()}
         >
           <Send size={16} aria-hidden="true" />
-          <span className="sr-only">Send</span>
         </button>
       </div>
       <p id="disclaimer" className="text-xs text-gray-400 mt-2 text-center" aria-live="polite">{chatTranslations.disclaimer}</p>

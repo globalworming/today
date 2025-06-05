@@ -18,14 +18,12 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, messages
       aria-live="polite" 
       aria-relevant="additions"
       aria-label="Chat message history"
-      tabIndex={0}
     >
       {messages.map((message) => (
         <div
           key={message.id}
           id={`message-${message.id}`}
           className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-          role="article"
           aria-label={`${message.sender === 'user' ? 'You' : 'Assistant'} said`}
         >
           <div
