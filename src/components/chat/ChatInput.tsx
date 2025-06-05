@@ -67,7 +67,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, inputRe
           <span className="sr-only">Send</span>
         </button>
       </div>
-      <p className="text-xs text-gray-400 mt-2 text-center" aria-live="polite">{chatTranslations.disclaimer}</p>
+      <p id="disclaimer" className="text-xs text-gray-400 mt-2 text-center" aria-live="polite">{chatTranslations.disclaimer}</p>
     </form>
   );
 };

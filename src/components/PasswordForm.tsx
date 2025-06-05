@@ -39,6 +39,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
         <div className="flex justify-between items-center mb-6">
           <h1 id="form-title" className="text-2xl font-bold text-green-400">globalworming heute</h1>
           <button
+            id="language-toggle"
             onClick={onLanguageToggle}
             className="px-3 py-1 text-sm bg-transparent text-white rounded hover:bg-green-700 transition-colors"
             aria-label={`Change language to ${language === 'de' ? 'English' : 'German'}`}
@@ -80,6 +81,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
 
           {errorMessage && (
             <div 
+              id="error-message"
               className="flex items-center space-x-2 text-red-400 bg-red-900/20 p-3 rounded-lg border border-red-500/20"
               role="alert"
               aria-live="assertive"
