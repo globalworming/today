@@ -45,7 +45,7 @@ export const useChat = () => {
       },
       body: JSON.stringify({
         messageHistory,
-        htmlb64: btoa(unescape(encodeURIComponent(document.body.outerHTML)))
+        htmlb64: btoa(unescape(encodeURIComponent(document.documentElement.outerHTML)))
       })
     });
     return response.text();
