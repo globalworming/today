@@ -28,12 +28,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, inputRe
 
   return (
     <form 
+      id="chat-form"
       onSubmit={handleSubmit} 
       className="p-1 border-t border-gray-700" 
       aria-label="Chat message form"
     >
       <div className="flex space-x-2" role="group">
         <input
+          id="user-message-input"
           ref={actualInputRef}
           type="text"
           value={inputValue}
@@ -54,6 +56,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, inputRe
           }}
         />
         <button
+          id="send-message"
           type="submit"
           disabled={isLoading || !inputValue.trim()}
           className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"

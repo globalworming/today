@@ -12,6 +12,7 @@ interface MessageListProps {
 const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, messagesEndRef }) => {
   return (
     <div 
+      id="chat-messages"
       className="h-80 overflow-y-auto p-1 space-y-4" 
       role="log" 
       aria-live="polite" 

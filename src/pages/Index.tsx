@@ -32,7 +32,7 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col items-center justify-center p-1" role="main" aria-label="Login and chat interface">
+    <main id="puzzle" className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col items-center justify-center p-1" role="main" aria-label="Login and chat interface">
       <div className="w-full max-w-2xl">
         <PasswordForm
           language={language}
@@ -42,7 +42,7 @@ const Index = () => {
         />
         
         {showChat && (
-          <section aria-labelledby="chat-section" className="mt-4">
+          <section id="chat-section" aria-labelledby="chat-section" className="mt-4">
             <h2 id="chat-section" className="sr-only">Chat Section</h2>
             <ChatSection
               ref={chatRef}
