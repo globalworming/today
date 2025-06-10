@@ -1,3 +1,5 @@
+> [!TIP]
+> The password is not here.. or if it is then only by coincidence
 
 # globalworming.today
 
