@@ -73,6 +73,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
           </div>
 
           <button
+            id="submit-password"
             type="submit"
             className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-medium"
             aria-label={t.submit}
@@ -83,6 +84,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
 
         <div className="mt-2 text-center">
           <button
+            id="problems-button"
             onClick={onHintClick}
             className="text-green-400 hover:text-green-300 underline text-sm transition-colors"
             type="button"
