@@ -8,9 +8,10 @@ interface PasswordFormProps {
   onHintClick: () => void;
   onLanguageToggle: () => void;
   'aria-labelledby'?: string;
+  isLoading?: boolean;
 }
 
-const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledby': ariaLabelledBy }: PasswordFormProps) => {
+const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledby': ariaLabelledBy, isLoading = false }: PasswordFormProps) => {
   const [password, setPassword] = useState('');
   
   const t = {
@@ -35,8 +36,10 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
           <button
             id="language-toggle"
             onClick={onLanguageToggle}
-            className="px-3 py-1 text-sm bg-transparent text-white rounded hover:bg-green-700 transition-colors"
+            disabled={isLoading}
+            className="px-3 py-1 text-sm bg-transparent text-white rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             aria-label={`Change language to ${language === 'de' ? 'English' : 'German'}`}
+            aria-disabled={isLoading}
             type="button"
           >
             Sprache:<br />  {(language === 'en' ? <span><u>EN</u> / DE</span> : <span>EN / <u>DE</u></span>)}

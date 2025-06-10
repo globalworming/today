@@ -7,6 +7,7 @@ import ChatSection from '../components/ChatSection';
 const Index = () => {
   const [language, setLanguage] = useState<'de' | 'en'>('de');
   const [showChat, setShowChat] = useState(false);
+  const [isChatLoading, setIsChatLoading] = useState(false);
   const chatRef = useRef<ChatSectionRef>(null);
 
   const handleHintClick = () => {
@@ -19,6 +20,8 @@ const Index = () => {
   };
 
   const handleLanguageToggle = () => {
+    if (isChatLoading) return;
+    
     setShowChat(true);
     setLanguage(language === 'de' ? 'en' : 'de');
     const message = language === 'de' 
@@ -30,6 +33,11 @@ const Index = () => {
       chatRef.current?.sendMessage(message);
     }, 100);
   };
+  
+  // Handle loading state changes from ChatSection
+  const handleChatLoadingChange = (isLoading: boolean) => {
+    setIsChatLoading(isLoading);
+  };
 
   return (
     <main id="puzzle" className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col items-center justify-center p-1" role="main" aria-label="Login and chat interface">
@@ -38,6 +46,7 @@ const Index = () => {
           language={language}
           onHintClick={handleHintClick}
           onLanguageToggle={handleLanguageToggle}
+          isLoading={isChatLoading}
           aria-labelledby="form-title"
         />
         
@@ -46,6 +55,7 @@ const Index = () => {
             <h2 id="chat-section" className="sr-only">Chat Section</h2>
             <ChatSection
               ref={chatRef}
+              onLoadingChange={handleChatLoadingChange}
             />  
           </section>
         )}

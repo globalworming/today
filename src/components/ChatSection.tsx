@@ -6,10 +6,16 @@ import MessageList from './chat/MessageList';
 import ChatInput from './chat/ChatInput';
 
 interface ChatSectionProps {
+  onLoadingChange?: (isLoading: boolean) => void;
 }
 
-const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>((props, ref) => {
+const ChatSection = forwardRef<ChatSectionRef, ChatSectionProps>(({ onLoadingChange }, ref) => {
   const { messages, isLoading, sendMessage } = useChat();
+  
+  // Notify parent of loading state changes
+  useEffect(() => {
+    onLoadingChange?.(isLoading);
+  }, [isLoading, onLoadingChange]);
 
   // Expose sendMessage globally for mcpTools
   React.useEffect(() => {
