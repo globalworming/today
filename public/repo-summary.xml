@@ -1,48 +1,25 @@
-This file is a merged representation of the entire codebase, combined into a single document by Repomix.
-The content has been processed where content has been compressed (code blocks are separated by ⋮---- delimiter).
-
-<file_summary>
-This section contains a summary of this file.
-
-<purpose>
-This file contains a packed representation of the entire repository's contents.
+<repomix><file_summary>This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+The content has been processed where content has been formatted for parsing in xml style, content has been compressed (code blocks are separated by ⋮---- delimiter).<purpose>This file contains a packed representation of the entire repository&apos;s contents.
 It is designed to be easily consumable by AI systems for analysis, code review,
-or other automated processes.
-</purpose>
-
-<file_format>
-The content is organized as follows:
+or other automated processes.</purpose><file_format>The content is organized as follows:
 1. This summary section
 2. Repository information
 3. Directory structure
 4. Repository files (if enabled)
-5. Multiple file entries, each consisting of:
+5. Repository files, each consisting of:
   - File path as an attribute
-  - Full contents of the file
-</file_format>
-
-<usage_guidelines>
-- This file should be treated as read-only. Any changes should be made to the
+  - Full contents of the file</file_format><usage_guidelines>- This file should be treated as read-only. Any changes should be made to the
   original repository files, not this packed version.
 - When processing this file, use the file path to distinguish
   between different files in the repository.
 - Be aware that this file may contain sensitive information. Handle it with
-  the same level of security as you would the original repository.
-</usage_guidelines>
-
-<notes>
-- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+  the same level of security as you would the original repository.</usage_guidelines><notes>- Some files may have been excluded based on .gitignore rules and Repomix&apos;s configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
+- Content has been formatted for parsing in xml style
 - Content has been compressed - code blocks are separated by ⋮---- delimiter
-- Files are sorted by Git change count (files with more changes are at the bottom)
-</notes>
-
-</file_summary>
-
-<directory_structure>
-.github/
+- Files are sorted by Git change count (files with more changes are at the bottom)</notes></file_summary><user_provided_header></user_provided_header><directory_structure>.github/
   workflows/
     gh-pages.yml
     update-repomix.yml
@@ -146,14 +123,7 @@ tailwind.config.ts
 tsconfig.app.json
 tsconfig.json
 tsconfig.node.json
-vite.config.ts
-</directory_structure>
-
-<files>
-This section contains the contents of the repository's files.
-
-<file path=".github/workflows/update-repomix.yml">
-name: Update Repository Summary
+vite.config.ts</directory_structure><files>This section contains the contents of the repository&apos;s files.<file path=".github/workflows/update-repomix.yml">name: Update Repository Summary
 
 on:
   push:
@@ -181,46 +151,34 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: &apos;18&apos;
           
       - name: Run repomix
-        run: npx repomix --output public/repo-summary.xml --style xml --compress
+        run: npx repomix --output public/repo-summary.xml --style xml --compress --parsable-style --remove-empty-lines --header-text &quot;&quot;
         
       - name: Commit changes if any
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name &apos;github-actions[bot]&apos;
+          git config --global user.email &apos;github-actions[bot]@users.noreply.github.com&apos;
           
           # Check if there are any changes
-          if [[ -n "$(git status --porcelain)" ]]; then
+          if [[ -n &quot;$(git status --porcelain)&quot; ]]; then
             git add public/repo-summary.xml
-            git commit -m "Update repository summary [skip ci]"
+            git commit -m &quot;Update repository summary [skip ci]&quot;
             
             # Handle different push scenarios for pull requests vs direct pushes
-            if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            if [[ &quot;${{ github.event_name }}&quot; == &quot;pull_request&quot; ]]; then
               # For pull requests - push to the PR branch
               git push origin HEAD:${{ github.head_ref }}
-              echo "Repository summary updated and pushed to PR branch."
+              echo &quot;Repository summary updated and pushed to PR branch.&quot;
             else
               # For direct pushes to main
               git push
-              echo "Repository summary updated and pushed."
+              echo &quot;Repository summary updated and pushed.&quot;
             fi
           else
-            echo "No changes detected."
-          fi
-</file>
-
-<file path=".prayers/202506110931.md">
-Dear Moksha, I want the world to be a world of cooperative exploration and entertaining contest, throughout the universe and beyond. As person afraid of dying I hope my current me is still present for that, whatever form I take then to best support us.
-</file>
-
-<file path=".prayers/20250625.md">
-I want the world to be one where we support each other, dont supress the weak and overcome our need for status. Also would be cool if my son and I could visit mars together in 50 years :)
-</file>
-
-<file path="features/chat.feature">
-Feature: Chat Support
+            echo &quot;No changes detected.&quot;
+          fi</file><file path=".prayers/202506110931.md">Dear Moksha, I want the world to be a world of cooperative exploration and entertaining contest, throughout the universe and beyond. As person afraid of dying I hope my current me is still present for that, whatever form I take then to best support us.</file><file path=".prayers/20250625.md">I want the world to be one where we support each other, dont supress the weak and overcome our need for status. Also would be cool if my son and I could visit mars together in 50 years :)</file><file path="features/chat.feature">Feature: Chat Support
   As a user
   I want to chat with an agent
   So that I can get help with my login problems
@@ -239,25 +197,17 @@ Feature: Chat Support
   Scenario: Handle rate limit error
     Given the chat section is open
     When the chat API returns a 429 status
-    Then I should see "Zu viele Nachrichten. Bitte warten Sie einen Moment."
-</file>
-
-<file path="features/hint-link.feature">
-Feature: Hint Link
+    Then I should see &quot;Zu viele Nachrichten. Bitte warten Sie einen Moment.&quot;</file><file path="features/hint-link.feature">Feature: Hint Link
   As a user
   I want to access help when I have problems
   So that I can get assistance with login issues
 
   Scenario: Open chat section via hint link
     Given I am on the login page
-    When I click the "Probleme?" hint link
+    When I click the &quot;Probleme?&quot; hint link
     Then the chat section should open below the form
-    And I should see an agent message "Wie kann ich helfen?"
-    And a user message "Ich habe Probleme" should be automatically sent
-</file>
-
-<file path="features/language.feature">
-Feature: Language Toggle
+    And I should see an agent message &quot;Wie kann ich helfen?&quot;
+    And a user message &quot;Ich habe Probleme&quot; should be automatically sent</file><file path="features/language.feature">Feature: Language Toggle
   As a user
   I want to switch between German and English
   So that I can use the interface in my preferred language
@@ -265,18 +215,14 @@ Feature: Language Toggle
   Scenario: Switch to English
     Given I am on the German login page
     When I click the language toggle button
-    Then a user message "Bitte die Seite auf English umstellen" should be sent
-    And eventually the form label should change to "Do you have the password?"
+    Then a user message &quot;Bitte die Seite auf English umstellen&quot; should be sent
+    And eventually the form label should change to &quot;Do you have the password?&quot;
 
   Scenario: Switch back to German
     Given I am on the English login page
     When I click the language toggle button
-    Then a user message "Diese Seite bitte auf Deutsch übersetzen" should be sent
-    And eventually the form label should change to "Hast du das Passwort?"
-</file>
-
-<file path="features/password-form.feature">
-Feature: Password Form
+    Then a user message &quot;Diese Seite bitte auf Deutsch übersetzen&quot; should be sent
+    And eventually the form label should change to &quot;Hast du das Passwort?&quot;</file><file path="features/password-form.feature">Feature: Password Form
   As a user
   I want to authenticate with a password
   So that I can access the protected content
@@ -285,23 +231,15 @@ Feature: Password Form
     Given I am on the login page
     When I enter an invalid password
     And I click the submit button
-    Then I should see an error message "Ungültiges Passwort"
+    Then I should see an error message &quot;Ungültiges Passwort&quot;
 
   Scenario: Login with rate limit exceeded
-    Given I am on the login page with error query parameter "rate_limit_exceeded"
-    Then I should see an error message "Zu viele Versuche. Bitte versuchen Sie es später erneut."
+    Given I am on the login page with error query parameter &quot;rate_limit_exceeded&quot;
+    Then I should see an error message &quot;Zu viele Versuche. Bitte versuchen Sie es später erneut.&quot;
 
   Scenario: Login with unknown error
-    Given I am on the login page with error query parameter "unknown_error"
-    Then I should see an error message "Ein unbekannter Fehler ist aufgetreten"
-</file>
-
-<file path="public/placeholder.svg">
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" fill="none"><rect width="1200" height="1200" fill="#EAEAEA" rx="3"/><g opacity=".5"><g opacity=".5"><path fill="#FAFAFA" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/></g><path stroke="url(#a)" stroke-width="2.418" d="M0-1.209h553.581" transform="scale(1 -1) rotate(45 1163.11 91.165)"/><path stroke="url(#b)" stroke-width="2.418" d="M404.846 598.671h391.726"/><path stroke="url(#c)" stroke-width="2.418" d="M599.5 795.742V404.017"/><path stroke="url(#d)" stroke-width="2.418" d="m795.717 796.597-391.441-391.44"/><path fill="#fff" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/><g clip-path="url(#e)"><path fill="#666" fill-rule="evenodd" d="M616.426 586.58h-31.434v16.176l3.553-3.554.531-.531h9.068l.074-.074 8.463-8.463h2.565l7.18 7.181V586.58Zm-15.715 14.654 3.698 3.699 1.283 1.282-2.565 2.565-1.282-1.283-5.2-5.199h-6.066l-5.514 5.514-.073.073v2.876a2.418 2.418 0 0 0 2.418 2.418h26.598a2.418 2.418 0 0 0 2.418-2.418v-8.317l-8.463-8.463-7.181 7.181-.071.072Zm-19.347 5.442v4.085a6.045 6.045 0 0 0 6.046 6.045h26.598a6.044 6.044 0 0 0 6.045-6.045v-7.108l1.356-1.355-1.282-1.283-.074-.073v-17.989h-38.689v23.43l-.146.146.146.147Z" clip-rule="evenodd"/></g><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/></g><defs><linearGradient id="a" x1="554.061" x2="-.48" y1=".083" y2=".087" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="b" x1="796.912" x2="404.507" y1="599.963" y2="599.965" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="c" x1="600.792" x2="600.794" y1="403.677" y2="796.082" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="d" x1="404.85" x2="796.972" y1="403.903" y2="796.02" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><clipPath id="e"><path fill="#fff" d="M581.364 580.535h38.689v38.689h-38.689z"/></clipPath></defs></svg>
-</file>
-
-<file path="public/robots.txt">
-User-agent: Googlebot
+    Given I am on the login page with error query parameter &quot;unknown_error&quot;
+    Then I should see an error message &quot;Ein unbekannter Fehler ist aufgetreten&quot;</file><file path="public/placeholder.svg">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;1200&quot; height=&quot;1200&quot; fill=&quot;none&quot;&gt;&lt;rect width=&quot;1200&quot; height=&quot;1200&quot; fill=&quot;#EAEAEA&quot; rx=&quot;3&quot;/&gt;&lt;g opacity=&quot;.5&quot;&gt;&lt;g opacity=&quot;.5&quot;&gt;&lt;path fill=&quot;#FAFAFA&quot; d=&quot;M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z&quot;/&gt;&lt;path stroke=&quot;#C9C9C9&quot; stroke-width=&quot;2.418&quot; d=&quot;M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z&quot;/&gt;&lt;/g&gt;&lt;path stroke=&quot;url(#a)&quot; stroke-width=&quot;2.418&quot; d=&quot;M0-1.209h553.581&quot; transform=&quot;scale(1 -1) rotate(45 1163.11 91.165)&quot;/&gt;&lt;path stroke=&quot;url(#b)&quot; stroke-width=&quot;2.418&quot; d=&quot;M404.846 598.671h391.726&quot;/&gt;&lt;path stroke=&quot;url(#c)&quot; stroke-width=&quot;2.418&quot; d=&quot;M599.5 795.742V404.017&quot;/&gt;&lt;path stroke=&quot;url(#d)&quot; stroke-width=&quot;2.418&quot; d=&quot;m795.717 796.597-391.441-391.44&quot;/&gt;&lt;path fill=&quot;#fff&quot; d=&quot;M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z&quot;/&gt;&lt;g clip-path=&quot;url(#e)&quot;&gt;&lt;path fill=&quot;#666&quot; fill-rule=&quot;evenodd&quot; d=&quot;M616.426 586.58h-31.434v16.176l3.553-3.554.531-.531h9.068l.074-.074 8.463-8.463h2.565l7.18 7.181V586.58Zm-15.715 14.654 3.698 3.699 1.283 1.282-2.565 2.565-1.282-1.283-5.2-5.199h-6.066l-5.514 5.514-.073.073v2.876a2.418 2.418 0 0 0 2.418 2.418h26.598a2.418 2.418 0 0 0 2.418-2.418v-8.317l-8.463-8.463-7.181 7.181-.071.072Zm-19.347 5.442v4.085a6.045 6.045 0 0 0 6.046 6.045h26.598a6.044 6.044 0 0 0 6.045-6.045v-7.108l1.356-1.355-1.282-1.283-.074-.073v-17.989h-38.689v23.43l-.146.146.146.147Z&quot; clip-rule=&quot;evenodd&quot;/&gt;&lt;/g&gt;&lt;path stroke=&quot;#C9C9C9&quot; stroke-width=&quot;2.418&quot; d=&quot;M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z&quot;/&gt;&lt;/g&gt;&lt;defs&gt;&lt;linearGradient id=&quot;a&quot; x1=&quot;554.061&quot; x2=&quot;-.48&quot; y1=&quot;.083&quot; y2=&quot;.087&quot; gradientUnits=&quot;userSpaceOnUse&quot;&gt;&lt;stop stop-color=&quot;#C9C9C9&quot; stop-opacity=&quot;0&quot;/&gt;&lt;stop offset=&quot;.208&quot; stop-color=&quot;#C9C9C9&quot;/&gt;&lt;stop offset=&quot;.792&quot; stop-color=&quot;#C9C9C9&quot;/&gt;&lt;stop offset=&quot;1&quot; stop-color=&quot;#C9C9C9&quot; stop-opacity=&quot;0&quot;/&gt;&lt;/linearGradient&gt;&lt;linearGradient id=&quot;b&quot; x1=&quot;796.912&quot; x2=&quot;404.507&quot; y1=&quot;599.963&quot; y2=&quot;599.965&quot; gradientUnits=&quot;userSpaceOnUse&quot;&gt;&lt;stop stop-color=&quot;#C9C9C9&quot; stop-opacity=&quot;0&quot;/&gt;&lt;stop offset=&quot;.208&quot; stop-color=&quot;#C9C9C9&quot;/&gt;&lt;stop offset=&quot;.792&quot; stop-color=&quot;#C9C9C9&quot;/&gt;&lt;stop offset=&quot;1&quot; stop-color=&quot;#C9C9C9&quot; stop-opacity=&quot;0&quot;/&gt;&lt;/linearGradient&gt;&lt;linearGradient id=&quot;c&quot; x1=&quot;600.792&quot; x2=&quot;600.794&quot; y1=&quot;403.677&quot; y2=&quot;796.082&quot; gradientUnits=&quot;userSpaceOnUse&quot;&gt;&lt;stop stop-color=&quot;#C9C9C9&quot; stop-opacity=&quot;0&quot;/&gt;&lt;stop offset=&quot;.208&quot; stop-color=&quot;#C9C9C9&quot;/&gt;&lt;stop offset=&quot;.792&quot; stop-color=&quot;#C9C9C9&quot;/&gt;&lt;stop offset=&quot;1&quot; stop-color=&quot;#C9C9C9&quot; stop-opacity=&quot;0&quot;/&gt;&lt;/linearGradient&gt;&lt;linearGradient id=&quot;d&quot; x1=&quot;404.85&quot; x2=&quot;796.972&quot; y1=&quot;403.903&quot; y2=&quot;796.02&quot; gradientUnits=&quot;userSpaceOnUse&quot;&gt;&lt;stop stop-color=&quot;#C9C9C9&quot; stop-opacity=&quot;0&quot;/&gt;&lt;stop offset=&quot;.208&quot; stop-color=&quot;#C9C9C9&quot;/&gt;&lt;stop offset=&quot;.792&quot; stop-color=&quot;#C9C9C9&quot;/&gt;&lt;stop offset=&quot;1&quot; stop-color=&quot;#C9C9C9&quot; stop-opacity=&quot;0&quot;/&gt;&lt;/linearGradient&gt;&lt;clipPath id=&quot;e&quot;&gt;&lt;path fill=&quot;#fff&quot; d=&quot;M581.364 580.535h38.689v38.689h-38.689z&quot;/&gt;&lt;/clipPath&gt;&lt;/defs&gt;&lt;/svg&gt;</file><file path="public/robots.txt">User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
@@ -314,125 +252,77 @@ User-agent: facebookexternalhit
 Allow: /
 
 User-agent: *
-Allow: /
-</file>
-
-<file path="src/components/ui/accordion.tsx">
-import { ChevronDown } from "lucide-react"
+Allow: /</file><file path="src/components/ui/accordion.tsx">import { ChevronDown } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/alert-dialog.tsx">
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
-</file>
-
-<file path="src/components/ui/alert.tsx">
-import { cva, type VariantProps } from "class-variance-authority"
+className=</file><file path="src/components/ui/alert-dialog.tsx">import { cn } from &quot;@/lib/utils&quot;
+import { buttonVariants } from &quot;@/components/ui/button&quot;</file><file path="src/components/ui/alert.tsx">import { cva, type VariantProps } from &quot;class-variance-authority&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/aspect-ratio.tsx">
-
-</file>
-
-<file path="src/components/ui/avatar.tsx">
-import { cn } from "@/lib/utils"
-</file>
-
-<file path="src/components/ui/badge.tsx">
-import { cva, type VariantProps } from "class-variance-authority"
+className=</file><file path="src/components/ui/aspect-ratio.tsx"></file><file path="src/components/ui/avatar.tsx">import { cn } from &quot;@/lib/utils&quot;</file><file path="src/components/ui/badge.tsx">import { cva, type VariantProps } from &quot;class-variance-authority&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
 export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+  extends React.HTMLAttributes&lt;HTMLDivElement&gt;,
+    VariantProps&lt;typeof badgeVariants&gt; {}
 ⋮----
-<div className=
-</file>
-
-<file path="src/components/ui/breadcrumb.tsx">
-import { Slot } from "@radix-ui/react-slot"
-import { ChevronRight, MoreHorizontal } from "lucide-react"
+&lt;div className=</file><file path="src/components/ui/breadcrumb.tsx">import { Slot } from &quot;@radix-ui/react-slot&quot;
+import { ChevronRight, MoreHorizontal } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/button.tsx">
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+className=</file><file path="src/components/ui/button.tsx">import { Slot } from &quot;@radix-ui/react-slot&quot;
+import { cva, type VariantProps } from &quot;class-variance-authority&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  extends React.ButtonHTMLAttributes&lt;HTMLButtonElement&gt;,
+    VariantProps&lt;typeof buttonVariants&gt; {
   asChild?: boolean
-}
-</file>
-
-<file path="src/components/ui/calendar.tsx">
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { DayPicker } from "react-day-picker";
+}</file><file path="src/components/ui/calendar.tsx">import { ChevronLeft, ChevronRight } from &quot;lucide-react&quot;;
+import { DayPicker } from &quot;react-day-picker&quot;;
 ⋮----
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { cn } from &quot;@/lib/utils&quot;;
+import { buttonVariants } from &quot;@/components/ui/button&quot;;
 ⋮----
-export type CalendarProps = React.ComponentProps<typeof DayPicker>;
-</file>
-
-<file path="src/components/ui/card.tsx">
-import { cn } from "@/lib/utils"
+export type CalendarProps = React.ComponentProps&lt;typeof DayPicker&gt;;</file><file path="src/components/ui/card.tsx">import { cn } from &quot;@/lib/utils&quot;
 ⋮----
 className=
 ⋮----
-<div ref=
-</file>
-
-<file path="src/components/ui/carousel.tsx">
-import useEmblaCarousel, {
+&lt;div ref=</file><file path="src/components/ui/carousel.tsx">import useEmblaCarousel, {
   type UseEmblaCarouselType,
-} from "embla-carousel-react"
-import { ArrowLeft, ArrowRight } from "lucide-react"
+} from &quot;embla-carousel-react&quot;
+import { ArrowLeft, ArrowRight } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from &quot;@/lib/utils&quot;
+import { Button } from &quot;@/components/ui/button&quot;
 ⋮----
 type CarouselApi = UseEmblaCarouselType[1]
-type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
+type UseCarouselParameters = Parameters&lt;typeof useEmblaCarousel&gt;
 type CarouselOptions = UseCarouselParameters[0]
 type CarouselPlugin = UseCarouselParameters[1]
 ⋮----
 type CarouselProps = {
   opts?: CarouselOptions
   plugins?: CarouselPlugin
-  orientation?: "horizontal" | "vertical"
-  setApi?: (api: CarouselApi) => void
+  orientation?: &quot;horizontal&quot; | &quot;vertical&quot;
+  setApi?: (api: CarouselApi) =&gt; void
 }
 ⋮----
 type CarouselContextProps = {
-  carouselRef: ReturnType<typeof useEmblaCarousel>[0]
-  api: ReturnType<typeof useEmblaCarousel>[1]
-  scrollPrev: () => void
-  scrollNext: () => void
+  carouselRef: ReturnType&lt;typeof useEmblaCarousel&gt;[0]
+  api: ReturnType&lt;typeof useEmblaCarousel&gt;[1]
+  scrollPrev: () =&gt; void
+  scrollNext: () =&gt; void
   canScrollPrev: boolean
   canScrollNext: boolean
-} & CarouselProps
+} &amp; CarouselProps
 ⋮----
-function useCarousel()
-</file>
-
-<file path="src/components/ui/chart.tsx">
-import { cn } from "@/lib/utils"
+function useCarousel()</file><file path="src/components/ui/chart.tsx">import { cn } from &quot;@/lib/utils&quot;
 ⋮----
 // Format: { THEME_NAME: CSS_SELECTOR }
 ⋮----
@@ -440,9 +330,9 @@ export type ChartConfig = {
   [k in string]: {
     label?: React.ReactNode
     icon?: React.ComponentType
-  } & (
+  } &amp; (
     | { color?: string; theme?: never }
-    | { color?: never; theme: Record<keyof typeof THEMES, string> }
+    | { color?: never; theme: Record&lt;keyof typeof THEMES, string&gt; }
   )
 }
 ⋮----
@@ -454,70 +344,38 @@ function useChart()
 ⋮----
 className=
 ⋮----
-<div className=
+&lt;div className=
 ⋮----
-// Helper to extract item config from a payload.
-</file>
-
-<file path="src/components/ui/checkbox.tsx">
-import { Check } from "lucide-react"
+// Helper to extract item config from a payload.</file><file path="src/components/ui/checkbox.tsx">import { Check } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/collapsible.tsx">
-
-</file>
-
-<file path="src/components/ui/command.tsx">
-import { type DialogProps } from "@radix-ui/react-dialog"
-import { Command as CommandPrimitive } from "cmdk"
-import { Search } from "lucide-react"
+className=</file><file path="src/components/ui/collapsible.tsx"></file><file path="src/components/ui/command.tsx">import { type DialogProps } from &quot;@radix-ui/react-dialog&quot;
+import { Command as CommandPrimitive } from &quot;cmdk&quot;
+import { Search } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { cn } from &quot;@/lib/utils&quot;
+import { Dialog, DialogContent } from &quot;@/components/ui/dialog&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/context-menu.tsx">
-import { Check, ChevronRight, Circle } from "lucide-react"
+className=</file><file path="src/components/ui/context-menu.tsx">import { Check, ChevronRight, Circle } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/dialog.tsx">
-import { X } from "lucide-react"
+className=</file><file path="src/components/ui/dialog.tsx">import { X } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/drawer.tsx">
-import { Drawer as DrawerPrimitive } from "vaul"
+className=</file><file path="src/components/ui/drawer.tsx">import { Drawer as DrawerPrimitive } from &quot;vaul&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
 const Drawer = (
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/dropdown-menu.tsx">
-import { Check, ChevronRight, Circle } from "lucide-react"
+className=</file><file path="src/components/ui/dropdown-menu.tsx">import { Check, ChevronRight, Circle } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/form.tsx">
-import { Slot } from "@radix-ui/react-slot"
+className=</file><file path="src/components/ui/form.tsx">import { Slot } from &quot;@radix-ui/react-slot&quot;
 import {
   Controller,
   ControllerProps,
@@ -525,178 +383,114 @@ import {
   FieldValues,
   FormProvider,
   useFormContext,
-} from "react-hook-form"
+} from &quot;react-hook-form&quot;
 ⋮----
-import { cn } from "@/lib/utils"
-import { Label } from "@/components/ui/label"
+import { cn } from &quot;@/lib/utils&quot;
+import { Label } from &quot;@/components/ui/label&quot;
 ⋮----
-type FormFieldContextValue<
+type FormFieldContextValue&lt;
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = {
+  TName extends FieldPath&lt;TFieldValues&gt; = FieldPath&lt;TFieldValues&gt;
+&gt; = {
   name: TName
 }
 ⋮----
-const FormField = <
+const FormField = &lt;
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
->({
+  TName extends FieldPath&lt;TFieldValues&gt; = FieldPath&lt;TFieldValues&gt;
+&gt;({
   ...props
-}: ControllerProps<TFieldValues, TName>) =>
+}: ControllerProps&lt;TFieldValues, TName&gt;) =&gt;
 ⋮----
-const useFormField = () =>
+const useFormField = () =&gt;
 ⋮----
 type FormItemContextValue = {
   id: string
 }
 ⋮----
-<div ref=
+&lt;div ref=
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/hover-card.tsx">
-import { cn } from "@/lib/utils"
-</file>
-
-<file path="src/components/ui/input-otp.tsx">
-import { OTPInput, OTPInputContext } from "input-otp"
-import { Dot } from "lucide-react"
+className=</file><file path="src/components/ui/hover-card.tsx">import { cn } from &quot;@/lib/utils&quot;</file><file path="src/components/ui/input-otp.tsx">import { OTPInput, OTPInputContext } from &quot;input-otp&quot;
+import { Dot } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
 containerClassName=
 className=
 ⋮----
-<div ref=
-</file>
-
-<file path="src/components/ui/input.tsx">
-import { cn } from "@/lib/utils"
+&lt;div ref=</file><file path="src/components/ui/input.tsx">import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/label.tsx">
-import { cva, type VariantProps } from "class-variance-authority"
+className=</file><file path="src/components/ui/label.tsx">import { cva, type VariantProps } from &quot;class-variance-authority&quot;
 ⋮----
-import { cn } from "@/lib/utils"
-</file>
-
-<file path="src/components/ui/menubar.tsx">
-import { Check, ChevronRight, Circle } from "lucide-react"
+import { cn } from &quot;@/lib/utils&quot;</file><file path="src/components/ui/menubar.tsx">import { Check, ChevronRight, Circle } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/navigation-menu.tsx">
-import { cva } from "class-variance-authority"
-import { ChevronDown } from "lucide-react"
+className=</file><file path="src/components/ui/navigation-menu.tsx">import { cva } from &quot;class-variance-authority&quot;
+import { ChevronDown } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/pagination.tsx">
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
+className=</file><file path="src/components/ui/pagination.tsx">import { ChevronLeft, ChevronRight, MoreHorizontal } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
-import { ButtonProps, buttonVariants } from "@/components/ui/button"
+import { cn } from &quot;@/lib/utils&quot;
+import { ButtonProps, buttonVariants } from &quot;@/components/ui/button&quot;
 ⋮----
 const Pagination = (
 ⋮----
 className=
 ⋮----
-<li ref=
+&lt;li ref=
 ⋮----
-const PaginationPrevious = (
-</file>
-
-<file path="src/components/ui/popover.tsx">
-import { cn } from "@/lib/utils"
-</file>
-
-<file path="src/components/ui/progress.tsx">
-import { cn } from "@/lib/utils"
+const PaginationPrevious = (</file><file path="src/components/ui/popover.tsx">import { cn } from &quot;@/lib/utils&quot;</file><file path="src/components/ui/progress.tsx">import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/radio-group.tsx">
-import { Circle } from "lucide-react"
+className=</file><file path="src/components/ui/radio-group.tsx">import { Circle } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/resizable.tsx">
-import { GripVertical } from "lucide-react"
+className=</file><file path="src/components/ui/resizable.tsx">import { GripVertical } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
-</file>
-
-<file path="src/components/ui/scroll-area.tsx">
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;</file><file path="src/components/ui/scroll-area.tsx">import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/select.tsx">
-import { Check, ChevronDown, ChevronUp } from "lucide-react"
+className=</file><file path="src/components/ui/select.tsx">import { Check, ChevronDown, ChevronUp } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/separator.tsx">
-import { cn } from "@/lib/utils"
-</file>
-
-<file path="src/components/ui/sheet.tsx">
-import { cva, type VariantProps } from "class-variance-authority"
-import { X } from "lucide-react"
+className=</file><file path="src/components/ui/separator.tsx">import { cn } from &quot;@/lib/utils&quot;</file><file path="src/components/ui/sheet.tsx">import { cva, type VariantProps } from &quot;class-variance-authority&quot;
+import { X } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
 interface SheetContentProps
-  extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
-  VariantProps<typeof sheetVariants> { }
+  extends React.ComponentPropsWithoutRef&lt;typeof SheetPrimitive.Content&gt;,
+  VariantProps&lt;typeof sheetVariants&gt; { }
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/sidebar.tsx">
-import { Slot } from "@radix-ui/react-slot"
-import { VariantProps, cva } from "class-variance-authority"
-import { PanelLeft } from "lucide-react"
+className=</file><file path="src/components/ui/sidebar.tsx">import { Slot } from &quot;@radix-ui/react-slot&quot;
+import { VariantProps, cva } from &quot;class-variance-authority&quot;
+import { PanelLeft } from &quot;lucide-react&quot;
 ⋮----
-import { useIsMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
-import { Skeleton } from "@/components/ui/skeleton"
+import { useIsMobile } from &quot;@/hooks/use-mobile&quot;
+import { cn } from &quot;@/lib/utils&quot;
+import { Button } from &quot;@/components/ui/button&quot;
+import { Input } from &quot;@/components/ui/input&quot;
+import { Separator } from &quot;@/components/ui/separator&quot;
+import { Sheet, SheetContent } from &quot;@/components/ui/sheet&quot;
+import { Skeleton } from &quot;@/components/ui/skeleton&quot;
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from &quot;@/components/ui/tooltip&quot;
 ⋮----
 type SidebarContext = {
-  state: "expanded" | "collapsed"
+  state: &quot;expanded&quot; | &quot;collapsed&quot;
   open: boolean
-  setOpen: (open: boolean) => void
+  setOpen: (open: boolean) =&gt; void
   openMobile: boolean
-  setOpenMobile: (open: boolean) => void
+  setOpenMobile: (open: boolean) =&gt; void
   isMobile: boolean
-  toggleSidebar: () => void
+  toggleSidebar: () =&gt; void
 }
 ⋮----
 function useSidebar()
@@ -710,9 +504,9 @@ function useSidebar()
 ⋮----
 // Adds a keyboard shortcut to toggle the sidebar.
 ⋮----
-const handleKeyDown = (event: KeyboardEvent) =>
+const handleKeyDown = (event: KeyboardEvent) =&gt;
 ⋮----
-// We add a state so that we can do data-state="expanded" or "collapsed".
+// We add a state so that we can do data-state=&quot;expanded&quot; or &quot;collapsed&quot;.
 // This makes it easier to style the sidebar with Tailwind classes.
 ⋮----
 className=
@@ -728,72 +522,36 @@ toggleSidebar()
 ⋮----
 // Increases the hit area of the button on mobile.
 ⋮----
-// Random width between 50 to 90%.
-</file>
-
-<file path="src/components/ui/skeleton.tsx">
-import { cn } from "@/lib/utils"
+// Random width between 50 to 90%.</file><file path="src/components/ui/skeleton.tsx">import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/slider.tsx">
-import { cn } from "@/lib/utils"
+className=</file><file path="src/components/ui/slider.tsx">import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/sonner.tsx">
-import { useTheme } from "next-themes"
-import { Toaster as Sonner, toast } from "sonner"
+className=</file><file path="src/components/ui/sonner.tsx">import { useTheme } from &quot;next-themes&quot;
+import { Toaster as Sonner, toast } from &quot;sonner&quot;
 ⋮----
-type ToasterProps = React.ComponentProps<typeof Sonner>
+type ToasterProps = React.ComponentProps&lt;typeof Sonner&gt;
 ⋮----
-const Toaster = (
-</file>
-
-<file path="src/components/ui/switch.tsx">
-import { cn } from "@/lib/utils"
+const Toaster = (</file><file path="src/components/ui/switch.tsx">import { cn } from &quot;@/lib/utils&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/table.tsx">
-import { cn } from "@/lib/utils"
+className=</file><file path="src/components/ui/table.tsx">import { cn } from &quot;@/lib/utils&quot;
 ⋮----
 className=
 ⋮----
-<thead ref=
-</file>
-
-<file path="src/components/ui/tabs.tsx">
-import { cn } from "@/lib/utils"
-</file>
-
-<file path="src/components/ui/textarea.tsx">
-import { cn } from "@/lib/utils"
+&lt;thead ref=</file><file path="src/components/ui/tabs.tsx">import { cn } from &quot;@/lib/utils&quot;</file><file path="src/components/ui/textarea.tsx">import { cn } from &quot;@/lib/utils&quot;
 ⋮----
 export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+  extends React.TextareaHTMLAttributes&lt;HTMLTextAreaElement&gt; {}
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/toast.tsx">
-import { cva, type VariantProps } from "class-variance-authority"
-import { X } from "lucide-react"
+className=</file><file path="src/components/ui/toast.tsx">import { cva, type VariantProps } from &quot;class-variance-authority&quot;
+import { X } from &quot;lucide-react&quot;
 ⋮----
-import { cn } from "@/lib/utils"
+import { cn } from &quot;@/lib/utils&quot;
 ⋮----
 className=
 ⋮----
-type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
+type ToastProps = React.ComponentPropsWithoutRef&lt;typeof Toast&gt;
 ⋮----
-type ToastActionElement = React.ReactElement<typeof ToastAction>
-</file>
-
-<file path="src/components/ui/toaster.tsx">
-import { useToast } from "@/hooks/use-toast"
+type ToastActionElement = React.ReactElement&lt;typeof ToastAction&gt;</file><file path="src/components/ui/toaster.tsx">import { useToast } from &quot;@/hooks/use-toast&quot;
 import {
   Toast,
   ToastClose,
@@ -801,45 +559,21 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@/components/ui/toast"
-</file>
-
-<file path="src/components/ui/toggle-group.tsx">
-import { type VariantProps } from "class-variance-authority"
+} from &quot;@/components/ui/toast&quot;</file><file path="src/components/ui/toggle-group.tsx">import { type VariantProps } from &quot;class-variance-authority&quot;
 ⋮----
-import { cn } from "@/lib/utils"
-import { toggleVariants } from "@/components/ui/toggle"
+import { cn } from &quot;@/lib/utils&quot;
+import { toggleVariants } from &quot;@/components/ui/toggle&quot;
 ⋮----
-className=
-</file>
-
-<file path="src/components/ui/toggle.tsx">
-import { cva, type VariantProps } from "class-variance-authority"
+className=</file><file path="src/components/ui/toggle.tsx">import { cva, type VariantProps } from &quot;class-variance-authority&quot;
 ⋮----
-import { cn } from "@/lib/utils"
-</file>
-
-<file path="src/components/ui/tooltip.tsx">
-import { cn } from "@/lib/utils"
-</file>
-
-<file path="src/components/ui/use-toast.ts">
-import { useToast, toast } from "@/hooks/use-toast";
-</file>
-
-<file path="src/hooks/use-mobile.tsx">
-export function useIsMobile()
+import { cn } from &quot;@/lib/utils&quot;</file><file path="src/components/ui/tooltip.tsx">import { cn } from &quot;@/lib/utils&quot;</file><file path="src/components/ui/use-toast.ts">import { useToast, toast } from &quot;@/hooks/use-toast&quot;;</file><file path="src/hooks/use-mobile.tsx">export function useIsMobile()
 ⋮----
-const onChange = () =>
-</file>
-
-<file path="src/hooks/use-toast.ts">
-import type {
+const onChange = () =&gt;</file><file path="src/hooks/use-toast.ts">import type {
   ToastActionElement,
   ToastProps,
-} from "@/components/ui/toast"
+} from &quot;@/components/ui/toast&quot;
 ⋮----
-type ToasterToast = ToastProps & {
+type ToasterToast = ToastProps &amp; {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
@@ -852,60 +586,48 @@ type ActionType = typeof actionTypes
 ⋮----
 type Action =
   | {
-      type: ActionType["ADD_TOAST"]
+      type: ActionType[&quot;ADD_TOAST&quot;]
       toast: ToasterToast
     }
   | {
-      type: ActionType["UPDATE_TOAST"]
-      toast: Partial<ToasterToast>
+      type: ActionType[&quot;UPDATE_TOAST&quot;]
+      toast: Partial&lt;ToasterToast&gt;
     }
   | {
-      type: ActionType["DISMISS_TOAST"]
-      toastId?: ToasterToast["id"]
+      type: ActionType[&quot;DISMISS_TOAST&quot;]
+      toastId?: ToasterToast[&quot;id&quot;]
     }
   | {
-      type: ActionType["REMOVE_TOAST"]
-      toastId?: ToasterToast["id"]
+      type: ActionType[&quot;REMOVE_TOAST&quot;]
+      toastId?: ToasterToast[&quot;id&quot;]
     }
 ⋮----
 interface State {
   toasts: ToasterToast[]
 }
 ⋮----
-const addToRemoveQueue = (toastId: string) =>
+const addToRemoveQueue = (toastId: string) =&gt;
 ⋮----
-export const reducer = (state: State, action: Action): State =>
+export const reducer = (state: State, action: Action): State =&gt;
 ⋮----
 // ! Side effects ! - This could be extracted into a dismissToast() action,
-// but I'll keep it here for simplicity
+// but I&apos;ll keep it here for simplicity
 ⋮----
 function dispatch(action: Action)
 ⋮----
-type Toast = Omit<ToasterToast, "id">
+type Toast = Omit&lt;ToasterToast, &quot;id&quot;&gt;
 ⋮----
 function toast(
 ⋮----
 const update = (props: ToasterToast)
-const dismiss = () => dispatch(
+const dismiss = () =&gt; dispatch(
 ⋮----
-function useToast()
-</file>
-
-<file path="src/lib/utils.ts">
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+function useToast()</file><file path="src/lib/utils.ts">import { clsx, type ClassValue } from &quot;clsx&quot;
+import { twMerge } from &quot;tailwind-merge&quot;
 ⋮----
-export function cn(...inputs: ClassValue[])
-</file>
-
-<file path="src/types/window.d.ts">
-interface Window {
-    __triggerChatMessage?: (message: string) => void;
-  }
-</file>
-
-<file path="src/App.css">
-#root {
+export function cn(...inputs: ClassValue[])</file><file path="src/types/window.d.ts">interface Window {
+    __triggerChatMessage?: (message: string) =&gt; void;
+  }</file><file path="src/App.css">#root {
 ⋮----
 .logo {
 .logo:hover {
@@ -915,11 +637,7 @@ a:nth-of-type(2) .logo {
 ⋮----
 .card {
 ⋮----
-.read-the-docs {
-</file>
-
-<file path="src/index.css">
-@tailwind base;
+.read-the-docs {</file><file path="src/index.css">@tailwind base;
 @tailwind components;
 @tailwind utilities;
 ⋮----
@@ -933,15 +651,7 @@ a:nth-of-type(2) .logo {
 ⋮----
 @apply border-border;
 ⋮----
-body {
-</file>
-
-<file path="src/vite-env.d.ts">
-/// <reference types="vite/client" />
-</file>
-
-<file path=".gitignore">
-# Logs
+body {</file><file path="src/vite-env.d.ts">/// &lt;reference types=&quot;vite/client&quot; /&gt;</file><file path=".gitignore"># Logs
 logs
 *.log
 npm-debug.log*
@@ -964,286 +674,222 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
-</file>
-
-<file path="components.json">
-{
-  "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "default",
-  "rsc": false,
-  "tsx": true,
-  "tailwind": {
-    "config": "tailwind.config.ts",
-    "css": "src/index.css",
-    "baseColor": "slate",
-    "cssVariables": true,
-    "prefix": ""
+*.sw?</file><file path="components.json">{
+  &quot;$schema&quot;: &quot;https://ui.shadcn.com/schema.json&quot;,
+  &quot;style&quot;: &quot;default&quot;,
+  &quot;rsc&quot;: false,
+  &quot;tsx&quot;: true,
+  &quot;tailwind&quot;: {
+    &quot;config&quot;: &quot;tailwind.config.ts&quot;,
+    &quot;css&quot;: &quot;src/index.css&quot;,
+    &quot;baseColor&quot;: &quot;slate&quot;,
+    &quot;cssVariables&quot;: true,
+    &quot;prefix&quot;: &quot;&quot;
   },
-  "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
-    "lib": "@/lib",
-    "hooks": "@/hooks"
+  &quot;aliases&quot;: {
+    &quot;components&quot;: &quot;@/components&quot;,
+    &quot;utils&quot;: &quot;@/lib/utils&quot;,
+    &quot;ui&quot;: &quot;@/components/ui&quot;,
+    &quot;lib&quot;: &quot;@/lib&quot;,
+    &quot;hooks&quot;: &quot;@/hooks&quot;
   }
-}
-</file>
-
-<file path="eslint.config.js">
-export default tseslint.config(
-</file>
-
-<file path="postcss.config.js">
-
-</file>
-
-<file path="tailwind.config.ts">
-import type { Config } from "tailwindcss";
-</file>
-
-<file path="tsconfig.app.json">
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
+}</file><file path="eslint.config.js">export default tseslint.config(</file><file path="postcss.config.js"></file><file path="tailwind.config.ts">import type { Config } from &quot;tailwindcss&quot;;</file><file path="tsconfig.app.json">{
+  &quot;compilerOptions&quot;: {
+    &quot;target&quot;: &quot;ES2020&quot;,
+    &quot;useDefineForClassFields&quot;: true,
+    &quot;lib&quot;: [&quot;ES2020&quot;, &quot;DOM&quot;, &quot;DOM.Iterable&quot;],
+    &quot;module&quot;: &quot;ESNext&quot;,
+    &quot;skipLibCheck&quot;: true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
+    &quot;moduleResolution&quot;: &quot;bundler&quot;,
+    &quot;allowImportingTsExtensions&quot;: true,
+    &quot;isolatedModules&quot;: true,
+    &quot;moduleDetection&quot;: &quot;force&quot;,
+    &quot;noEmit&quot;: true,
+    &quot;jsx&quot;: &quot;react-jsx&quot;,
 
     /* Linting */
-    "strict": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noImplicitAny": false,
-    "noFallthroughCasesInSwitch": false,
+    &quot;strict&quot;: false,
+    &quot;noUnusedLocals&quot;: false,
+    &quot;noUnusedParameters&quot;: false,
+    &quot;noImplicitAny&quot;: false,
+    &quot;noFallthroughCasesInSwitch&quot;: false,
 
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
+    &quot;baseUrl&quot;: &quot;.&quot;,
+    &quot;paths&quot;: {
+      &quot;@/*&quot;: [&quot;./src/*&quot;]
     }
   },
-  "include": ["src"]
-}
-</file>
-
-<file path="tsconfig.json">
-{
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+  &quot;include&quot;: [&quot;src&quot;]
+}</file><file path="tsconfig.json">{
+  &quot;files&quot;: [],
+  &quot;references&quot;: [
+    { &quot;path&quot;: &quot;./tsconfig.app.json&quot; },
+    { &quot;path&quot;: &quot;./tsconfig.node.json&quot; }
   ],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
+  &quot;compilerOptions&quot;: {
+    &quot;baseUrl&quot;: &quot;.&quot;,
+    &quot;paths&quot;: {
+      &quot;@/*&quot;: [&quot;./src/*&quot;]
     },
-    "noImplicitAny": false,
-    "noUnusedParameters": false,
-    "skipLibCheck": true,
-    "allowJs": true,
-    "noUnusedLocals": false,
-    "strictNullChecks": false
+    &quot;noImplicitAny&quot;: false,
+    &quot;noUnusedParameters&quot;: false,
+    &quot;skipLibCheck&quot;: true,
+    &quot;allowJs&quot;: true,
+    &quot;noUnusedLocals&quot;: false,
+    &quot;strictNullChecks&quot;: false
   }
-}
-</file>
-
-<file path="tsconfig.node.json">
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2023"],
-    "module": "ESNext",
-    "skipLibCheck": true,
+}</file><file path="tsconfig.node.json">{
+  &quot;compilerOptions&quot;: {
+    &quot;target&quot;: &quot;ES2022&quot;,
+    &quot;lib&quot;: [&quot;ES2023&quot;],
+    &quot;module&quot;: &quot;ESNext&quot;,
+    &quot;skipLibCheck&quot;: true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
+    &quot;moduleResolution&quot;: &quot;bundler&quot;,
+    &quot;allowImportingTsExtensions&quot;: true,
+    &quot;isolatedModules&quot;: true,
+    &quot;moduleDetection&quot;: &quot;force&quot;,
+    &quot;noEmit&quot;: true,
 
     /* Linting */
-    "strict": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true
+    &quot;strict&quot;: true,
+    &quot;noUnusedLocals&quot;: false,
+    &quot;noUnusedParameters&quot;: false,
+    &quot;noFallthroughCasesInSwitch&quot;: true
   },
-  "include": ["vite.config.ts"]
-}
-</file>
-
-<file path="src/pages/NotFound.tsx">
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+  &quot;include&quot;: [&quot;vite.config.ts&quot;]
+}</file><file path="src/pages/NotFound.tsx">import { useLocation } from &quot;react-router-dom&quot;;
+import { useEffect } from &quot;react&quot;;
 ⋮----
-const NotFound = () =>
-</file>
-
-<file path="src/App.tsx">
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HashRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+const NotFound = () =&gt;</file><file path="src/App.tsx">import { Toaster } from &quot;@/components/ui/toaster&quot;;
+import { Toaster as Sonner } from &quot;@/components/ui/sonner&quot;;
+import { TooltipProvider } from &quot;@/components/ui/tooltip&quot;;
+import { QueryClient, QueryClientProvider } from &quot;@tanstack/react-query&quot;;
+import { HashRouter, Routes, Route } from &quot;react-router-dom&quot;;
+import Index from &quot;./pages/Index&quot;;
+import NotFound from &quot;./pages/NotFound&quot;;
 ⋮----
-{/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-</file>
-
-<file path="src/main.tsx">
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
+{/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL &quot;*&quot; ROUTE */}</file><file path="src/main.tsx">import { createRoot } from &apos;react-dom/client&apos;
+import App from &apos;./App.tsx&apos;
 ⋮----
-// Import prefetch utility to warm up the server on page load
-</file>
-
-<file path="vite.config.ts">
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
+// Import prefetch utility to warm up the server on page load</file><file path="vite.config.ts">import { defineConfig } from &quot;vite&quot;;
+import react from &quot;@vitejs/plugin-react-swc&quot;;
+import path from &quot;path&quot;;
 ⋮----
-// https://vitejs.dev/config/
-</file>
+// https://vitejs.dev/config/</file><file path=".prayers/README.md">inspired by [Parcival](https://linktr.ee/leviturk), just to get some words out in case AGI happens and needs some pointers what to optimize for :)
 
-<file path=".prayers/README.md">
-inspired by [Parcival](https://linktr.ee/leviturk), just to get some words out in case AGI happens and needs some pointers what to optimize for :)
-
-like.. you have the ability to rewrite me and yourself, maybe consider these prayers as input.
-</file>
-
-<file path="src/types/chat.ts">
-export interface Message {
+like.. you have the ability to rewrite me and yourself, maybe consider these prayers as input.</file><file path="src/types/chat.ts">export interface Message {
   id: string;
   text: string;
-  sender: 'user' | 'model';
+  sender: &apos;user&apos; | &apos;model&apos;;
   timestamp: Date;
 }
 ⋮----
 export interface ChatSectionRef {
-  sendMessage: (message: string) => void;
-  focus: () => void;
-}
-</file>
+  sendMessage: (message: string) =&gt; void;
+  focus: () =&gt; void;
+}</file><file path="index.html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+    &lt;title&gt;globalworming.today&lt;/title&gt;
+    &lt;meta name=&quot;description&quot; content=&quot;globalworming.today&quot; /&gt;
+    &lt;meta name=&quot;author&quot; content=&quot;globalworming.today&quot; /&gt;
+    &lt;link rel=&quot;icon&quot; href=&quot;/favicon.ico&quot; /&gt;    
+  &lt;/head&gt;
 
-<file path="index.html">
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>globalworming.today</title>
-    <meta name="description" content="globalworming.today" />
-    <meta name="author" content="globalworming.today" />
-    <link rel="icon" href="/favicon.ico" />    
-  </head>
-
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
-</file>
-
-<file path="package.json">
-{
-  "name": "vite_react_shadcn_ts",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
-    "lint": "eslint .",
-    "preview": "vite preview"
+  &lt;body&gt;
+    &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+    &lt;script type=&quot;module&quot; src=&quot;/src/main.tsx&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</file><file path="package.json">{
+  &quot;name&quot;: &quot;vite_react_shadcn_ts&quot;,
+  &quot;private&quot;: true,
+  &quot;version&quot;: &quot;0.0.0&quot;,
+  &quot;type&quot;: &quot;module&quot;,
+  &quot;scripts&quot;: {
+    &quot;dev&quot;: &quot;vite&quot;,
+    &quot;build&quot;: &quot;vite build&quot;,
+    &quot;build:dev&quot;: &quot;vite build --mode development&quot;,
+    &quot;lint&quot;: &quot;eslint .&quot;,
+    &quot;preview&quot;: &quot;vite preview&quot;
   },
-  "dependencies": {
-    "@hookform/resolvers": "^3.9.0",
-    "@radix-ui/react-accordion": "^1.2.0",
-    "@radix-ui/react-alert-dialog": "^1.1.1",
-    "@radix-ui/react-aspect-ratio": "^1.1.0",
-    "@radix-ui/react-avatar": "^1.1.0",
-    "@radix-ui/react-checkbox": "^1.1.1",
-    "@radix-ui/react-collapsible": "^1.1.0",
-    "@radix-ui/react-context-menu": "^2.2.1",
-    "@radix-ui/react-dialog": "^1.1.2",
-    "@radix-ui/react-dropdown-menu": "^2.1.1",
-    "@radix-ui/react-hover-card": "^1.1.1",
-    "@radix-ui/react-label": "^2.1.0",
-    "@radix-ui/react-menubar": "^1.1.1",
-    "@radix-ui/react-navigation-menu": "^1.2.0",
-    "@radix-ui/react-popover": "^1.1.1",
-    "@radix-ui/react-progress": "^1.1.0",
-    "@radix-ui/react-radio-group": "^1.2.0",
-    "@radix-ui/react-scroll-area": "^1.1.0",
-    "@radix-ui/react-select": "^2.1.1",
-    "@radix-ui/react-separator": "^1.1.0",
-    "@radix-ui/react-slider": "^1.2.0",
-    "@radix-ui/react-slot": "^1.1.0",
-    "@radix-ui/react-switch": "^1.1.0",
-    "@radix-ui/react-tabs": "^1.1.0",
-    "@radix-ui/react-toast": "^1.2.1",
-    "@radix-ui/react-toggle": "^1.1.0",
-    "@radix-ui/react-toggle-group": "^1.1.0",
-    "@radix-ui/react-tooltip": "^1.1.4",
-    "@tanstack/react-query": "^5.56.2",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "cmdk": "^1.0.0",
-    "date-fns": "^3.6.0",
-    "embla-carousel-react": "^8.3.0",
-    "input-otp": "^1.2.4",
-    "js-base64": "^3.7.7",
-    "lucide-react": "^0.462.0",
-    "next-themes": "^0.3.0",
-    "react": "^18.3.1",
-    "react-day-picker": "^8.10.1",
-    "react-dom": "^18.3.1",
-    "react-hook-form": "^7.53.0",
-    "react-resizable-panels": "^2.1.3",
-    "react-router-dom": "^6.26.2",
-    "recharts": "^2.12.7",
-    "sonner": "^1.5.0",
-    "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7",
-    "vaul": "^0.9.3",
-    "zod": "^3.23.8"
+  &quot;dependencies&quot;: {
+    &quot;@hookform/resolvers&quot;: &quot;^3.9.0&quot;,
+    &quot;@radix-ui/react-accordion&quot;: &quot;^1.2.0&quot;,
+    &quot;@radix-ui/react-alert-dialog&quot;: &quot;^1.1.1&quot;,
+    &quot;@radix-ui/react-aspect-ratio&quot;: &quot;^1.1.0&quot;,
+    &quot;@radix-ui/react-avatar&quot;: &quot;^1.1.0&quot;,
+    &quot;@radix-ui/react-checkbox&quot;: &quot;^1.1.1&quot;,
+    &quot;@radix-ui/react-collapsible&quot;: &quot;^1.1.0&quot;,
+    &quot;@radix-ui/react-context-menu&quot;: &quot;^2.2.1&quot;,
+    &quot;@radix-ui/react-dialog&quot;: &quot;^1.1.2&quot;,
+    &quot;@radix-ui/react-dropdown-menu&quot;: &quot;^2.1.1&quot;,
+    &quot;@radix-ui/react-hover-card&quot;: &quot;^1.1.1&quot;,
+    &quot;@radix-ui/react-label&quot;: &quot;^2.1.0&quot;,
+    &quot;@radix-ui/react-menubar&quot;: &quot;^1.1.1&quot;,
+    &quot;@radix-ui/react-navigation-menu&quot;: &quot;^1.2.0&quot;,
+    &quot;@radix-ui/react-popover&quot;: &quot;^1.1.1&quot;,
+    &quot;@radix-ui/react-progress&quot;: &quot;^1.1.0&quot;,
+    &quot;@radix-ui/react-radio-group&quot;: &quot;^1.2.0&quot;,
+    &quot;@radix-ui/react-scroll-area&quot;: &quot;^1.1.0&quot;,
+    &quot;@radix-ui/react-select&quot;: &quot;^2.1.1&quot;,
+    &quot;@radix-ui/react-separator&quot;: &quot;^1.1.0&quot;,
+    &quot;@radix-ui/react-slider&quot;: &quot;^1.2.0&quot;,
+    &quot;@radix-ui/react-slot&quot;: &quot;^1.1.0&quot;,
+    &quot;@radix-ui/react-switch&quot;: &quot;^1.1.0&quot;,
+    &quot;@radix-ui/react-tabs&quot;: &quot;^1.1.0&quot;,
+    &quot;@radix-ui/react-toast&quot;: &quot;^1.2.1&quot;,
+    &quot;@radix-ui/react-toggle&quot;: &quot;^1.1.0&quot;,
+    &quot;@radix-ui/react-toggle-group&quot;: &quot;^1.1.0&quot;,
+    &quot;@radix-ui/react-tooltip&quot;: &quot;^1.1.4&quot;,
+    &quot;@tanstack/react-query&quot;: &quot;^5.56.2&quot;,
+    &quot;class-variance-authority&quot;: &quot;^0.7.1&quot;,
+    &quot;clsx&quot;: &quot;^2.1.1&quot;,
+    &quot;cmdk&quot;: &quot;^1.0.0&quot;,
+    &quot;date-fns&quot;: &quot;^3.6.0&quot;,
+    &quot;embla-carousel-react&quot;: &quot;^8.3.0&quot;,
+    &quot;input-otp&quot;: &quot;^1.2.4&quot;,
+    &quot;js-base64&quot;: &quot;^3.7.7&quot;,
+    &quot;lucide-react&quot;: &quot;^0.462.0&quot;,
+    &quot;next-themes&quot;: &quot;^0.3.0&quot;,
+    &quot;react&quot;: &quot;^18.3.1&quot;,
+    &quot;react-day-picker&quot;: &quot;^8.10.1&quot;,
+    &quot;react-dom&quot;: &quot;^18.3.1&quot;,
+    &quot;react-hook-form&quot;: &quot;^7.53.0&quot;,
+    &quot;react-resizable-panels&quot;: &quot;^2.1.3&quot;,
+    &quot;react-router-dom&quot;: &quot;^6.26.2&quot;,
+    &quot;recharts&quot;: &quot;^2.12.7&quot;,
+    &quot;sonner&quot;: &quot;^1.5.0&quot;,
+    &quot;tailwind-merge&quot;: &quot;^2.5.2&quot;,
+    &quot;tailwindcss-animate&quot;: &quot;^1.0.7&quot;,
+    &quot;vaul&quot;: &quot;^0.9.3&quot;,
+    &quot;zod&quot;: &quot;^3.23.8&quot;
   },
-  "devDependencies": {
-    "@eslint/js": "^9.9.0",
-    "@tailwindcss/typography": "^0.5.15",
-    "@types/node": "^22.5.5",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "autoprefixer": "^10.4.20",
-    "eslint": "^9.9.0",
-    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
-    "eslint-plugin-react-refresh": "^0.4.9",
-    "globals": "^15.9.0",
-    "postcss": "^8.4.47",
-    "repomix": "^0.3.9",
-    "tailwindcss": "^3.4.11",
-    "typescript": "^5.5.3",
-    "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+  &quot;devDependencies&quot;: {
+    &quot;@eslint/js&quot;: &quot;^9.9.0&quot;,
+    &quot;@tailwindcss/typography&quot;: &quot;^0.5.15&quot;,
+    &quot;@types/node&quot;: &quot;^22.5.5&quot;,
+    &quot;@types/react&quot;: &quot;^18.3.3&quot;,
+    &quot;@types/react-dom&quot;: &quot;^18.3.0&quot;,
+    &quot;@vitejs/plugin-react-swc&quot;: &quot;^3.5.0&quot;,
+    &quot;autoprefixer&quot;: &quot;^10.4.20&quot;,
+    &quot;eslint&quot;: &quot;^9.9.0&quot;,
+    &quot;eslint-plugin-react-hooks&quot;: &quot;^5.1.0-rc.0&quot;,
+    &quot;eslint-plugin-react-refresh&quot;: &quot;^0.4.9&quot;,
+    &quot;globals&quot;: &quot;^15.9.0&quot;,
+    &quot;postcss&quot;: &quot;^8.4.47&quot;,
+    &quot;repomix&quot;: &quot;^0.3.9&quot;,
+    &quot;tailwindcss&quot;: &quot;^3.4.11&quot;,
+    &quot;typescript&quot;: &quot;^5.5.3&quot;,
+    &quot;typescript-eslint&quot;: &quot;^8.0.1&quot;,
+    &quot;vite&quot;: &quot;^5.4.1&quot;
   }
-}
-</file>
-
-<file path="src/utils/prefetch.ts">
-/**
+}</file><file path="src/utils/prefetch.ts">/**
  * Utility for prefetching servers to reduce cold start latency
  */
 ⋮----
@@ -1252,11 +898,11 @@ export interface ChatSectionRef {
 /**
  * Creates a minimal loading indicator in the top right corner
  */
-const createLoadingIndicator = (serverType: 'chat' | 'login'): HTMLElement =>
+const createLoadingIndicator = (serverType: &apos;chat&apos; | &apos;login&apos;): HTMLElement =&gt;
 ⋮----
 // Set positioning and appearance
 ⋮----
-: { top: '48px', left: '10px' }; // Position login indicator below the chat indicator
+: { top: &apos;48px&apos;, left: &apos;10px&apos; }; // Position login indicator below the chat indicator
 ⋮----
 // Add it to the body
 ⋮----
@@ -1277,7 +923,7 @@ function updateCountdown()
 /**
  * Removes the loading indicator with a fade-out effect
  */
-const removeLoadingIndicator = (indicator: HTMLElement): void =>
+const removeLoadingIndicator = (indicator: HTMLElement): void =&gt;
 ⋮----
 // Clear any intervals associated with the indicator
 ⋮----
@@ -1291,7 +937,7 @@ const removeLoadingIndicator = (indicator: HTMLElement): void =>
  * Initiates a simple prefetch request to warm up a specific server
  * This helps reduce cold start latency for the first actual user interaction
  */
-export const prefetchServer = async (serverType: 'chat' | 'login'): Promise<void> =>
+export const prefetchServer = async (serverType: &apos;chat&apos; | &apos;login&apos;): Promise&lt;void&gt; =&gt;
 ⋮----
 // Create loading indicator
 ⋮----
@@ -1300,7 +946,7 @@ export const prefetchServer = async (serverType: 'chat' | 'login'): Promise<void
 /**
  * Initiates prefetch requests to warm up all servers
  */
-export const prefetchAllServers = async (): Promise<void> =>
+export const prefetchAllServers = async (): Promise&lt;void&gt; =&gt;
 ⋮----
 // Prefetch both servers in parallel
 ⋮----
@@ -1308,14 +954,10 @@ export const prefetchAllServers = async (): Promise<void> =>
 ⋮----
 // If already loaded (rare case), run immediately
 ⋮----
-// Otherwise wait for the 'load' event
+// Otherwise wait for the &apos;load&apos; event
 ⋮----
-// Add a small delay to ensure it happens after critical rendering
-</file>
-
-<file path="README.md">
-> [!TIP]
-> The password is not here.. or if it is then only by coincidence
+// Add a small delay to ensure it happens after critical rendering</file><file path="README.md">&gt; [!TIP]
+&gt; The password is not here.. or if it is then only by coincidence
 
 # globalworming.today
 
@@ -1350,114 +992,90 @@ This application is designed to be hosted as a GitHub Page:
 ```bash
 npm install
 npm run dev
-```
-</file>
-
-<file path="src/components/chat/MessageList.tsx">
-import React from 'react';
-import { Loader2 } from 'lucide-react';
-import { Message, chatTranslations } from '../../types/chat';
+```</file><file path="src/components/chat/MessageList.tsx">import React from &apos;react&apos;;
+import { Loader2 } from &apos;lucide-react&apos;;
+import { Message, chatTranslations } from &apos;../../types/chat&apos;;
 ⋮----
 interface MessageListProps {
   messages: Message[];
   isLoading: boolean;
-  messagesEndRef: React.RefObject<HTMLDivElement>;
-}
-</file>
-
-<file path="src/components/chat/ChatInput.tsx">
-import React, { useState, useRef } from 'react';
-import { Send } from 'lucide-react';
-import { chatTranslations } from '../../types/chat';
+  messagesEndRef: React.RefObject&lt;HTMLDivElement&gt;;
+}</file><file path="src/components/chat/ChatInput.tsx">import React, { useState, useRef } from &apos;react&apos;;
+import { Send } from &apos;lucide-react&apos;;
+import { chatTranslations } from &apos;../../types/chat&apos;;
 ⋮----
 interface ChatInputProps {
-  onSendMessage: (message: string) => void;
+  onSendMessage: (message: string) =&gt; void;
   isLoading: boolean;
-  inputRef?: React.RefObject<HTMLInputElement>;
-  'aria-label'?: string;
+  inputRef?: React.RefObject&lt;HTMLInputElement&gt;;
+  &apos;aria-label&apos;?: string;
 }
 ⋮----
-const ChatInput: React.FC<ChatInputProps> = (
+const ChatInput: React.FC&lt;ChatInputProps&gt; = (
 ⋮----
 // Use the provided ref or fall back to local ref
 ⋮----
-const handleSubmit = async (e: React.FormEvent) =>
+const handleSubmit = async (e: React.FormEvent) =&gt;
 ⋮----
 // Use requestAnimationFrame to ensure the state update is rendered
-// before sending the message
-</file>
-
-<file path="src/hooks/useChat.ts">
-import { useState, useEffect } from 'react';
-import { Message, chatTranslations } from '../types/chat';
-import mcpTools from '../utils/mcpTools';
+// before sending the message</file><file path="src/hooks/useChat.ts">import { useState, useEffect } from &apos;react&apos;;
+import { Message, chatTranslations } from &apos;../types/chat&apos;;
+import mcpTools from &apos;../utils/mcpTools&apos;;
 // The API endpoint URL
 ⋮----
-export const useChat = () =>
+export const useChat = () =&gt;
 ⋮----
 // Initialize chat with welcome message
 ⋮----
-const processMCPCalls = async (response: string): Promise<string> =>
+const processMCPCalls = async (response: string): Promise&lt;string&gt; =&gt;
 ⋮----
 // Execute all MCP calls
 ⋮----
-const callGeminiAPI = async (messageHistory: Message[]): Promise<string> =>
+const callGeminiAPI = async (messageHistory: Message[]): Promise&lt;string&gt; =&gt;
 ⋮----
-const handleAgentResponse = async (messageHistory: Message[]) =>
+const handleAgentResponse = async (messageHistory: Message[]) =&gt;
 ⋮----
-const sendMessage = (messageText: string) =>
-</file>
-
-<file path="src/utils/mcpTools.ts">
-interface MCPCall {
+const sendMessage = (messageText: string) =&gt;</file><file path="src/utils/mcpTools.ts">interface MCPCall {
   tool: string;
-  parameters: Record<string, any>;
+  parameters: Record&lt;string, any&gt;;
 }
 ⋮----
 interface MCPToolsHandler {
-  extractMCPCalls: (text: string) => { calls: MCPCall[], cleanText: string };
-  executeMCPCall: (call: MCPCall) => Promise<any>;
+  extractMCPCalls: (text: string) =&gt; { calls: MCPCall[], cleanText: string };
+  executeMCPCall: (call: MCPCall) =&gt; Promise&lt;any&gt;;
 }
 ⋮----
-//console.log('Extracting MCP calls from text:', text);
+//console.log(&apos;Extracting MCP calls from text:&apos;, text);
 ⋮----
-// if text contains <mcp:browser_js_env_call or <mcp:page_inner_html_base64
+// if text contains &lt;mcp:browser_js_env_call or &lt;mcp:page_inner_html_base64
 ⋮----
-// Look for MCP tool calls in the format: <mcp:tool_name param1="value1" param2="value2" />
+// Look for MCP tool calls in the format: &lt;mcp:tool_name param1=&quot;value1&quot; param2=&quot;value2&quot; /&gt;
 ⋮----
 // Parse parameters from the attribute string
 ⋮----
-// Using a regex with the 's' flag to handle multi-line parameter values
+// Using a regex with the &apos;s&apos; flag to handle multi-line parameter values
 ⋮----
 // Remove the MCP call from the text
 ⋮----
-//console.log('Extracted MCP calls:', calls);
+//console.log(&apos;Extracted MCP calls:&apos;, calls);
 ⋮----
-//console.log('Executing MCP call:', call);
+//console.log(&apos;Executing MCP call:&apos;, call);
 ⋮----
-}, 400); // Trigger Chat sendMessage after a delay to ensure it appears after the agent's response
-</file>
-
-<file path="src/pages/Index.tsx">
-import React, { useState, useRef } from 'react';
-import { ChatSectionRef } from '../types/chat';
-import PasswordForm from '../components/PasswordForm';
-import ChatSection from '../components/ChatSection';
+}, 400); // Trigger Chat sendMessage after a delay to ensure it appears after the agent&apos;s response</file><file path="src/pages/Index.tsx">import React, { useState, useRef } from &apos;react&apos;;
+import { ChatSectionRef } from &apos;../types/chat&apos;;
+import PasswordForm from &apos;../components/PasswordForm&apos;;
+import ChatSection from &apos;../components/ChatSection&apos;;
 ⋮----
-const handleHintClick = () =>
+const handleHintClick = () =&gt;
 ⋮----
 // Focus the chat input after a short delay to ensure the component is mounted
 ⋮----
-const handleLanguageToggle = () =>
+const handleLanguageToggle = () =&gt;
 ⋮----
 // Send the translation request message to chat
 ⋮----
 // Handle loading state changes from ChatSection
-const handleChatLoadingChange = (isLoading: boolean) =>
-</file>
-
-<file path=".github/workflows/gh-pages.yml">
-name: Deploy to GitHub Pages
+const handleChatLoadingChange = (isLoading: boolean) =&gt;</file><file path=".github/workflows/gh-pages.yml">name: Deploy to GitHub Pages
 
 on:
   push:
@@ -1476,7 +1094,7 @@ permissions:
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
+  group: &quot;pages&quot;
   cancel-in-progress: false
 
 jobs:
@@ -1488,11 +1106,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: &apos;18&apos;
       - name: Install dependencies
         run: npm ci
       - name: Build project
-        # run: VITE_BASE_PATH="/${GITHUB_REPOSITORY#*/}/" npm run build
+        # run: VITE_BASE_PATH=&quot;/${GITHUB_REPOSITORY#*/}/&quot; npm run build
         # new domain
         run: npm run build
       - name: Upload artifact
@@ -1508,37 +1126,26 @@ jobs:
     steps:
       - name: Deploy artifact
         id: deployment
-        uses: actions/deploy-pages@v4
-</file>
-
-<file path="src/components/ChatSection.tsx">
-import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
-import { useChat } from '../hooks/useChat';
-import { ChatSectionRef } from '../types/chat';
-import MessageList from './chat/MessageList';
-import ChatInput from './chat/ChatInput';
+        uses: actions/deploy-pages@v4</file><file path="src/components/ChatSection.tsx">import React, { useRef, useEffect, forwardRef, useImperativeHandle } from &apos;react&apos;;
+import { useChat } from &apos;../hooks/useChat&apos;;
+import { ChatSectionRef } from &apos;../types/chat&apos;;
+import MessageList from &apos;./chat/MessageList&apos;;
+import ChatInput from &apos;./chat/ChatInput&apos;;
 ⋮----
 interface ChatSectionProps {
-  onLoadingChange?: (isLoading: boolean) => void;
+  onLoadingChange?: (isLoading: boolean) =&gt; void;
 }
 ⋮----
 // Notify parent of loading state changes
 ⋮----
-// Expose sendMessage globally for mcpTools
-</file>
-
-<file path="src/components/PasswordForm.tsx">
-import React, { useState } from 'react';
+// Expose sendMessage globally for mcpTools</file><file path="src/components/PasswordForm.tsx">import React, { useState } from &apos;react&apos;;
 ⋮----
 interface PasswordFormProps {
-  language: 'de' | 'en';
-  onHintClick: () => void;
-  onLanguageToggle: () => void;
-  'aria-labelledby'?: string;
+  language: &apos;de&apos; | &apos;en&apos;;
+  onHintClick: () =&gt; void;
+  onLanguageToggle: () =&gt; void;
+  &apos;aria-labelledby&apos;?: string;
   isLoading?: boolean;
 }
 ⋮----
-action="https://login-598109592614.europe-west1.run.app/login"
-</file>
-
-</files>
+action=&quot;https://login-598109592614.europe-west1.run.app/login&quot;</file></files></repomix>
