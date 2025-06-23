@@ -26,11 +26,35 @@ const createLoadingIndicator = (): HTMLElement => {
     transition: 'opacity 0.3s ease'
   });
   
-  // Set the text content
-  indicator.textContent = 'Starting server...';
-  
   // Add it to the body
   document.body.appendChild(indicator);
+  
+  // Initialize countdown
+  let secondsLeft = 60;
+  
+  // Function to update the text content
+  function updateText() {
+    indicator.textContent = `chat server starting, please wait ${secondsLeft}s`;
+  }
+  
+  // Set initial text
+  updateText();
+  
+  // Function to update the countdown
+  function updateCountdown() {
+    secondsLeft--;
+    updateText();
+    
+    if (secondsLeft < 0) {
+      clearInterval(countdownInterval);
+    }
+  }
+  
+  // Set up interval for countdown
+  const countdownInterval = setInterval(updateCountdown, 1000);
+  
+  // Store interval for cleanup
+  (indicator as any)._intervals = [countdownInterval];
   
   return indicator;
 };
@@ -39,6 +63,11 @@ const createLoadingIndicator = (): HTMLElement => {
  * Removes the loading indicator with a fade-out effect
  */
 const removeLoadingIndicator = (indicator: HTMLElement): void => {
+  // Clear any intervals associated with the indicator
+  if ((indicator as any)._intervals) {
+    (indicator as any)._intervals.forEach((id: number) => clearInterval(id));
+  }
+  
   // Fade out effect
   indicator.style.opacity = '0';
   
