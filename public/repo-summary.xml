@@ -5492,62 +5492,7 @@ export default {
     &quot;noFallthroughCasesInSwitch&quot;: true
   },
   &quot;include&quot;: [&quot;vite.config.ts&quot;]
-}</file><file path=".github/workflows/update-repomix.yml">name: Update Repository Summary
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
-
-# This ensures this workflow runs with proper concurrency management
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
-
-jobs:
-  update-repomix:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          # Need fetch-depth 0 to be able to push back
-          fetch-depth: 0
-          # Need to have permissions to push back to the repo
-          token: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: &apos;18&apos;
-          
-      - name: Run repomix
-        run: npx repomix --output public/repo-summary.xml --style xml --compress --parsable-style --header-text &quot;&quot;
-        
-      - name: Commit changes if any
-        run: |
-          git config --global user.name &apos;github-actions[bot]&apos;
-          git config --global user.email &apos;github-actions[bot]@users.noreply.github.com&apos;
-          
-          # Check if there are any changes
-          if [[ -n &quot;$(git status --porcelain)&quot; ]]; then
-            git add public/repo-summary.xml
-            git commit -m &quot;Update repository summary [skip ci]&quot;
-            
-            # Handle different push scenarios for pull requests vs direct pushes
-            if [[ &quot;${{ github.event_name }}&quot; == &quot;pull_request&quot; ]]; then
-              # For pull requests - push to the PR branch
-              git push origin HEAD:${{ github.head_ref }}
-              echo &quot;Repository summary updated and pushed to PR branch.&quot;
-            else
-              # For direct pushes to main
-              git push
-              echo &quot;Repository summary updated and pushed.&quot;
-            fi
-          else
-            echo &quot;No changes detected.&quot;
-          fi</file><file path="src/pages/NotFound.tsx">import { useLocation } from &quot;react-router-dom&quot;;
+}</file><file path="src/pages/NotFound.tsx">import { useLocation } from &quot;react-router-dom&quot;;
 import { useEffect } from &quot;react&quot;;
 
 const NotFound = () =&gt; {
@@ -5605,7 +5550,62 @@ import &apos;./index.css&apos;
 // Import prefetch utility to warm up the server on page load
 import &apos;./utils/prefetch&apos;
 
-createRoot(document.getElementById(&quot;root&quot;)!).render(&lt;App /&gt;);</file><file path="vite.config.ts">import { defineConfig } from &quot;vite&quot;;
+createRoot(document.getElementById(&quot;root&quot;)!).render(&lt;App /&gt;);</file><file path=".github/workflows/update-repomix.yml">name: Update Repository Summary
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+# This ensures this workflow runs with proper concurrency management
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  update-repomix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # Need fetch-depth 0 to be able to push back
+          fetch-depth: 0
+          # Need to have permissions to push back to the repo
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: &apos;18&apos;
+          
+      - name: Run repomix
+        run: npx repomix --output public/repo-summary.xml --style xml --parsable-style --header-text &quot;&quot;
+        
+      - name: Commit changes if any
+        run: |
+          git config --global user.name &apos;github-actions[bot]&apos;
+          git config --global user.email &apos;github-actions[bot]@users.noreply.github.com&apos;
+          
+          # Check if there are any changes
+          if [[ -n &quot;$(git status --porcelain)&quot; ]]; then
+            git add public/repo-summary.xml
+            git commit -m &quot;Update repository summary [skip ci]&quot;
+            
+            # Handle different push scenarios for pull requests vs direct pushes
+            if [[ &quot;${{ github.event_name }}&quot; == &quot;pull_request&quot; ]]; then
+              # For pull requests - push to the PR branch
+              git push origin HEAD:${{ github.head_ref }}
+              echo &quot;Repository summary updated and pushed to PR branch.&quot;
+            else
+              # For direct pushes to main
+              git push
+              echo &quot;Repository summary updated and pushed.&quot;
+            fi
+          else
+            echo &quot;No changes detected.&quot;
+          fi</file><file path="vite.config.ts">import { defineConfig } from &quot;vite&quot;;
 import react from &quot;@vitejs/plugin-react-swc&quot;;
 import path from &quot;path&quot;;
 
