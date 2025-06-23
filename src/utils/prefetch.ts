@@ -13,10 +13,13 @@ const createLoadingIndicator = (serverType: 'chat' | 'login'): HTMLElement => {
   const indicator = document.createElement('div');
   
   // Set positioning and appearance
+  const position = serverType === 'chat' 
+    ? { top: '10px', left: '10px' } 
+    : { top: '48px', left: '10px' }; // Position login indicator below the chat indicator
+  
   Object.assign(indicator.style, {
     position: 'fixed',
-    top: '10px',
-    left: '10px',
+    ...position,
     padding: '6px 12px',
     background: 'rgba(0, 0, 0, 0.7)',
     color: 'white',
@@ -91,10 +94,7 @@ export const prefetchServer = async (serverType: 'chat' | 'login'): Promise<void
   
   try {
     console.log(`Warming up ${serverType} server with prefetch request...`);
-    const response = await fetch(apiUrl);
-    console.log(`${serverType}: ${response.status}`);
-  } catch (error) {
-    console.error(`Failed to prefetch ${serverType} server:`, error);
+    await fetch(apiUrl);
   } finally {
     // Remove the indicator when done (whether successful or not)
     removeLoadingIndicator(indicator);
