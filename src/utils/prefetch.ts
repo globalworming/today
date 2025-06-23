@@ -1,21 +1,18 @@
 /**
- * Utility for prefetching servers to reduce cold start latency
+ * Utility for prefetching chat server to reduce cold start latency
  */
 
-// The API endpoint URLs from the cloud functions
+// The API endpoint URL for the chat function
 const CHAT_API_URL = 'https://chat-598109592614.europe-west1.run.app';
-const LOGIN_API_URL = 'https://login-598109592614.europe-west1.run.app';
 
 /**
  * Creates a minimal loading indicator in the top right corner
  */
-const createLoadingIndicator = (serverType: 'chat' | 'login'): HTMLElement => {
+const createLoadingIndicator = (): HTMLElement => {
   const indicator = document.createElement('div');
   
   // Set positioning and appearance
-  const position = serverType === 'chat' 
-    ? { top: '10px', left: '10px' } 
-    : { top: '48px', left: '10px' }; // Position login indicator below the chat indicator
+  const position = { top: '10px', left: '10px' };
   
   Object.assign(indicator.style, {
     position: 'fixed',
@@ -38,7 +35,7 @@ const createLoadingIndicator = (serverType: 'chat' | 'login'): HTMLElement => {
   
   // Function to update the text content
   function updateText() {
-    indicator.textContent = `${serverType} server starting, please wait ${secondsLeft}s`;
+    indicator.textContent = `Chat server starting, please wait ${secondsLeft}s`;
   }
   
   // Set initial text
@@ -83,18 +80,16 @@ const removeLoadingIndicator = (indicator: HTMLElement): void => {
 };
 
 /**
- * Initiates a simple prefetch request to warm up a specific server
+ * Initiates a simple prefetch request to warm up the chat server
  * This helps reduce cold start latency for the first actual user interaction
  */
-export const prefetchServer = async (serverType: 'chat' | 'login'): Promise<void> => {
-  const apiUrl = serverType === 'chat' ? CHAT_API_URL : LOGIN_API_URL;
-  
+export const prefetchServer = async (): Promise<void> => {
   // Create loading indicator
-  const indicator = createLoadingIndicator(serverType);
+  const indicator = createLoadingIndicator();
   
   try {
-    console.log(`Warming up ${serverType} server with prefetch request...`);
-    await fetch(apiUrl);
+    console.log('Warming up chat server with prefetch request...');
+    await fetch(CHAT_API_URL);
   } finally {
     // Remove the indicator when done (whether successful or not)
     removeLoadingIndicator(indicator);
@@ -102,24 +97,20 @@ export const prefetchServer = async (serverType: 'chat' | 'login'): Promise<void
 };
 
 /**
- * Initiates prefetch requests to warm up all servers
+ * Initiates prefetch request to warm up the chat server
  */
-export const prefetchAllServers = async (): Promise<void> => {
-  // Prefetch both servers in parallel
-  await Promise.all([
-    prefetchServer('chat'),
-    prefetchServer('login')
-  ]);
+export const prefetchChat = async (): Promise<void> => {
+  await prefetchServer();
 };
 
 // Wait for page to fully load before prefetching to avoid blocking initial render
 if (document.readyState === 'complete') {
   // If already loaded (rare case), run immediately
-  setTimeout(() => prefetchAllServers(), 0);
+  setTimeout(() => prefetchChat(), 0);
 } else {
   // Otherwise wait for the 'load' event
   window.addEventListener('load', () => {
     // Add a small delay to ensure it happens after critical rendering
-    setTimeout(() => prefetchAllServers(), 100);
+    setTimeout(() => prefetchChat(), 100);
   });
 }
