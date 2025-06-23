@@ -1,7 +1,5 @@
 
 import React, { useState } from 'react';
-import { AlertCircle } from 'lucide-react';
-import { spawn } from 'child_process';
 
 interface PasswordFormProps {
   language: 'de' | 'en';
