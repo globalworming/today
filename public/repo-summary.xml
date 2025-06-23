@@ -5745,24 +5745,57 @@ export const chatTranslations = {
     &quot;typescript-eslint&quot;: &quot;^8.0.1&quot;,
     &quot;vite&quot;: &quot;^5.4.1&quot;
   }
-}</file><file path="src/utils/prefetch.ts">/**
- * Utility for prefetching servers to reduce cold start latency
+}</file><file path="README.md">&gt; [!TIP]
+&gt; The password is not here.. or if it is then only by coincidence
+
+# globalworming.today
+
+A minimalistic single-page application for password authentication with integrated chat support.
+
+## Features
+
+- **Password Authentication**: Simple form with placeholder `/login` endpoint
+- **Chat Support**: Integrated customer support chat with Gemini AI
+- **Language Toggle**: Switch between German and English or any other language
+
+## Chat Integration
+
+The chat system includes:
+
+- Automatic welcome message and problem reporting
+- Integration with Gemini Flash API
+- local MCP to call (what could go wrong)
+- Rate limiting and error handling
+- Language-aware responses
+
+## Deployment
+
+This application is designed to be hosted as a GitHub Page:
+
+1. Build the application: `npm run build`
+2. Deploy the `dist` folder to GitHub Pages
+3. Configure any necessary redirects for the `/login` endpoint
+
+## Development
+
+```bash
+npm install
+npm run dev
+```</file><file path="src/utils/prefetch.ts">/**
+ * Utility for prefetching chat server to reduce cold start latency
  */
 
-// The API endpoint URLs from the cloud functions
+// The API endpoint URL for the chat function
 const CHAT_API_URL = &apos;https://chat-598109592614.europe-west1.run.app&apos;;
-const LOGIN_API_URL = &apos;https://login-598109592614.europe-west1.run.app&apos;;
 
 /**
  * Creates a minimal loading indicator in the top right corner
  */
-const createLoadingIndicator = (serverType: &apos;chat&apos; | &apos;login&apos;): HTMLElement =&gt; {
+const createLoadingIndicator = (): HTMLElement =&gt; {
   const indicator = document.createElement(&apos;div&apos;);
   
   // Set positioning and appearance
-  const position = serverType === &apos;chat&apos; 
-    ? { top: &apos;10px&apos;, left: &apos;10px&apos; } 
-    : { top: &apos;48px&apos;, left: &apos;10px&apos; }; // Position login indicator below the chat indicator
+  const position = { top: &apos;10px&apos;, left: &apos;10px&apos; };
   
   Object.assign(indicator.style, {
     position: &apos;fixed&apos;,
@@ -5785,7 +5818,7 @@ const createLoadingIndicator = (serverType: &apos;chat&apos; | &apos;login&apos;
   
   // Function to update the text content
   function updateText() {
-    indicator.textContent = `${serverType} server starting, please wait ${secondsLeft}s`;
+    indicator.textContent = `Chat server starting, please wait ${secondsLeft}s`;
   }
   
   // Set initial text
@@ -5830,18 +5863,16 @@ const removeLoadingIndicator = (indicator: HTMLElement): void =&gt; {
 };
 
 /**
- * Initiates a simple prefetch request to warm up a specific server
+ * Initiates a simple prefetch request to warm up the chat server
  * This helps reduce cold start latency for the first actual user interaction
  */
-export const prefetchServer = async (serverType: &apos;chat&apos; | &apos;login&apos;): Promise&lt;void&gt; =&gt; {
-  const apiUrl = serverType === &apos;chat&apos; ? CHAT_API_URL : LOGIN_API_URL;
-  
+export const prefetchServer = async (): Promise&lt;void&gt; =&gt; {
   // Create loading indicator
-  const indicator = createLoadingIndicator(serverType);
+  const indicator = createLoadingIndicator();
   
   try {
-    console.log(`Warming up ${serverType} server with prefetch request...`);
-    await fetch(apiUrl);
+    console.log(&apos;Warming up chat server with prefetch request...&apos;);
+    await fetch(CHAT_API_URL);
   } finally {
     // Remove the indicator when done (whether successful or not)
     removeLoadingIndicator(indicator);
@@ -5849,63 +5880,23 @@ export const prefetchServer = async (serverType: &apos;chat&apos; | &apos;login&
 };
 
 /**
- * Initiates prefetch requests to warm up all servers
+ * Initiates prefetch request to warm up the chat server
  */
-export const prefetchAllServers = async (): Promise&lt;void&gt; =&gt; {
-  // Prefetch both servers in parallel
-  await Promise.all([
-    prefetchServer(&apos;chat&apos;),
-    prefetchServer(&apos;login&apos;)
-  ]);
+export const prefetchChat = async (): Promise&lt;void&gt; =&gt; {
+  await prefetchServer();
 };
 
 // Wait for page to fully load before prefetching to avoid blocking initial render
 if (document.readyState === &apos;complete&apos;) {
   // If already loaded (rare case), run immediately
-  setTimeout(() =&gt; prefetchAllServers(), 0);
+  setTimeout(() =&gt; prefetchChat(), 0);
 } else {
   // Otherwise wait for the &apos;load&apos; event
   window.addEventListener(&apos;load&apos;, () =&gt; {
     // Add a small delay to ensure it happens after critical rendering
-    setTimeout(() =&gt; prefetchAllServers(), 100);
+    setTimeout(() =&gt; prefetchChat(), 100);
   });
-}</file><file path="README.md">&gt; [!TIP]
-&gt; The password is not here.. or if it is then only by coincidence
-
-# globalworming.today
-
-A minimalistic single-page application for password authentication with integrated chat support.
-
-## Features
-
-- **Password Authentication**: Simple form with placeholder `/login` endpoint
-- **Chat Support**: Integrated customer support chat with Gemini AI
-- **Language Toggle**: Switch between German and English or any other language
-
-## Chat Integration
-
-The chat system includes:
-
-- Automatic welcome message and problem reporting
-- Integration with Gemini Flash API
-- local MCP to call (what could go wrong)
-- Rate limiting and error handling
-- Language-aware responses
-
-## Deployment
-
-This application is designed to be hosted as a GitHub Page:
-
-1. Build the application: `npm run build`
-2. Deploy the `dist` folder to GitHub Pages
-3. Configure any necessary redirects for the `/login` endpoint
-
-## Development
-
-```bash
-npm install
-npm run dev
-```</file><file path="src/components/chat/MessageList.tsx">import React from &apos;react&apos;;
+}</file><file path="src/components/chat/MessageList.tsx">import React from &apos;react&apos;;
 import { Loader2 } from &apos;lucide-react&apos;;
 import { Message, chatTranslations } from &apos;../../types/chat&apos;;
 
