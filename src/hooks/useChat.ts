@@ -41,7 +41,7 @@ export const useChat = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer AIzaSyCeQaGPWswIuWYCT6ELXc9nvDKn-egonb1`
+        'Authorization': `Bearer 56e287b2-78ab-4ccb-a8cd-8113583058c3`
       },
       body: JSON.stringify({
         messageHistory,
