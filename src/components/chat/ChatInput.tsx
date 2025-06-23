@@ -23,7 +23,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, inputRe
 
     const messageText = inputValue.trim();
     setInputValue('');
-    onSendMessage(messageText);
+    
+    // Use requestAnimationFrame to ensure the state update is rendered
+    // before sending the message
+    requestAnimationFrame(() => {
+      onSendMessage(messageText);
+    });
   };
 
   return (
