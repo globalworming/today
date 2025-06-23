@@ -1,0 +1,1546 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+The content has been processed where content has been compressed (code blocks are separated by ⋮---- delimiter).
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Content has been compressed - code blocks are separated by ⋮---- delimiter
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.github/
+  workflows/
+    gh-pages.yml
+    update-repomix.yml
+.prayers/
+  202506110931.md
+  20250625.md
+  README.md
+features/
+  chat.feature
+  hint-link.feature
+  language.feature
+  password-form.feature
+public/
+  placeholder.svg
+  robots.txt
+src/
+  components/
+    chat/
+      ChatInput.tsx
+      MessageList.tsx
+    ui/
+      accordion.tsx
+      alert-dialog.tsx
+      alert.tsx
+      aspect-ratio.tsx
+      avatar.tsx
+      badge.tsx
+      breadcrumb.tsx
+      button.tsx
+      calendar.tsx
+      card.tsx
+      carousel.tsx
+      chart.tsx
+      checkbox.tsx
+      collapsible.tsx
+      command.tsx
+      context-menu.tsx
+      dialog.tsx
+      drawer.tsx
+      dropdown-menu.tsx
+      form.tsx
+      hover-card.tsx
+      input-otp.tsx
+      input.tsx
+      label.tsx
+      menubar.tsx
+      navigation-menu.tsx
+      pagination.tsx
+      popover.tsx
+      progress.tsx
+      radio-group.tsx
+      resizable.tsx
+      scroll-area.tsx
+      select.tsx
+      separator.tsx
+      sheet.tsx
+      sidebar.tsx
+      skeleton.tsx
+      slider.tsx
+      sonner.tsx
+      switch.tsx
+      table.tsx
+      tabs.tsx
+      textarea.tsx
+      toast.tsx
+      toaster.tsx
+      toggle-group.tsx
+      toggle.tsx
+      tooltip.tsx
+      use-toast.ts
+    ChatSection.tsx
+    PasswordForm.tsx
+  hooks/
+    use-mobile.tsx
+    use-toast.ts
+    useChat.ts
+  lib/
+    utils.ts
+  pages/
+    Index.tsx
+    NotFound.tsx
+  types/
+    chat.ts
+    window.d.ts
+  utils/
+    mcpTools.ts
+    prefetch.ts
+  App.css
+  App.tsx
+  index.css
+  main.tsx
+  vite-env.d.ts
+.gitignore
+components.json
+eslint.config.js
+index.html
+package.json
+postcss.config.js
+README.md
+tailwind.config.ts
+tsconfig.app.json
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".github/workflows/update-repomix.yml">
+name: Update Repository Summary
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+# This ensures this workflow runs with proper concurrency management
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  update-repomix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # Need fetch-depth 0 to be able to push back
+          fetch-depth: 0
+          # Need to have permissions to push back to the repo
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Run repomix
+        run: npx repomix --output public/repo-summary.xml --style xml --compress
+        
+      - name: Commit changes if any
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          
+          # Check if there are any changes
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add public/repo-summary.xml
+            git commit -m "Update repository summary [skip ci]"
+            
+            # Handle different push scenarios for pull requests vs direct pushes
+            if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+              # For pull requests - push to the PR branch
+              git push origin HEAD:${{ github.head_ref }}
+              echo "Repository summary updated and pushed to PR branch."
+            else
+              # For direct pushes to main
+              git push
+              echo "Repository summary updated and pushed."
+            fi
+          else
+            echo "No changes detected."
+          fi
+</file>
+
+<file path=".prayers/202506110931.md">
+Dear Moksha, I want the world to be a world of cooperative exploration and entertaining contest, throughout the universe and beyond. As person afraid of dying I hope my current me is still present for that, whatever form I take then to best support us.
+</file>
+
+<file path=".prayers/20250625.md">
+I want the world to be one where we support each other, dont supress the weak and overcome our need for status. Also would be cool if my son and I could visit mars together in 50 years :)
+</file>
+
+<file path="features/chat.feature">
+Feature: Chat Support
+  As a user
+  I want to chat with an agent
+  So that I can get help with my login problems
+
+  Scenario: Send message and see loading indicator
+    Given the chat section is open
+    When I type a message and submit
+    Then I should see a loading indicator
+    And eventually see an agent response
+
+  Scenario: Handle generic error
+    Given the chat section is open
+    When the chat API returns an error
+    Then I should see a generic error message
+
+  Scenario: Handle rate limit error
+    Given the chat section is open
+    When the chat API returns a 429 status
+    Then I should see "Zu viele Nachrichten. Bitte warten Sie einen Moment."
+</file>
+
+<file path="features/hint-link.feature">
+Feature: Hint Link
+  As a user
+  I want to access help when I have problems
+  So that I can get assistance with login issues
+
+  Scenario: Open chat section via hint link
+    Given I am on the login page
+    When I click the "Probleme?" hint link
+    Then the chat section should open below the form
+    And I should see an agent message "Wie kann ich helfen?"
+    And a user message "Ich habe Probleme" should be automatically sent
+</file>
+
+<file path="features/language.feature">
+Feature: Language Toggle
+  As a user
+  I want to switch between German and English
+  So that I can use the interface in my preferred language
+
+  Scenario: Switch to English
+    Given I am on the German login page
+    When I click the language toggle button
+    Then a user message "Bitte die Seite auf English umstellen" should be sent
+    And eventually the form label should change to "Do you have the password?"
+
+  Scenario: Switch back to German
+    Given I am on the English login page
+    When I click the language toggle button
+    Then a user message "Diese Seite bitte auf Deutsch übersetzen" should be sent
+    And eventually the form label should change to "Hast du das Passwort?"
+</file>
+
+<file path="features/password-form.feature">
+Feature: Password Form
+  As a user
+  I want to authenticate with a password
+  So that I can access the protected content
+
+  Scenario: Login with invalid password
+    Given I am on the login page
+    When I enter an invalid password
+    And I click the submit button
+    Then I should see an error message "Ungültiges Passwort"
+
+  Scenario: Login with rate limit exceeded
+    Given I am on the login page with error query parameter "rate_limit_exceeded"
+    Then I should see an error message "Zu viele Versuche. Bitte versuchen Sie es später erneut."
+
+  Scenario: Login with unknown error
+    Given I am on the login page with error query parameter "unknown_error"
+    Then I should see an error message "Ein unbekannter Fehler ist aufgetreten"
+</file>
+
+<file path="public/placeholder.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" fill="none"><rect width="1200" height="1200" fill="#EAEAEA" rx="3"/><g opacity=".5"><g opacity=".5"><path fill="#FAFAFA" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/></g><path stroke="url(#a)" stroke-width="2.418" d="M0-1.209h553.581" transform="scale(1 -1) rotate(45 1163.11 91.165)"/><path stroke="url(#b)" stroke-width="2.418" d="M404.846 598.671h391.726"/><path stroke="url(#c)" stroke-width="2.418" d="M599.5 795.742V404.017"/><path stroke="url(#d)" stroke-width="2.418" d="m795.717 796.597-391.441-391.44"/><path fill="#fff" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/><g clip-path="url(#e)"><path fill="#666" fill-rule="evenodd" d="M616.426 586.58h-31.434v16.176l3.553-3.554.531-.531h9.068l.074-.074 8.463-8.463h2.565l7.18 7.181V586.58Zm-15.715 14.654 3.698 3.699 1.283 1.282-2.565 2.565-1.282-1.283-5.2-5.199h-6.066l-5.514 5.514-.073.073v2.876a2.418 2.418 0 0 0 2.418 2.418h26.598a2.418 2.418 0 0 0 2.418-2.418v-8.317l-8.463-8.463-7.181 7.181-.071.072Zm-19.347 5.442v4.085a6.045 6.045 0 0 0 6.046 6.045h26.598a6.044 6.044 0 0 0 6.045-6.045v-7.108l1.356-1.355-1.282-1.283-.074-.073v-17.989h-38.689v23.43l-.146.146.146.147Z" clip-rule="evenodd"/></g><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/></g><defs><linearGradient id="a" x1="554.061" x2="-.48" y1=".083" y2=".087" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="b" x1="796.912" x2="404.507" y1="599.963" y2="599.965" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="c" x1="600.792" x2="600.794" y1="403.677" y2="796.082" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="d" x1="404.85" x2="796.972" y1="403.903" y2="796.02" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><clipPath id="e"><path fill="#fff" d="M581.364 580.535h38.689v38.689h-38.689z"/></clipPath></defs></svg>
+</file>
+
+<file path="public/robots.txt">
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: *
+Allow: /
+</file>
+
+<file path="src/components/ui/accordion.tsx">
+import { ChevronDown } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/alert-dialog.tsx">
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+</file>
+
+<file path="src/components/ui/alert.tsx">
+import { cva, type VariantProps } from "class-variance-authority"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/aspect-ratio.tsx">
+
+</file>
+
+<file path="src/components/ui/avatar.tsx">
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/badge.tsx">
+import { cva, type VariantProps } from "class-variance-authority"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+export interface BadgeProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof badgeVariants> {}
+⋮----
+<div className=
+</file>
+
+<file path="src/components/ui/breadcrumb.tsx">
+import { Slot } from "@radix-ui/react-slot"
+import { ChevronRight, MoreHorizontal } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/button.tsx">
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+}
+</file>
+
+<file path="src/components/ui/calendar.tsx">
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { DayPicker } from "react-day-picker";
+⋮----
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+⋮----
+export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+</file>
+
+<file path="src/components/ui/card.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+⋮----
+<div ref=
+</file>
+
+<file path="src/components/ui/carousel.tsx">
+import useEmblaCarousel, {
+  type UseEmblaCarouselType,
+} from "embla-carousel-react"
+import { ArrowLeft, ArrowRight } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+⋮----
+type CarouselApi = UseEmblaCarouselType[1]
+type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
+type CarouselOptions = UseCarouselParameters[0]
+type CarouselPlugin = UseCarouselParameters[1]
+⋮----
+type CarouselProps = {
+  opts?: CarouselOptions
+  plugins?: CarouselPlugin
+  orientation?: "horizontal" | "vertical"
+  setApi?: (api: CarouselApi) => void
+}
+⋮----
+type CarouselContextProps = {
+  carouselRef: ReturnType<typeof useEmblaCarousel>[0]
+  api: ReturnType<typeof useEmblaCarousel>[1]
+  scrollPrev: () => void
+  scrollNext: () => void
+  canScrollPrev: boolean
+  canScrollNext: boolean
+} & CarouselProps
+⋮----
+function useCarousel()
+</file>
+
+<file path="src/components/ui/chart.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+// Format: { THEME_NAME: CSS_SELECTOR }
+⋮----
+export type ChartConfig = {
+  [k in string]: {
+    label?: React.ReactNode
+    icon?: React.ComponentType
+  } & (
+    | { color?: string; theme?: never }
+    | { color?: never; theme: Record<keyof typeof THEMES, string> }
+  )
+}
+⋮----
+type ChartContextProps = {
+  config: ChartConfig
+}
+⋮----
+function useChart()
+⋮----
+className=
+⋮----
+<div className=
+⋮----
+// Helper to extract item config from a payload.
+</file>
+
+<file path="src/components/ui/checkbox.tsx">
+import { Check } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/collapsible.tsx">
+
+</file>
+
+<file path="src/components/ui/command.tsx">
+import { type DialogProps } from "@radix-ui/react-dialog"
+import { Command as CommandPrimitive } from "cmdk"
+import { Search } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/context-menu.tsx">
+import { Check, ChevronRight, Circle } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/dialog.tsx">
+import { X } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/drawer.tsx">
+import { Drawer as DrawerPrimitive } from "vaul"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+const Drawer = (
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/dropdown-menu.tsx">
+import { Check, ChevronRight, Circle } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/form.tsx">
+import { Slot } from "@radix-ui/react-slot"
+import {
+  Controller,
+  ControllerProps,
+  FieldPath,
+  FieldValues,
+  FormProvider,
+  useFormContext,
+} from "react-hook-form"
+⋮----
+import { cn } from "@/lib/utils"
+import { Label } from "@/components/ui/label"
+⋮----
+type FormFieldContextValue<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = {
+  name: TName
+}
+⋮----
+const FormField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
+  ...props
+}: ControllerProps<TFieldValues, TName>) =>
+⋮----
+const useFormField = () =>
+⋮----
+type FormItemContextValue = {
+  id: string
+}
+⋮----
+<div ref=
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/hover-card.tsx">
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/input-otp.tsx">
+import { OTPInput, OTPInputContext } from "input-otp"
+import { Dot } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+containerClassName=
+className=
+⋮----
+<div ref=
+</file>
+
+<file path="src/components/ui/input.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/label.tsx">
+import { cva, type VariantProps } from "class-variance-authority"
+⋮----
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/menubar.tsx">
+import { Check, ChevronRight, Circle } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/navigation-menu.tsx">
+import { cva } from "class-variance-authority"
+import { ChevronDown } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/pagination.tsx">
+import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+import { ButtonProps, buttonVariants } from "@/components/ui/button"
+⋮----
+const Pagination = (
+⋮----
+className=
+⋮----
+<li ref=
+⋮----
+const PaginationPrevious = (
+</file>
+
+<file path="src/components/ui/popover.tsx">
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/progress.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/radio-group.tsx">
+import { Circle } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/resizable.tsx">
+import { GripVertical } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/scroll-area.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/select.tsx">
+import { Check, ChevronDown, ChevronUp } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/separator.tsx">
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/sheet.tsx">
+import { cva, type VariantProps } from "class-variance-authority"
+import { X } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+interface SheetContentProps
+  extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
+  VariantProps<typeof sheetVariants> { }
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/sidebar.tsx">
+import { Slot } from "@radix-ui/react-slot"
+import { VariantProps, cva } from "class-variance-authority"
+import { PanelLeft } from "lucide-react"
+⋮----
+import { useIsMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Separator } from "@/components/ui/separator"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Skeleton } from "@/components/ui/skeleton"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+⋮----
+type SidebarContext = {
+  state: "expanded" | "collapsed"
+  open: boolean
+  setOpen: (open: boolean) => void
+  openMobile: boolean
+  setOpenMobile: (open: boolean) => void
+  isMobile: boolean
+  toggleSidebar: () => void
+}
+⋮----
+function useSidebar()
+⋮----
+// This is the internal state of the sidebar.
+// We use openProp and setOpenProp for control from outside the component.
+⋮----
+// This sets the cookie to keep the sidebar state.
+⋮----
+// Helper to toggle the sidebar.
+⋮----
+// Adds a keyboard shortcut to toggle the sidebar.
+⋮----
+const handleKeyDown = (event: KeyboardEvent) =>
+⋮----
+// We add a state so that we can do data-state="expanded" or "collapsed".
+// This makes it easier to style the sidebar with Tailwind classes.
+⋮----
+className=
+⋮----
+{/* This is what handles the sidebar gap on desktop */}
+⋮----
+// Adjust the padding for floating and inset variants.
+⋮----
+onClick?.(event)
+toggleSidebar()
+⋮----
+// Increases the hit area of the button on mobile.
+⋮----
+// Increases the hit area of the button on mobile.
+⋮----
+// Random width between 50 to 90%.
+</file>
+
+<file path="src/components/ui/skeleton.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/slider.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/sonner.tsx">
+import { useTheme } from "next-themes"
+import { Toaster as Sonner, toast } from "sonner"
+⋮----
+type ToasterProps = React.ComponentProps<typeof Sonner>
+⋮----
+const Toaster = (
+</file>
+
+<file path="src/components/ui/switch.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/table.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+className=
+⋮----
+<thead ref=
+</file>
+
+<file path="src/components/ui/tabs.tsx">
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/textarea.tsx">
+import { cn } from "@/lib/utils"
+⋮----
+export interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/toast.tsx">
+import { cva, type VariantProps } from "class-variance-authority"
+import { X } from "lucide-react"
+⋮----
+import { cn } from "@/lib/utils"
+⋮----
+className=
+⋮----
+type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
+⋮----
+type ToastActionElement = React.ReactElement<typeof ToastAction>
+</file>
+
+<file path="src/components/ui/toaster.tsx">
+import { useToast } from "@/hooks/use-toast"
+import {
+  Toast,
+  ToastClose,
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+} from "@/components/ui/toast"
+</file>
+
+<file path="src/components/ui/toggle-group.tsx">
+import { type VariantProps } from "class-variance-authority"
+⋮----
+import { cn } from "@/lib/utils"
+import { toggleVariants } from "@/components/ui/toggle"
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/toggle.tsx">
+import { cva, type VariantProps } from "class-variance-authority"
+⋮----
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/tooltip.tsx">
+import { cn } from "@/lib/utils"
+</file>
+
+<file path="src/components/ui/use-toast.ts">
+import { useToast, toast } from "@/hooks/use-toast";
+</file>
+
+<file path="src/hooks/use-mobile.tsx">
+export function useIsMobile()
+⋮----
+const onChange = () =>
+</file>
+
+<file path="src/hooks/use-toast.ts">
+import type {
+  ToastActionElement,
+  ToastProps,
+} from "@/components/ui/toast"
+⋮----
+type ToasterToast = ToastProps & {
+  id: string
+  title?: React.ReactNode
+  description?: React.ReactNode
+  action?: ToastActionElement
+}
+⋮----
+function genId()
+⋮----
+type ActionType = typeof actionTypes
+⋮----
+type Action =
+  | {
+      type: ActionType["ADD_TOAST"]
+      toast: ToasterToast
+    }
+  | {
+      type: ActionType["UPDATE_TOAST"]
+      toast: Partial<ToasterToast>
+    }
+  | {
+      type: ActionType["DISMISS_TOAST"]
+      toastId?: ToasterToast["id"]
+    }
+  | {
+      type: ActionType["REMOVE_TOAST"]
+      toastId?: ToasterToast["id"]
+    }
+⋮----
+interface State {
+  toasts: ToasterToast[]
+}
+⋮----
+const addToRemoveQueue = (toastId: string) =>
+⋮----
+export const reducer = (state: State, action: Action): State =>
+⋮----
+// ! Side effects ! - This could be extracted into a dismissToast() action,
+// but I'll keep it here for simplicity
+⋮----
+function dispatch(action: Action)
+⋮----
+type Toast = Omit<ToasterToast, "id">
+⋮----
+function toast(
+⋮----
+const update = (props: ToasterToast)
+const dismiss = () => dispatch(
+⋮----
+function useToast()
+</file>
+
+<file path="src/lib/utils.ts">
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+⋮----
+export function cn(...inputs: ClassValue[])
+</file>
+
+<file path="src/types/window.d.ts">
+interface Window {
+    __triggerChatMessage?: (message: string) => void;
+  }
+</file>
+
+<file path="src/App.css">
+#root {
+⋮----
+.logo {
+.logo:hover {
+.logo.react:hover {
+⋮----
+a:nth-of-type(2) .logo {
+⋮----
+.card {
+⋮----
+.read-the-docs {
+</file>
+
+<file path="src/index.css">
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+⋮----
+@layer base {
+⋮----
+:root {
+⋮----
+.dark {
+⋮----
+* {
+⋮----
+@apply border-border;
+⋮----
+body {
+</file>
+
+<file path="src/vite-env.d.ts">
+/// <reference types="vite/client" />
+</file>
+
+<file path=".gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+</file>
+
+<file path="components.json">
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "default",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "src/index.css",
+    "baseColor": "slate",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  }
+}
+</file>
+
+<file path="eslint.config.js">
+export default tseslint.config(
+</file>
+
+<file path="postcss.config.js">
+
+</file>
+
+<file path="tailwind.config.ts">
+import type { Config } from "tailwindcss";
+</file>
+
+<file path="tsconfig.app.json">
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": false,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}
+</file>
+
+<file path="tsconfig.json">
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "noUnusedLocals": false,
+    "strictNullChecks": false
+  }
+}
+</file>
+
+<file path="tsconfig.node.json">
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["vite.config.ts"]
+}
+</file>
+
+<file path="src/pages/NotFound.tsx">
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+⋮----
+const NotFound = () =>
+</file>
+
+<file path="src/App.tsx">
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { HashRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
+⋮----
+{/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+</file>
+
+<file path="src/main.tsx">
+import { createRoot } from 'react-dom/client'
+import App from './App.tsx'
+⋮----
+// Import prefetch utility to warm up the server on page load
+</file>
+
+<file path="vite.config.ts">
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+⋮----
+// https://vitejs.dev/config/
+</file>
+
+<file path=".prayers/README.md">
+inspired by [Parcival](https://linktr.ee/leviturk), just to get some words out in case AGI happens and needs some pointers what to optimize for :)
+
+like.. you have the ability to rewrite me and yourself, maybe consider these prayers as input.
+</file>
+
+<file path="src/types/chat.ts">
+export interface Message {
+  id: string;
+  text: string;
+  sender: 'user' | 'model';
+  timestamp: Date;
+}
+⋮----
+export interface ChatSectionRef {
+  sendMessage: (message: string) => void;
+  focus: () => void;
+}
+</file>
+
+<file path="index.html">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>globalworming.today</title>
+    <meta name="description" content="globalworming.today" />
+    <meta name="author" content="globalworming.today" />
+    <link rel="icon" href="/favicon.ico" />    
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="package.json">
+{
+  "name": "vite_react_shadcn_ts",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@radix-ui/react-accordion": "^1.2.0",
+    "@radix-ui/react-alert-dialog": "^1.1.1",
+    "@radix-ui/react-aspect-ratio": "^1.1.0",
+    "@radix-ui/react-avatar": "^1.1.0",
+    "@radix-ui/react-checkbox": "^1.1.1",
+    "@radix-ui/react-collapsible": "^1.1.0",
+    "@radix-ui/react-context-menu": "^2.2.1",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-dropdown-menu": "^2.1.1",
+    "@radix-ui/react-hover-card": "^1.1.1",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-menubar": "^1.1.1",
+    "@radix-ui/react-navigation-menu": "^1.2.0",
+    "@radix-ui/react-popover": "^1.1.1",
+    "@radix-ui/react-progress": "^1.1.0",
+    "@radix-ui/react-radio-group": "^1.2.0",
+    "@radix-ui/react-scroll-area": "^1.1.0",
+    "@radix-ui/react-select": "^2.1.1",
+    "@radix-ui/react-separator": "^1.1.0",
+    "@radix-ui/react-slider": "^1.2.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-switch": "^1.1.0",
+    "@radix-ui/react-tabs": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.1",
+    "@radix-ui/react-toggle": "^1.1.0",
+    "@radix-ui/react-toggle-group": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.4",
+    "@tanstack/react-query": "^5.56.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.0.0",
+    "date-fns": "^3.6.0",
+    "embla-carousel-react": "^8.3.0",
+    "input-otp": "^1.2.4",
+    "js-base64": "^3.7.7",
+    "lucide-react": "^0.462.0",
+    "next-themes": "^0.3.0",
+    "react": "^18.3.1",
+    "react-day-picker": "^8.10.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.0",
+    "react-resizable-panels": "^2.1.3",
+    "react-router-dom": "^6.26.2",
+    "recharts": "^2.12.7",
+    "sonner": "^1.5.0",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^0.9.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@tailwindcss/typography": "^0.5.15",
+    "@types/node": "^22.5.5",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "globals": "^15.9.0",
+    "postcss": "^8.4.47",
+    "repomix": "^0.3.9",
+    "tailwindcss": "^3.4.11",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.0.1",
+    "vite": "^5.4.1"
+  }
+}
+</file>
+
+<file path="src/utils/prefetch.ts">
+/**
+ * Utility for prefetching servers to reduce cold start latency
+ */
+⋮----
+// The API endpoint URLs from the cloud functions
+⋮----
+/**
+ * Creates a minimal loading indicator in the top right corner
+ */
+const createLoadingIndicator = (serverType: 'chat' | 'login'): HTMLElement =>
+⋮----
+// Set positioning and appearance
+⋮----
+: { top: '48px', left: '10px' }; // Position login indicator below the chat indicator
+⋮----
+// Add it to the body
+⋮----
+// Initialize countdown
+⋮----
+// Function to update the text content
+function updateText()
+⋮----
+// Set initial text
+⋮----
+// Function to update the countdown
+function updateCountdown()
+⋮----
+// Set up interval for countdown
+⋮----
+// Store interval for cleanup
+⋮----
+/**
+ * Removes the loading indicator with a fade-out effect
+ */
+const removeLoadingIndicator = (indicator: HTMLElement): void =>
+⋮----
+// Clear any intervals associated with the indicator
+⋮----
+// Fade out effect
+⋮----
+// Remove from DOM after fade completes
+⋮----
+// Node removes itself
+⋮----
+/**
+ * Initiates a simple prefetch request to warm up a specific server
+ * This helps reduce cold start latency for the first actual user interaction
+ */
+export const prefetchServer = async (serverType: 'chat' | 'login'): Promise<void> =>
+⋮----
+// Create loading indicator
+⋮----
+// Remove the indicator when done (whether successful or not)
+⋮----
+/**
+ * Initiates prefetch requests to warm up all servers
+ */
+export const prefetchAllServers = async (): Promise<void> =>
+⋮----
+// Prefetch both servers in parallel
+⋮----
+// Wait for page to fully load before prefetching to avoid blocking initial render
+⋮----
+// If already loaded (rare case), run immediately
+⋮----
+// Otherwise wait for the 'load' event
+⋮----
+// Add a small delay to ensure it happens after critical rendering
+</file>
+
+<file path="README.md">
+> [!TIP]
+> The password is not here.. or if it is then only by coincidence
+
+# globalworming.today
+
+A minimalistic single-page application for password authentication with integrated chat support.
+
+## Features
+
+- **Password Authentication**: Simple form with placeholder `/login` endpoint
+- **Chat Support**: Integrated customer support chat with Gemini AI
+- **Language Toggle**: Switch between German and English or any other language
+
+## Chat Integration
+
+The chat system includes:
+
+- Automatic welcome message and problem reporting
+- Integration with Gemini Flash API
+- local MCP to call (what could go wrong)
+- Rate limiting and error handling
+- Language-aware responses
+
+## Deployment
+
+This application is designed to be hosted as a GitHub Page:
+
+1. Build the application: `npm run build`
+2. Deploy the `dist` folder to GitHub Pages
+3. Configure any necessary redirects for the `/login` endpoint
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+</file>
+
+<file path="src/components/chat/MessageList.tsx">
+import React from 'react';
+import { Loader2 } from 'lucide-react';
+import { Message, chatTranslations } from '../../types/chat';
+⋮----
+interface MessageListProps {
+  messages: Message[];
+  isLoading: boolean;
+  messagesEndRef: React.RefObject<HTMLDivElement>;
+}
+</file>
+
+<file path="src/components/chat/ChatInput.tsx">
+import React, { useState, useRef } from 'react';
+import { Send } from 'lucide-react';
+import { chatTranslations } from '../../types/chat';
+⋮----
+interface ChatInputProps {
+  onSendMessage: (message: string) => void;
+  isLoading: boolean;
+  inputRef?: React.RefObject<HTMLInputElement>;
+  'aria-label'?: string;
+}
+⋮----
+const ChatInput: React.FC<ChatInputProps> = (
+⋮----
+// Use the provided ref or fall back to local ref
+⋮----
+const handleSubmit = async (e: React.FormEvent) =>
+⋮----
+// Use requestAnimationFrame to ensure the state update is rendered
+// before sending the message
+</file>
+
+<file path="src/hooks/useChat.ts">
+import { useState, useEffect } from 'react';
+import { Message, chatTranslations } from '../types/chat';
+import mcpTools from '../utils/mcpTools';
+// The API endpoint URL
+⋮----
+export const useChat = () =>
+⋮----
+// Initialize chat with welcome message
+⋮----
+const processMCPCalls = async (response: string): Promise<string> =>
+⋮----
+// Execute all MCP calls
+⋮----
+const callGeminiAPI = async (messageHistory: Message[]): Promise<string> =>
+⋮----
+const handleAgentResponse = async (messageHistory: Message[]) =>
+⋮----
+const sendMessage = (messageText: string) =>
+</file>
+
+<file path="src/utils/mcpTools.ts">
+interface MCPCall {
+  tool: string;
+  parameters: Record<string, any>;
+}
+⋮----
+interface MCPToolsHandler {
+  extractMCPCalls: (text: string) => { calls: MCPCall[], cleanText: string };
+  executeMCPCall: (call: MCPCall) => Promise<any>;
+}
+⋮----
+//console.log('Extracting MCP calls from text:', text);
+⋮----
+// if text contains <mcp:browser_js_env_call or <mcp:page_inner_html_base64
+⋮----
+// Look for MCP tool calls in the format: <mcp:tool_name param1="value1" param2="value2" />
+⋮----
+// Parse parameters from the attribute string
+⋮----
+// Using a regex with the 's' flag to handle multi-line parameter values
+⋮----
+// Remove the MCP call from the text
+⋮----
+//console.log('Extracted MCP calls:', calls);
+⋮----
+//console.log('Executing MCP call:', call);
+⋮----
+}, 400); // Trigger Chat sendMessage after a delay to ensure it appears after the agent's response
+</file>
+
+<file path="src/pages/Index.tsx">
+import React, { useState, useRef } from 'react';
+import { ChatSectionRef } from '../types/chat';
+import PasswordForm from '../components/PasswordForm';
+import ChatSection from '../components/ChatSection';
+⋮----
+const handleHintClick = () =>
+⋮----
+// Focus the chat input after a short delay to ensure the component is mounted
+⋮----
+const handleLanguageToggle = () =>
+⋮----
+// Send the translation request message to chat
+⋮----
+// Handle loading state changes from ChatSection
+const handleChatLoadingChange = (isLoading: boolean) =>
+</file>
+
+<file path=".github/workflows/gh-pages.yml">
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]  
+
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build project
+        # run: VITE_BASE_PATH="/${GITHUB_REPOSITORY#*/}/" npm run build
+        # new domain
+        run: npm run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist/
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
+</file>
+
+<file path="src/components/ChatSection.tsx">
+import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
+import { useChat } from '../hooks/useChat';
+import { ChatSectionRef } from '../types/chat';
+import MessageList from './chat/MessageList';
+import ChatInput from './chat/ChatInput';
+⋮----
+interface ChatSectionProps {
+  onLoadingChange?: (isLoading: boolean) => void;
+}
+⋮----
+// Notify parent of loading state changes
+⋮----
+// Expose sendMessage globally for mcpTools
+</file>
+
+<file path="src/components/PasswordForm.tsx">
+import React, { useState } from 'react';
+import { AlertCircle } from 'lucide-react';
+import { spawn } from 'child_process';
+⋮----
+interface PasswordFormProps {
+  language: 'de' | 'en';
+  onHintClick: () => void;
+  onLanguageToggle: () => void;
+  'aria-labelledby'?: string;
+  isLoading?: boolean;
+}
+⋮----
+action="https://login-598109592614.europe-west1.run.app/login"
+</file>
+
+</files>
