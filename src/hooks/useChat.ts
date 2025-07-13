@@ -71,7 +71,8 @@ export const useChat = () => {
         id: (messageHistory.length + 1).toString(),
         text: processedResponse,
         sender: 'model',
-        timestamp: new Date()
+        timestamp: new Date(),
+        role: getCurrentRole()
       };
 
       setMessages(prev => [...prev, agentMessage]);
