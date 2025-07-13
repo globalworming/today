@@ -62,7 +62,8 @@ export const useChat = () => {
 
   const handleAgentResponse = async (messageHistory: Message[]) => {
     setIsLoading(true);
-
+    const role = getCurrentRole();
+    
     try {
       const response = await callGeminiAPI(messageHistory);
       const processedResponse = await processMCPCalls(response);
@@ -72,7 +73,7 @@ export const useChat = () => {
         text: processedResponse,
         sender: 'model',
         timestamp: new Date(),
-        role: getCurrentRole()
+        role
       };
 
       setMessages(prev => [...prev, agentMessage]);
