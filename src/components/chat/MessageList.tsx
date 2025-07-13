@@ -33,7 +33,9 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, messages
                 : 'bg-gray-700 text-gray-100'
             }`}
           >
-            <p className="text-sm">{message.text}</p>
+            <p className="text-sm">
+              {message.sender === 'model' && message.role && `${message.role}: `}{message.text}
+            </p>
             <time 
               id={`message-time-${message.id}`}
               className="text-xs mt-1 opacity-60"

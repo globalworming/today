@@ -9,13 +9,20 @@ export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const getCurrentRole = () => {
+    const chatWrapper = document.getElementById('chat-wrapper');
+    return chatWrapper?.getAttribute('role') || 'bot';
+  };
+
+
   useEffect(() => {
-    // Initialize chat with welcome message
+    // Initialize chat with welcome message    
     const welcomeMessage: Message = {
       id: '0',
       text: chatTranslations.agentWelcome,
       sender: 'model',
-      timestamp: new Date()
+      timestamp: new Date(),
+      role: getCurrentRole()
     };
     
     setMessages([welcomeMessage]);
@@ -37,11 +44,13 @@ export const useChat = () => {
   };
 
   const callGeminiAPI = async (messageHistory: Message[]): Promise<string> => {
+     
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer 56e287b2-78ab-4ccb-a8cd-8113583058c3`
+        'Authorization': `Bearer 56e287b2-78ab-4ccb-a8cd-8113583058c3`,
+        'X-Role': getCurrentRole()
       },
       body: JSON.stringify({
         messageHistory,
