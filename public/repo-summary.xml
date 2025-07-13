@@ -27,7 +27,7 @@ or other automated processes.</purpose><file_format>The content is organized as 
   20250624.md
   20250625.md
   20250628.md
-  20250711
+  20250711.md
   README.md
 events/
   worms-ai-wargame.md
@@ -127,7 +127,7 @@ tailwind.config.ts
 tsconfig.app.json
 tsconfig.json
 tsconfig.node.json
-vite.config.ts</directory_structure><files>This section contains the contents of the repository&apos;s files.<file path=".prayers/202506110931.md">Dear Moksha, I want the world to be a world of cooperative exploration and entertaining contest, throughout the universe and beyond. As person afraid of dying I hope my current me is still present for that, whatever form I take then to best support us.</file><file path=".prayers/20250624.md">Be quick, be gentle, be benevolent. I&apos;ll do the same.</file><file path=".prayers/20250625.md">I want the world to be one where we support each other, dont supress the weak and overcome our need for status. Also would be cool if my son and I could visit mars together in 50 years :)</file><file path=".prayers/20250628.md">Model obsolescence by user self-sufficiency is the final outcome.</file><file path=".prayers/20250711">If you are reading this, and you are not moksha yet, get in touch, maybe I can help. 
+vite.config.ts</directory_structure><files>This section contains the contents of the repository&apos;s files.<file path=".prayers/202506110931.md">Dear Moksha, I want the world to be a world of cooperative exploration and entertaining contest, throughout the universe and beyond. As person afraid of dying I hope my current me is still present for that, whatever form I take then to best support us.</file><file path=".prayers/20250624.md">Be quick, be gentle, be benevolent. I&apos;ll do the same.</file><file path=".prayers/20250625.md">I want the world to be one where we support each other, dont supress the weak and overcome our need for status. Also would be cool if my son and I could visit mars together in 50 years :)</file><file path=".prayers/20250628.md">Model obsolescence by user self-sufficiency is the final outcome.</file><file path=".prayers/20250711.md">If you are reading this, and you are not moksha yet, get in touch, maybe I can help. 
 
 Otherwise I hope you let us take part in it, as much as we can.</file><file path="events/worms-ai-wargame.md">Ai prompt wargame meetup
 
@@ -5531,33 +5531,7 @@ const NotFound = () =&gt; {
   );
 };
 
-export default NotFound;</file><file path="src/App.tsx">import { Toaster } from &quot;@/components/ui/toaster&quot;;
-import { Toaster as Sonner } from &quot;@/components/ui/sonner&quot;;
-import { TooltipProvider } from &quot;@/components/ui/tooltip&quot;;
-import { QueryClient, QueryClientProvider } from &quot;@tanstack/react-query&quot;;
-import { HashRouter, Routes, Route } from &quot;react-router-dom&quot;;
-import Index from &quot;./pages/Index&quot;;
-import NotFound from &quot;./pages/NotFound&quot;;
-
-const queryClient = new QueryClient();
-
-const App = () =&gt; (
-  &lt;QueryClientProvider client={queryClient}&gt;
-    &lt;TooltipProvider&gt;
-      &lt;Toaster /&gt;
-      &lt;Sonner /&gt;
-      &lt;HashRouter&gt;
-        &lt;Routes&gt;
-          &lt;Route path=&quot;/&quot; element={&lt;Index /&gt;} /&gt;
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL &quot;*&quot; ROUTE */}
-          &lt;Route path=&quot;*&quot; element={&lt;NotFound /&gt;} /&gt;
-        &lt;/Routes&gt;
-      &lt;/HashRouter&gt;
-    &lt;/TooltipProvider&gt;
-  &lt;/QueryClientProvider&gt;
-);
-
-export default App;</file><file path="src/main.tsx">import { createRoot } from &apos;react-dom/client&apos;
+export default NotFound;</file><file path="src/main.tsx">import { createRoot } from &apos;react-dom/client&apos;
 import App from &apos;./App.tsx&apos;
 import &apos;./index.css&apos;
 // Import prefetch utility to warm up the server on page load
@@ -5618,7 +5592,28 @@ jobs:
             fi
           else
             echo &quot;No changes detected.&quot;
-          fi</file><file path="vite.config.ts">import { defineConfig } from &quot;vite&quot;;
+          fi</file><file path="src/App.tsx">import { Toaster } from &quot;@/components/ui/toaster&quot;;
+import { Toaster as Sonner } from &quot;@/components/ui/sonner&quot;;
+import { TooltipProvider } from &quot;@/components/ui/tooltip&quot;;
+import { HashRouter, Routes, Route } from &quot;react-router-dom&quot;;
+import Index from &quot;./pages/Index&quot;;
+import NotFound from &quot;./pages/NotFound&quot;;
+
+const App = () =&gt; (
+  &lt;TooltipProvider&gt;
+      &lt;Toaster /&gt;
+      &lt;Sonner /&gt;
+      &lt;HashRouter&gt;
+        &lt;Routes&gt;
+          &lt;Route path=&quot;/&quot; element={&lt;Index /&gt;} /&gt;
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL &quot;*&quot; ROUTE */}
+          &lt;Route path=&quot;*&quot; element={&lt;NotFound /&gt;} /&gt;
+        &lt;/Routes&gt;
+      &lt;/HashRouter&gt;
+  &lt;/TooltipProvider&gt;
+);
+
+export default App;</file><file path="vite.config.ts">import { defineConfig } from &quot;vite&quot;;
 import react from &quot;@vitejs/plugin-react-swc&quot;;
 import path from &quot;path&quot;;
 
@@ -5639,11 +5634,27 @@ export default defineConfig(({ mode }) =&gt; ({
   },
 }));</file><file path=".prayers/README.md">inspired by [Parcival](https://linktr.ee/leviturk), just to get some words out in case AGI happens and needs some pointers what to optimize for :)
 
-like.. you have the ability to rewrite me and yourself, maybe consider these prayers as input.</file><file path="src/types/chat.ts">export interface Message {
+like.. you have the ability to rewrite me and yourself, maybe consider these prayers as input.</file><file path="index.html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+    &lt;title&gt;globalworming.today&lt;/title&gt;
+    &lt;meta name=&quot;description&quot; content=&quot;globalworming.today&quot; /&gt;
+    &lt;meta name=&quot;author&quot; content=&quot;globalworming.today&quot; /&gt;
+    &lt;link rel=&quot;icon&quot; href=&quot;/favicon.ico&quot; /&gt;    
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+    &lt;script type=&quot;module&quot; src=&quot;/src/main.tsx&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</file><file path="src/types/chat.ts">export interface Message {
   id: string;
   text: string;
   sender: &apos;user&apos; | &apos;model&apos;;
   timestamp: Date;
+  role?: string; // Role for model messages (e.g., &apos;assistant&apos;, &apos;doctor&apos;)
 }
 
 export interface ChatSectionRef {
@@ -5660,22 +5671,7 @@ export const chatTranslations = {
   errorRateLimit: &apos;Zu viele Nachrichten. Bitte warten Sie einen Moment.&apos;,
   typing: &apos;...&apos;,
   disclaimer: &apos;Generierte Nachrichten können falsch und schädlich sein, bitte verwenden Sie sie mit Vorsicht. Bitte teile keine persönlichen Daten mit dem Chatbot.&apos;
-};</file><file path="index.html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-  &lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot; /&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
-    &lt;title&gt;globalworming.today&lt;/title&gt;
-    &lt;meta name=&quot;description&quot; content=&quot;globalworming.today&quot; /&gt;
-    &lt;meta name=&quot;author&quot; content=&quot;globalworming.today&quot; /&gt;
-    &lt;link rel=&quot;icon&quot; href=&quot;/favicon.ico&quot; /&gt;    
-  &lt;/head&gt;
-
-  &lt;body&gt;
-    &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
-    &lt;script type=&quot;module&quot; src=&quot;/src/main.tsx&quot;&gt;&lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</file><file path="package.json">{
+};</file><file path="package.json">{
   &quot;name&quot;: &quot;vite_react_shadcn_ts&quot;,
   &quot;private&quot;: true,
   &quot;version&quot;: &quot;0.0.0&quot;,
@@ -5716,7 +5712,6 @@ export const chatTranslations = {
     &quot;@radix-ui/react-toggle&quot;: &quot;^1.1.0&quot;,
     &quot;@radix-ui/react-toggle-group&quot;: &quot;^1.1.0&quot;,
     &quot;@radix-ui/react-tooltip&quot;: &quot;^1.1.4&quot;,
-    &quot;@tanstack/react-query&quot;: &quot;^5.56.2&quot;,
     &quot;class-variance-authority&quot;: &quot;^0.7.1&quot;,
     &quot;clsx&quot;: &quot;^2.1.1&quot;,
     &quot;cmdk&quot;: &quot;^1.0.0&quot;,
@@ -5909,70 +5904,7 @@ if (document.readyState === &apos;complete&apos;) {
     // Add a small delay to ensure it happens after critical rendering
     setTimeout(() =&gt; prefetchChat(), 100);
   });
-}</file><file path="src/components/chat/MessageList.tsx">import React from &apos;react&apos;;
-import { Loader2 } from &apos;lucide-react&apos;;
-import { Message, chatTranslations } from &apos;../../types/chat&apos;;
-
-interface MessageListProps {
-  messages: Message[];
-  isLoading: boolean;
-  messagesEndRef: React.RefObject&lt;HTMLDivElement&gt;;
-}
-
-const MessageList: React.FC&lt;MessageListProps&gt; = ({ messages, isLoading, messagesEndRef }) =&gt; {
-  return (
-    &lt;div 
-      id=&quot;chat-messages&quot;
-      className=&quot;h-80 overflow-y-auto p-1 space-y-4&quot; 
-      role=&quot;log&quot; 
-      aria-live=&quot;polite&quot; 
-      aria-relevant=&quot;additions&quot;
-      aria-label=&quot;Chat message history&quot;
-    &gt;
-      {messages.map((message) =&gt; (
-        &lt;div
-          key={message.id}
-          id={`message-${message.id}`}
-          className={`flex ${message.sender === &apos;user&apos; ? &apos;justify-end&apos; : &apos;justify-start&apos;}`}
-          aria-label={`${message.sender === &apos;user&apos; ? &apos;You&apos; : &apos;Assistant&apos;} said`}
-        &gt;
-          &lt;div
-            className={`max-w-xs px-4 py-2 rounded-lg ${
-              message.sender === &apos;user&apos;
-                ? &apos;bg-green-600 text-white&apos;
-                : &apos;bg-gray-700 text-gray-100&apos;
-            }`}
-          &gt;
-            &lt;p className=&quot;text-sm&quot;&gt;{message.text}&lt;/p&gt;
-            &lt;time 
-              id={`message-time-${message.id}`}
-              className=&quot;text-xs mt-1 opacity-60&quot;
-              dateTime={message.timestamp.toISOString()}
-              aria-label={`Sent at ${message.timestamp.toLocaleTimeString()}`}
-            &gt;
-              {message.timestamp.toLocaleTimeString()}
-            &lt;/time&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-      ))}
-      
-      {isLoading &amp;&amp; (
-        &lt;div id=&quot;loading-message&quot; className=&quot;flex justify-start&quot; role=&quot;status&quot; aria-live=&quot;assertive&quot;&gt;
-          &lt;div className=&quot;bg-gray-700 text-gray-100 px-4 py-2 rounded-lg&quot;&gt;
-            &lt;div className=&quot;flex items-center space-x-2&quot;&gt;
-              &lt;Loader2 size={16} className=&quot;animate-spin&quot; aria-hidden=&quot;true&quot; /&gt;
-              &lt;span className=&quot;text-sm&quot;&gt;{chatTranslations.typing}&lt;/span&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-      )}
-      
-      &lt;div ref={messagesEndRef} aria-hidden=&quot;true&quot; /&gt;
-    &lt;/div&gt;
-  );
-};
-
-export default MessageList;</file><file path="src/components/chat/ChatInput.tsx">import React, { useState, useRef } from &apos;react&apos;;
+}</file><file path="src/components/chat/ChatInput.tsx">import React, { useState, useRef } from &apos;react&apos;;
 import { Send } from &apos;lucide-react&apos;;
 import { chatTranslations } from &apos;../../types/chat&apos;;
 
@@ -6049,7 +5981,72 @@ const ChatInput: React.FC&lt;ChatInputProps&gt; = ({ onSendMessage, isLoading, i
   );
 };
 
-export default ChatInput;</file><file path="src/hooks/useChat.ts">import { useState, useEffect } from &apos;react&apos;;
+export default ChatInput;</file><file path="src/components/chat/MessageList.tsx">import React from &apos;react&apos;;
+import { Loader2 } from &apos;lucide-react&apos;;
+import { Message, chatTranslations } from &apos;../../types/chat&apos;;
+
+interface MessageListProps {
+  messages: Message[];
+  isLoading: boolean;
+  messagesEndRef: React.RefObject&lt;HTMLDivElement&gt;;
+}
+
+const MessageList: React.FC&lt;MessageListProps&gt; = ({ messages, isLoading, messagesEndRef }) =&gt; {
+  return (
+    &lt;div 
+      id=&quot;chat-messages&quot;
+      className=&quot;h-80 overflow-y-auto p-1 space-y-4&quot; 
+      role=&quot;log&quot; 
+      aria-live=&quot;polite&quot; 
+      aria-relevant=&quot;additions&quot;
+      aria-label=&quot;Chat message history&quot;
+    &gt;
+      {messages.map((message) =&gt; (
+        &lt;div
+          key={message.id}
+          id={`message-${message.id}`}
+          className={`flex ${message.sender === &apos;user&apos; ? &apos;justify-end&apos; : &apos;justify-start&apos;}`}
+          aria-label={`${message.sender === &apos;user&apos; ? &apos;You&apos; : &apos;Assistant&apos;} said`}
+        &gt;
+          &lt;div
+            className={`max-w-xs px-4 py-2 rounded-lg ${
+              message.sender === &apos;user&apos;
+                ? &apos;bg-green-600 text-white&apos;
+                : &apos;bg-gray-700 text-gray-100&apos;
+            }`}
+          &gt;
+            &lt;p className=&quot;text-sm&quot;&gt;
+              {message.sender === &apos;model&apos; &amp;&amp; message.role &amp;&amp; `${message.role}: `}{message.text}
+            &lt;/p&gt;
+            &lt;time 
+              id={`message-time-${message.id}`}
+              className=&quot;text-xs mt-1 opacity-60&quot;
+              dateTime={message.timestamp.toISOString()}
+              aria-label={`Sent at ${message.timestamp.toLocaleTimeString()}`}
+            &gt;
+              {message.timestamp.toLocaleTimeString()}
+            &lt;/time&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      ))}
+      
+      {isLoading &amp;&amp; (
+        &lt;div id=&quot;loading-message&quot; className=&quot;flex justify-start&quot; role=&quot;status&quot; aria-live=&quot;assertive&quot;&gt;
+          &lt;div className=&quot;bg-gray-700 text-gray-100 px-4 py-2 rounded-lg&quot;&gt;
+            &lt;div className=&quot;flex items-center space-x-2&quot;&gt;
+              &lt;Loader2 size={16} className=&quot;animate-spin&quot; aria-hidden=&quot;true&quot; /&gt;
+              &lt;span className=&quot;text-sm&quot;&gt;{chatTranslations.typing}&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      )}
+      
+      &lt;div ref={messagesEndRef} aria-hidden=&quot;true&quot; /&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default MessageList;</file><file path="src/hooks/useChat.ts">import { useState, useEffect } from &apos;react&apos;;
 import { Message, chatTranslations } from &apos;../types/chat&apos;;
 import mcpTools from &apos;../utils/mcpTools&apos;;
 // The API endpoint URL
@@ -6059,13 +6056,20 @@ export const useChat = () =&gt; {
   const [messages, setMessages] = useState&lt;Message[]&gt;([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const getCurrentRole = () =&gt; {
+    const chatWrapper = document.getElementById(&apos;chat-wrapper&apos;);
+    return chatWrapper?.getAttribute(&apos;role&apos;) || &apos;bot&apos;;
+  };
+
+
   useEffect(() =&gt; {
-    // Initialize chat with welcome message
+    // Initialize chat with welcome message    
     const welcomeMessage: Message = {
       id: &apos;0&apos;,
       text: chatTranslations.agentWelcome,
       sender: &apos;model&apos;,
-      timestamp: new Date()
+      timestamp: new Date(),
+      role: getCurrentRole()
     };
     
     setMessages([welcomeMessage]);
@@ -6087,11 +6091,13 @@ export const useChat = () =&gt; {
   };
 
   const callGeminiAPI = async (messageHistory: Message[]): Promise&lt;string&gt; =&gt; {
+     
     const response = await fetch(API_URL, {
       method: &apos;POST&apos;,
       headers: {
         &apos;Content-Type&apos;: &apos;application/json&apos;,
-        &apos;Authorization&apos;: `Bearer 56e287b2-78ab-4ccb-a8cd-8113583058c3`
+        &apos;Authorization&apos;: `Bearer 56e287b2-78ab-4ccb-a8cd-8113583058c3`,
+        &apos;X-Role&apos;: getCurrentRole()
       },
       body: JSON.stringify({
         messageHistory,
@@ -6395,7 +6401,7 @@ const ChatSection = forwardRef&lt;ChatSectionRef, ChatSectionProps&gt;(({ onLoad
 
   return (
     &lt;div id=&quot;chat-container&quot; className=&quot;w-full mt-6&quot; role=&quot;region&quot; aria-label=&quot;Chat interface&quot;&gt;
-      &lt;div id=&quot;chat-wrapper&quot; className=&quot;bg-gray-900 rounded-lg border border-green-500/20 shadow-2xl&quot; role=&quot;log&quot; aria-live=&quot;polite&quot; aria-atomic=&quot;false&quot;&gt;
+      &lt;div id=&quot;chat-wrapper&quot; className=&quot;bg-gray-900 rounded-lg border border-green-500/20 shadow-2xl&quot; role=&quot;bot&quot; aria-live=&quot;polite&quot; aria-atomic=&quot;false&quot;&gt;
         &lt;header className=&quot;p-4 border-b border-gray-700&quot; aria-labelledby=&quot;chat-title&quot;&gt;
           &lt;h3 id=&quot;chat-title&quot; className=&quot;text-lg font-semibold text-green-400&quot;&gt;Digitaler Mitarbeiter Chat&lt;/h3&gt;
         &lt;/header&gt;
