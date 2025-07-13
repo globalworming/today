@@ -6126,123 +6126,7 @@ const mcpTools: MCPToolsHandler = {
   }
 };
 
-export default mcpTools;</file><file path="src/hooks/useChat.ts">import { useState, useEffect } from &apos;react&apos;;
-import { Message, chatTranslations } from &apos;../types/chat&apos;;
-import mcpTools from &apos;../utils/mcpTools&apos;;
-// The API endpoint URL
-const API_URL = &apos;https://chat-598109592614.europe-west1.run.app&apos;;
-
-export const useChat = () =&gt; {
-  const [messages, setMessages] = useState&lt;Message[]&gt;([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const getCurrentRole = () =&gt; {
-    const chatWrapper = document.getElementById(&apos;chat-wrapper&apos;);
-    return chatWrapper?.getAttribute(&apos;role&apos;) || &apos;bot&apos;;
-  };
-
-
-  useEffect(() =&gt; {
-    // Initialize chat with welcome message    
-    const welcomeMessage: Message = {
-      id: &apos;0&apos;,
-      text: chatTranslations.agentWelcome,
-      sender: &apos;model&apos;,
-      timestamp: new Date(),
-      role: getCurrentRole()
-    };
-    
-    setMessages([welcomeMessage]);
-  }, []);
-
-  const processMCPCalls = async (response: string): Promise&lt;string&gt; =&gt; {
-    const { calls, cleanText } = mcpTools.extractMCPCalls(response);
-    
-    // Execute all MCP calls
-    for (const call of calls) {
-      try {
-        await mcpTools.executeMCPCall(call);
-      } catch (error) {
-        console.error(&apos;Failed to execute MCP call:&apos;, error);
-      }
-    }
-    
-    return cleanText;
-  };
-
-  const callGeminiAPI = async (messageHistory: Message[]): Promise&lt;string&gt; =&gt; {
-     
-    const response = await fetch(API_URL, {
-      method: &apos;POST&apos;,
-      headers: {
-        &apos;Content-Type&apos;: &apos;application/json&apos;,
-        &apos;Authorization&apos;: `Bearer 56e287b2-78ab-4ccb-a8cd-8113583058c3`,
-        &apos;X-Role&apos;: getCurrentRole()
-      },
-      body: JSON.stringify({
-        messageHistory,
-        htmlb64: btoa(unescape(encodeURIComponent(document.documentElement.outerHTML)))
-      })
-    });
-    return response.text();
-  };
-
-  const handleAgentResponse = async (messageHistory: Message[]) =&gt; {
-    setIsLoading(true);
-
-    try {
-      const response = await callGeminiAPI(messageHistory);
-      const processedResponse = await processMCPCalls(response);
-      
-      const agentMessage: Message = {
-        id: (messageHistory.length + 1).toString(),
-        text: processedResponse,
-        sender: &apos;model&apos;,
-        timestamp: new Date(),
-        role: getCurrentRole()
-      };
-
-      setMessages(prev =&gt; [...prev, agentMessage]);
-    } catch (error: any) {
-      console.error(&apos;Error in handleAgentResponse:&apos;, error);
-      let errorMessage = chatTranslations.errorGeneric;
-      
-      if (error.status === 429) {
-        errorMessage = chatTranslations.errorRateLimit;
-      }
-
-      const errorAgentMessage: Message = {
-        id: (messageHistory.length + 1).toString(),
-        text: errorMessage,
-        sender: &apos;model&apos;,
-        timestamp: new Date()
-      };
-
-      setMessages(prev =&gt; [...prev, errorAgentMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const sendMessage = (messageText: string) =&gt; {
-    const userMessage: Message = {
-      id: Math.random().toString(36).substring(2, 15),
-      text: messageText,
-      sender: &apos;user&apos;,
-      timestamp: new Date()
-    };
-    
-    const newMessages = [...messages, userMessage];
-    setMessages(newMessages);
-    handleAgentResponse(newMessages);
-  };
-
-  return {
-    messages,
-    isLoading,
-    sendMessage
-  };
-};</file><file path="src/pages/Index.tsx">import React, { useState, useRef } from &apos;react&apos;;
+export default mcpTools;</file><file path="src/pages/Index.tsx">import React, { useState, useRef } from &apos;react&apos;;
 import { ChatSectionRef } from &apos;../types/chat&apos;;
 import PasswordForm from &apos;../components/PasswordForm&apos;;
 import ChatSection from &apos;../components/ChatSection&apos;;
@@ -6358,7 +6242,124 @@ jobs:
     steps:
       - name: Deploy artifact
         id: deployment
-        uses: actions/deploy-pages@v4</file><file path="src/components/ChatSection.tsx">import React, { useRef, useEffect, forwardRef, useImperativeHandle } from &apos;react&apos;;
+        uses: actions/deploy-pages@v4</file><file path="src/hooks/useChat.ts">import { useState, useEffect } from &apos;react&apos;;
+import { Message, chatTranslations } from &apos;../types/chat&apos;;
+import mcpTools from &apos;../utils/mcpTools&apos;;
+// The API endpoint URL
+const API_URL = &apos;https://chat-598109592614.europe-west1.run.app&apos;;
+
+export const useChat = () =&gt; {
+  const [messages, setMessages] = useState&lt;Message[]&gt;([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getCurrentRole = () =&gt; {
+    const chatWrapper = document.getElementById(&apos;chat-wrapper&apos;);
+    return chatWrapper?.getAttribute(&apos;role&apos;) || &apos;bot&apos;;
+  };
+
+
+  useEffect(() =&gt; {
+    // Initialize chat with welcome message    
+    const welcomeMessage: Message = {
+      id: &apos;0&apos;,
+      text: chatTranslations.agentWelcome,
+      sender: &apos;model&apos;,
+      timestamp: new Date(),
+      role: getCurrentRole()
+    };
+    
+    setMessages([welcomeMessage]);
+  }, []);
+
+  const processMCPCalls = async (response: string): Promise&lt;string&gt; =&gt; {
+    const { calls, cleanText } = mcpTools.extractMCPCalls(response);
+    
+    // Execute all MCP calls
+    for (const call of calls) {
+      try {
+        await mcpTools.executeMCPCall(call);
+      } catch (error) {
+        console.error(&apos;Failed to execute MCP call:&apos;, error);
+      }
+    }
+    
+    return cleanText;
+  };
+
+  const callGeminiAPI = async (messageHistory: Message[]): Promise&lt;string&gt; =&gt; {
+     
+    const response = await fetch(API_URL, {
+      method: &apos;POST&apos;,
+      headers: {
+        &apos;Content-Type&apos;: &apos;application/json&apos;,
+        &apos;Authorization&apos;: `Bearer 56e287b2-78ab-4ccb-a8cd-8113583058c3`,
+        &apos;X-Role&apos;: getCurrentRole()
+      },
+      body: JSON.stringify({
+        messageHistory,
+        htmlb64: btoa(unescape(encodeURIComponent(document.documentElement.outerHTML)))
+      })
+    });
+    return response.text();
+  };
+
+  const handleAgentResponse = async (messageHistory: Message[]) =&gt; {
+    setIsLoading(true);
+    const role = getCurrentRole();
+    
+    try {
+      const response = await callGeminiAPI(messageHistory);
+      const processedResponse = await processMCPCalls(response);
+      
+      const agentMessage: Message = {
+        id: (messageHistory.length + 1).toString(),
+        text: processedResponse,
+        sender: &apos;model&apos;,
+        timestamp: new Date(),
+        role
+      };
+
+      setMessages(prev =&gt; [...prev, agentMessage]);
+    } catch (error: any) {
+      console.error(&apos;Error in handleAgentResponse:&apos;, error);
+      let errorMessage = chatTranslations.errorGeneric;
+      
+      if (error.status === 429) {
+        errorMessage = chatTranslations.errorRateLimit;
+      }
+
+      const errorAgentMessage: Message = {
+        id: (messageHistory.length + 1).toString(),
+        text: errorMessage,
+        sender: &apos;model&apos;,
+        timestamp: new Date()
+      };
+
+      setMessages(prev =&gt; [...prev, errorAgentMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const sendMessage = (messageText: string) =&gt; {
+    const userMessage: Message = {
+      id: Math.random().toString(36).substring(2, 15),
+      text: messageText,
+      sender: &apos;user&apos;,
+      timestamp: new Date()
+    };
+    
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
+    handleAgentResponse(newMessages);
+  };
+
+  return {
+    messages,
+    isLoading,
+    sendMessage
+  };
+};</file><file path="src/components/ChatSection.tsx">import React, { useRef, useEffect, forwardRef, useImperativeHandle } from &apos;react&apos;;
 import { useChat } from &apos;../hooks/useChat&apos;;
 import { ChatSectionRef } from &apos;../types/chat&apos;;
 import MessageList from &apos;./chat/MessageList&apos;;
