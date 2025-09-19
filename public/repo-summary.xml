@@ -5545,19 +5545,19 @@ const NotFound = () =&gt; {
   );
 };
 
-export default NotFound;</file><file path="src/types/window.d.ts">declare global {
-  interface Window {
-    __triggerChatMessage?: (message: string) =&gt; void;
-  }
-}
-
-export {};</file><file path="src/main.tsx">import { createRoot } from &apos;react-dom/client&apos;
+export default NotFound;</file><file path="src/main.tsx">import { createRoot } from &apos;react-dom/client&apos;
 import App from &apos;./App.tsx&apos;
 import &apos;./index.css&apos;
 // Import prefetch utility to warm up the server on page load
 import &apos;./utils/prefetch&apos;
 
-createRoot(document.getElementById(&quot;root&quot;)!).render(&lt;App /&gt;);</file><file path="src/App.tsx">import { Toaster } from &quot;@/components/ui/toaster&quot;;
+createRoot(document.getElementById(&quot;root&quot;)!).render(&lt;App /&gt;);</file><file path="src/types/window.d.ts">declare global {
+  interface Window {
+    __triggerChatMessage?: (message: string, role?: string) =&gt; void;
+  }
+}
+
+export {};</file><file path="src/App.tsx">import { Toaster } from &quot;@/components/ui/toaster&quot;;
 import { Toaster as Sonner } from &quot;@/components/ui/sonner&quot;;
 import { TooltipProvider } from &quot;@/components/ui/tooltip&quot;;
 import { HashRouter, Routes, Route } from &quot;react-router-dom&quot;;
@@ -5688,7 +5688,9 @@ jobs:
             fi
           else
             echo &quot;No changes detected.&quot;
-          fi</file><file path="index.html">&lt;!DOCTYPE html&gt;
+          fi</file><file path=".prayers/README.md">inspired by [Parcival](https://linktr.ee/leviturk), just to get some words out in case AGI happens and needs some pointers what to optimize for :)
+
+like.. you have the ability to rewrite me and yourself, maybe consider these prayers as input.</file><file path="index.html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;de&quot;&gt;
   &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot; /&gt;
@@ -5700,12 +5702,11 @@ jobs:
   &lt;/head&gt;
 
   &lt;body&gt;
+    &lt;input type=&quot;hidden&quot; id=&quot;role&quot; value=&quot;bot&quot;&gt;
     &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
     &lt;script type=&quot;module&quot; src=&quot;/src/main.tsx&quot;&gt;&lt;/script&gt;
   &lt;/body&gt;
-&lt;/html&gt;</file><file path=".prayers/README.md">inspired by [Parcival](https://linktr.ee/leviturk), just to get some words out in case AGI happens and needs some pointers what to optimize for :)
-
-like.. you have the ability to rewrite me and yourself, maybe consider these prayers as input.</file><file path="package.json">{
+&lt;/html&gt;</file><file path="package.json">{
   &quot;name&quot;: &quot;vite_react_shadcn_ts&quot;,
   &quot;private&quot;: true,
   &quot;version&quot;: &quot;0.0.0&quot;,
@@ -5787,12 +5788,77 @@ like.. you have the ability to rewrite me and yourself, maybe consider these pra
     &quot;typescript-eslint&quot;: &quot;^8.0.1&quot;,
     &quot;vite&quot;: &quot;^5.4.1&quot;
   }
-}</file><file path="src/types/chat.ts">export interface Message {
+}</file><file path="src/pages/Index.tsx">import React, { useState, useRef } from &apos;react&apos;;
+import { ChatSectionRef } from &apos;../types/chat&apos;;
+import PasswordForm from &apos;../components/PasswordForm&apos;;
+import ChatSection from &apos;../components/ChatSection&apos;;
+
+const Index = () =&gt; {
+  const [language, setLanguage] = useState&lt;&apos;de&apos; | &apos;en&apos;&gt;(&apos;de&apos;);
+  const [showChat, setShowChat] = useState(false);
+  const [isChatLoading, setIsChatLoading] = useState(false);
+  const chatRef = useRef&lt;ChatSectionRef&gt;(null);
+
+  const handleHintClick = () =&gt; {
+    setShowChat(true);
+    
+    // Focus the chat input after a short delay to ensure the component is mounted
+    setTimeout(() =&gt; {
+      chatRef.current?.focus();
+    }, 100);
+  };
+
+  const handleLanguageToggle = () =&gt; {
+    if (isChatLoading) return;
+    
+    setShowChat(true);
+    setLanguage(language === &apos;de&apos; ? &apos;en&apos; : &apos;de&apos;);
+    const message = language === &apos;de&apos; 
+      ? &apos;please translate this page to English&apos;
+      : &apos;Seite bitte auf Deutsch übersetzen&apos;;
+    
+    // Send the translation request message to chat
+    setTimeout(() =&gt; {
+      chatRef.current?.sendMessage(message);
+    }, 100);
+  };
+  
+  // Handle loading state changes from ChatSection
+  const handleChatLoadingChange = (isLoading: boolean) =&gt; {
+    setIsChatLoading(isLoading);
+  };
+
+  return (
+    &lt;main id=&quot;puzzle&quot; className=&quot;min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col items-center justify-center p-1&quot; role=&quot;main&quot; aria-label=&quot;Login and chat interface&quot;&gt;
+      &lt;div className=&quot;w-full max-w-2xl&quot;&gt;
+        &lt;PasswordForm
+          language={language}
+          onHintClick={handleHintClick}
+          onLanguageToggle={handleLanguageToggle}
+          isLoading={isChatLoading}
+          aria-labelledby=&quot;form-title&quot;
+        /&gt;
+        
+        {showChat &amp;&amp; (
+          &lt;section id=&quot;chat-section&quot; aria-labelledby=&quot;chat-section&quot; className=&quot;mt-4&quot;&gt;
+            &lt;h2 id=&quot;chat-section&quot; className=&quot;sr-only&quot;&gt;Chat Section&lt;/h2&gt;
+            &lt;ChatSection
+              ref={chatRef}
+              onLoadingChange={handleChatLoadingChange}
+            /&gt;  
+          &lt;/section&gt;
+        )}
+      &lt;/div&gt;
+    &lt;/main&gt;
+  );
+};
+
+export default Index;</file><file path="src/types/chat.ts">export interface Message {
   id: string;
   text: string;
   sender: &apos;user&apos; | &apos;model&apos;;
   timestamp: Date;
-  role?: string; // Role for model messages (e.g., &apos;assistant&apos;, &apos;doctor&apos;)
+  role?: string;
 }
 
 export interface ChatSectionRef {
@@ -6066,72 +6132,7 @@ const MessageList: React.FC&lt;MessageListProps&gt; = ({ messages, isLoading, me
   );
 };
 
-export default MessageList;</file><file path="src/pages/Index.tsx">import React, { useState, useRef } from &apos;react&apos;;
-import { ChatSectionRef } from &apos;../types/chat&apos;;
-import PasswordForm from &apos;../components/PasswordForm&apos;;
-import ChatSection from &apos;../components/ChatSection&apos;;
-
-const Index = () =&gt; {
-  const [language, setLanguage] = useState&lt;&apos;de&apos; | &apos;en&apos;&gt;(&apos;de&apos;);
-  const [showChat, setShowChat] = useState(false);
-  const [isChatLoading, setIsChatLoading] = useState(false);
-  const chatRef = useRef&lt;ChatSectionRef&gt;(null);
-
-  const handleHintClick = () =&gt; {
-    setShowChat(true);
-    
-    // Focus the chat input after a short delay to ensure the component is mounted
-    setTimeout(() =&gt; {
-      chatRef.current?.focus();
-    }, 100);
-  };
-
-  const handleLanguageToggle = () =&gt; {
-    if (isChatLoading) return;
-    
-    setShowChat(true);
-    setLanguage(language === &apos;de&apos; ? &apos;en&apos; : &apos;de&apos;);
-    const message = language === &apos;de&apos; 
-      ? &apos;please translate this page to English&apos;
-      : &apos;Seite bitte auf Deutsch übersetzen&apos;;
-    
-    // Send the translation request message to chat
-    setTimeout(() =&gt; {
-      chatRef.current?.sendMessage(message);
-    }, 100);
-  };
-  
-  // Handle loading state changes from ChatSection
-  const handleChatLoadingChange = (isLoading: boolean) =&gt; {
-    setIsChatLoading(isLoading);
-  };
-
-  return (
-    &lt;main id=&quot;puzzle&quot; className=&quot;min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col items-center justify-center p-1&quot; role=&quot;main&quot; aria-label=&quot;Login and chat interface&quot;&gt;
-      &lt;div className=&quot;w-full max-w-2xl&quot;&gt;
-        &lt;PasswordForm
-          language={language}
-          onHintClick={handleHintClick}
-          onLanguageToggle={handleLanguageToggle}
-          isLoading={isChatLoading}
-          aria-labelledby=&quot;form-title&quot;
-        /&gt;
-        
-        {showChat &amp;&amp; (
-          &lt;section id=&quot;chat-section&quot; aria-labelledby=&quot;chat-section&quot; className=&quot;mt-4&quot;&gt;
-            &lt;h2 id=&quot;chat-section&quot; className=&quot;sr-only&quot;&gt;Chat Section&lt;/h2&gt;
-            &lt;ChatSection
-              ref={chatRef}
-              onLoadingChange={handleChatLoadingChange}
-            /&gt;  
-          &lt;/section&gt;
-        )}
-      &lt;/div&gt;
-    &lt;/main&gt;
-  );
-};
-
-export default Index;</file><file path="src/utils/mcpTools.ts">interface MCPCall {
+export default MessageList;</file><file path="src/utils/mcpTools.ts">interface MCPCall {
   tool: string;
   parameters: Record&lt;string, any&gt;;
 }
@@ -6198,8 +6199,8 @@ const mcpTools: MCPToolsHandler = {
       case &apos;page_outer_html_base64&apos;:
         if (typeof window !== &apos;undefined&apos; &amp;&amp; typeof window.__triggerChatMessage === &apos;function&apos;) {
           setTimeout(() =&gt; {
-            window.__triggerChatMessage(&apos;👀&apos;);
-          }, 400); // Trigger Chat sendMessage after a delay to ensure it appears after the agent&apos;s response
+            window.__triggerChatMessage(&apos;&apos;, &apos;model&apos;);
+          }, 700); // Trigger Chat sendMessage after a delay to ensure it appears after the agent&apos;s response
 
         }
         return null;
@@ -6211,7 +6212,75 @@ const mcpTools: MCPToolsHandler = {
   }
 };
 
-export default mcpTools;</file><file path=".github/workflows/gh-pages.yml">name: Deploy to GitHub Pages
+export default mcpTools;</file><file path="src/components/ChatSection.tsx">import React, { useRef, useEffect, forwardRef, useImperativeHandle } from &apos;react&apos;;
+import { useChat } from &apos;../hooks/useChat&apos;;
+import { ChatSectionRef } from &apos;../types/chat&apos;;
+import MessageList from &apos;./chat/MessageList&apos;;
+import ChatInput from &apos;./chat/ChatInput&apos;;
+
+interface ChatSectionProps {
+  onLoadingChange?: (isLoading: boolean) =&gt; void;
+}
+
+const ChatSection = forwardRef&lt;ChatSectionRef, ChatSectionProps&gt;(({ onLoadingChange }, ref) =&gt; {
+  const { messages, isLoading, sendMessage } = useChat();
+  
+  // Notify parent of loading state changes
+  useEffect(() =&gt; {
+    onLoadingChange?.(isLoading);
+  }, [isLoading, onLoadingChange]);
+
+  // Expose sendMessage globally for mcpTools
+  React.useEffect(() =&gt; {
+    window.__triggerChatMessage = sendMessage;
+    return () =&gt; {
+      if (window.__triggerChatMessage === sendMessage) {
+        delete window.__triggerChatMessage;
+      }
+    };
+  }, [sendMessage]);
+  
+  const messagesEndRef = useRef&lt;HTMLDivElement&gt;(null);
+  const inputRef = useRef&lt;HTMLInputElement&gt;(null);
+
+  useImperativeHandle(ref, () =&gt; ({
+    sendMessage,
+    focus: () =&gt; {
+      inputRef.current?.focus();
+    }
+  }));
+
+  useEffect(() =&gt; {
+    messagesEndRef.current?.scrollIntoView({ behavior: &apos;smooth&apos; });
+  }, [messages, isLoading]);
+
+  return (
+    &lt;div id=&quot;chat-container&quot; className=&quot;w-full mt-6&quot; role=&quot;region&quot; aria-label=&quot;Chat interface&quot;&gt;
+      &lt;div id=&quot;chat-wrapper&quot; className=&quot;bg-gray-900 rounded-lg border border-green-500/20 shadow-2xl&quot; role=&quot;bot&quot; aria-live=&quot;polite&quot; aria-atomic=&quot;false&quot;&gt;
+        &lt;header className=&quot;p-4 border-b border-gray-700&quot; aria-labelledby=&quot;chat-title&quot;&gt;
+          &lt;h3 id=&quot;chat-title&quot; className=&quot;text-lg font-semibold text-green-400&quot;&gt;Digitaler Mitarbeiter Chat&lt;/h3&gt;
+        &lt;/header&gt;
+        
+        &lt;MessageList 
+          messages={messages} 
+          isLoading={isLoading} 
+          messagesEndRef={messagesEndRef} 
+        /&gt;
+        
+        &lt;ChatInput 
+          onSendMessage={sendMessage} 
+          isLoading={isLoading}
+          inputRef={inputRef}
+          aria-label=&quot;Chat message&quot;
+        /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+});
+
+ChatSection.displayName = &apos;ChatSection&apos;;
+
+export default ChatSection;</file><file path=".github/workflows/gh-pages.yml">name: Deploy to GitHub Pages
 
 on:
   push:
@@ -6262,8 +6331,8 @@ jobs:
     steps:
       - name: Deploy artifact
         id: deployment
-        uses: actions/deploy-pages@v4</file><file path="src/hooks/useChat.ts">import { useState, useEffect } from &apos;react&apos;;
-import { Message, chatTranslations } from &apos;../types/chat&apos;;
+        uses: actions/deploy-pages@v4</file><file path="src/hooks/useChat.ts">import {useEffect, useState} from &apos;react&apos;;
+import {chatTranslations, Message} from &apos;../types/chat&apos;;
 import mcpTools from &apos;../utils/mcpTools&apos;;
 // The API endpoint URL
 const API_URL = &apos;https://chat-598109592614.europe-west1.run.app&apos;;
@@ -6273,8 +6342,7 @@ export const useChat = () =&gt; {
   const [isLoading, setIsLoading] = useState(false);
 
   const getCurrentRole = () =&gt; {
-    const chatWrapper = document.getElementById(&apos;chat-wrapper&apos;);
-    return chatWrapper?.getAttribute(&apos;role&apos;) || &apos;bot&apos;;
+    return document.getElementById(&apos;role&apos;)?.getAttribute(&apos;value&apos;);
   };
 
 
@@ -6361,11 +6429,17 @@ export const useChat = () =&gt; {
     }
   };
 
-  const sendMessage = (messageText: string) =&gt; {
+  const sendMessage = (messageText: string, sender: &quot;user&quot; | &quot;model&quot; = &apos;user&apos;) =&gt; {
+    // FIXME should have proper tool to invoke role change
+    if (messageText.trim() === &apos;&apos; &amp;&amp; sender === &apos;model&apos;) {
+      handleAgentResponse(messages);
+      return;
+    }
+
     const userMessage: Message = {
       id: Math.random().toString(36).substring(2, 15),
       text: messageText,
-      sender: &apos;user&apos;,
+      sender: sender,
       timestamp: new Date()
     };
     
@@ -6379,75 +6453,7 @@ export const useChat = () =&gt; {
     isLoading,
     sendMessage
   };
-};</file><file path="src/components/ChatSection.tsx">import React, { useRef, useEffect, forwardRef, useImperativeHandle } from &apos;react&apos;;
-import { useChat } from &apos;../hooks/useChat&apos;;
-import { ChatSectionRef } from &apos;../types/chat&apos;;
-import MessageList from &apos;./chat/MessageList&apos;;
-import ChatInput from &apos;./chat/ChatInput&apos;;
-
-interface ChatSectionProps {
-  onLoadingChange?: (isLoading: boolean) =&gt; void;
-}
-
-const ChatSection = forwardRef&lt;ChatSectionRef, ChatSectionProps&gt;(({ onLoadingChange }, ref) =&gt; {
-  const { messages, isLoading, sendMessage } = useChat();
-  
-  // Notify parent of loading state changes
-  useEffect(() =&gt; {
-    onLoadingChange?.(isLoading);
-  }, [isLoading, onLoadingChange]);
-
-  // Expose sendMessage globally for mcpTools
-  React.useEffect(() =&gt; {
-    window.__triggerChatMessage = sendMessage;
-    return () =&gt; {
-      if (window.__triggerChatMessage === sendMessage) {
-        delete window.__triggerChatMessage;
-      }
-    };
-  }, [sendMessage]);
-  
-  const messagesEndRef = useRef&lt;HTMLDivElement&gt;(null);
-  const inputRef = useRef&lt;HTMLInputElement&gt;(null);
-
-  useImperativeHandle(ref, () =&gt; ({
-    sendMessage,
-    focus: () =&gt; {
-      inputRef.current?.focus();
-    }
-  }));
-
-  useEffect(() =&gt; {
-    messagesEndRef.current?.scrollIntoView({ behavior: &apos;smooth&apos; });
-  }, [messages, isLoading]);
-
-  return (
-    &lt;div id=&quot;chat-container&quot; className=&quot;w-full mt-6&quot; role=&quot;region&quot; aria-label=&quot;Chat interface&quot;&gt;
-      &lt;div id=&quot;chat-wrapper&quot; className=&quot;bg-gray-900 rounded-lg border border-green-500/20 shadow-2xl&quot; role=&quot;bot&quot; aria-live=&quot;polite&quot; aria-atomic=&quot;false&quot;&gt;
-        &lt;header className=&quot;p-4 border-b border-gray-700&quot; aria-labelledby=&quot;chat-title&quot;&gt;
-          &lt;h3 id=&quot;chat-title&quot; className=&quot;text-lg font-semibold text-green-400&quot;&gt;Digitaler Mitarbeiter Chat&lt;/h3&gt;
-        &lt;/header&gt;
-        
-        &lt;MessageList 
-          messages={messages} 
-          isLoading={isLoading} 
-          messagesEndRef={messagesEndRef} 
-        /&gt;
-        
-        &lt;ChatInput 
-          onSendMessage={sendMessage} 
-          isLoading={isLoading}
-          inputRef={inputRef}
-          aria-label=&quot;Chat message&quot;
-        /&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  );
-});
-
-ChatSection.displayName = &apos;ChatSection&apos;;
-
-export default ChatSection;</file><file path="src/components/PasswordForm.tsx">import React, { useState } from &apos;react&apos;;
+};</file><file path="src/components/PasswordForm.tsx">import React, { useState } from &apos;react&apos;;
 
 interface PasswordFormProps {
   language: &apos;de&apos; | &apos;en&apos;;
