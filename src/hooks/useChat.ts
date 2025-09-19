@@ -1,6 +1,5 @@
-
-import { useState, useEffect } from 'react';
-import { Message, chatTranslations } from '../types/chat';
+import {useEffect, useState} from 'react';
+import {chatTranslations, Message} from '../types/chat';
 import mcpTools from '../utils/mcpTools';
 // The API endpoint URL
 const API_URL = 'https://chat-598109592614.europe-west1.run.app';
@@ -10,8 +9,7 @@ export const useChat = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const getCurrentRole = () => {
-    const chatWrapper = document.getElementById('chat-wrapper');
-    return chatWrapper?.getAttribute('role') || 'bot';
+    return document.getElementById('role')?.getAttribute('value');
   };
 
 
@@ -98,11 +96,17 @@ export const useChat = () => {
     }
   };
 
-  const sendMessage = (messageText: string) => {
+  const sendMessage = (messageText: string, sender: "user" | "model" = 'user') => {
+    // FIXME should have proper tool to invoke role change
+    if (messageText.trim() === '' && sender === 'model') {
+      handleAgentResponse(messages);
+      return;
+    }
+
     const userMessage: Message = {
       id: Math.random().toString(36).substring(2, 15),
       text: messageText,
-      sender: 'user',
+      sender: sender,
       timestamp: new Date()
     };
     

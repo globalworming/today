@@ -66,8 +66,8 @@ const mcpTools: MCPToolsHandler = {
       case 'page_outer_html_base64':
         if (typeof window !== 'undefined' && typeof window.__triggerChatMessage === 'function') {
           setTimeout(() => {
-            window.__triggerChatMessage('👀');
-          }, 400); // Trigger Chat sendMessage after a delay to ensure it appears after the agent's response
+            window.__triggerChatMessage('', 'model');
+          }, 700); // Trigger Chat sendMessage after a delay to ensure it appears after the agent's response
 
         }
         return null;

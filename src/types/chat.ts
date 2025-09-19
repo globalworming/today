@@ -4,7 +4,7 @@ export interface Message {
   text: string;
   sender: 'user' | 'model';
   timestamp: Date;
-  role?: string; // Role for model messages (e.g., 'assistant', 'doctor')
+  role?: string;
 }
 
 export interface ChatSectionRef {
