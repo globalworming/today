@@ -5691,7 +5691,29 @@ jobs:
             echo &quot;No changes detected.&quot;
           fi</file><file path=".prayers/README.md">inspired by [Parcival](https://linktr.ee/leviturk), just to get some words out in case AGI happens and needs some pointers what to optimize for :)
 
-like.. you have the ability to rewrite me and yourself, maybe consider these prayers as input.</file><file path="index.html">&lt;!DOCTYPE html&gt;
+like.. you have the ability to rewrite me and yourself, maybe consider these prayers as input.</file><file path="src/types/chat.ts">export interface Message {
+  id: string;
+  text: string;
+  sender: &apos;user&apos; | &apos;model&apos;;
+  timestamp: Date;
+  role?: string;
+}
+
+export interface ChatSectionRef {
+  sendMessage: (message: string) =&gt; void;
+  focus: () =&gt; void;
+}
+
+export const chatTranslations = {
+  placeholder: &apos;Ihre Nachricht...&apos;,
+  send: &apos;Senden&apos;,
+  agentWelcome: &apos;Wie kann ich helfen?&apos;,
+  userProblem: &apos;Ich habe Probleme&apos;,
+  errorGeneric: &apos;Entschuldigung, es gab ein Problem. Bitte versuchen Sie es erneut.&apos;,
+  errorRateLimit: &apos;Zu viele Nachrichten. Bitte warten Sie einen Moment.&apos;,
+  typing: &apos;...&apos;,
+  disclaimer: &apos;Generierte Nachrichten können falsch und schädlich sein, bitte verwenden Sie sie mit Vorsicht. Bitte teile keine persönlichen Daten mit dem Chatbot.&apos;
+};</file><file path="index.html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;de&quot;&gt;
   &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot; /&gt;
@@ -5854,29 +5876,7 @@ const Index = () =&gt; {
   );
 };
 
-export default Index;</file><file path="src/types/chat.ts">export interface Message {
-  id: string;
-  text: string;
-  sender: &apos;user&apos; | &apos;model&apos;;
-  timestamp: Date;
-  role?: string;
-}
-
-export interface ChatSectionRef {
-  sendMessage: (message: string) =&gt; void;
-  focus: () =&gt; void;
-}
-
-export const chatTranslations = {
-  placeholder: &apos;Ihre Nachricht...&apos;,
-  send: &apos;Senden&apos;,
-  agentWelcome: &apos;Wie kann ich helfen?&apos;,
-  userProblem: &apos;Ich habe Probleme&apos;,
-  errorGeneric: &apos;Entschuldigung, es gab ein Problem. Bitte versuchen Sie es erneut.&apos;,
-  errorRateLimit: &apos;Zu viele Nachrichten. Bitte warten Sie einen Moment.&apos;,
-  typing: &apos;...&apos;,
-  disclaimer: &apos;Generierte Nachrichten können falsch und schädlich sein, bitte verwenden Sie sie mit Vorsicht. Bitte teile keine persönlichen Daten mit dem Chatbot.&apos;
-};</file><file path="src/utils/prefetch.ts">/**
+export default Index;</file><file path="src/utils/prefetch.ts">/**
  * Utility for prefetching chat server to reduce cold start latency
  */
 
@@ -6082,7 +6082,7 @@ const MessageList: React.FC&lt;MessageListProps&gt; = ({ messages, isLoading, me
   return (
     &lt;div 
       id=&quot;chat-messages&quot;
-      className=&quot;h-80 overflow-y-auto p-1 space-y-4&quot; 
+      className=&quot;max-h-screen overflow-y-auto p-1 space-y-4&quot;
       role=&quot;log&quot; 
       aria-live=&quot;polite&quot; 
       aria-relevant=&quot;additions&quot;
@@ -6281,58 +6281,7 @@ const mcpTools: MCPToolsHandler = {
   }
 };
 
-export default mcpTools;</file><file path=".github/workflows/gh-pages.yml">name: Deploy to GitHub Pages
-
-on:
-  push:
-    branches: [ main ]  
-
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: &quot;pages&quot;
-  cancel-in-progress: false
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: &apos;18&apos;
-      - name: Install dependencies
-        run: npm ci
-      - name: Build project
-        # run: VITE_BASE_PATH=&quot;/${GITHUB_REPOSITORY#*/}/&quot; npm run build
-        # new domain
-        run: npm run build
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist/
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy artifact
-        id: deployment
-        uses: actions/deploy-pages@v4</file><file path="src/hooks/useChat.ts">import {useEffect, useState} from &apos;react&apos;;
+export default mcpTools;</file><file path="src/hooks/useChat.ts">import {useEffect, useState} from &apos;react&apos;;
 import {chatTranslations, Message} from &apos;../types/chat&apos;;
 import mcpTools from &apos;../utils/mcpTools&apos;;
 // The API endpoint URL
@@ -6454,7 +6403,58 @@ export const useChat = () =&gt; {
     isLoading,
     sendMessage
   };
-};</file><file path="src/components/PasswordForm.tsx">import React, { useState } from &apos;react&apos;;
+};</file><file path=".github/workflows/gh-pages.yml">name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]  
+
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: &quot;pages&quot;
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: &apos;18&apos;
+      - name: Install dependencies
+        run: npm ci
+      - name: Build project
+        # run: VITE_BASE_PATH=&quot;/${GITHUB_REPOSITORY#*/}/&quot; npm run build
+        # new domain
+        run: npm run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist/
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy artifact
+        id: deployment
+        uses: actions/deploy-pages@v4</file><file path="src/components/PasswordForm.tsx">import React, { useState } from &apos;react&apos;;
 
 interface PasswordFormProps {
   language: &apos;de&apos; | &apos;en&apos;;
