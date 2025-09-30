@@ -65,6 +65,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
               className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               required
               maxLength={256}
+              minLength={8}
               autoComplete="current-password"
             />
           </div>
