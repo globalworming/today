@@ -45,7 +45,8 @@ const mcpTools: MCPToolsHandler = {
       });
 
       // Remove the MCP call from the text
-      cleanText = cleanText.replace(match[0], '🏗️').trim();
+      //cleanText = cleanText.replace(match[0], '🏗️').trim();
+      cleanText = cleanText.replace(match[0], '').trim();
     }
 
     //console.log('Extracted MCP calls:', calls);
