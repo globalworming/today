@@ -33,6 +33,7 @@ export const useChat = () => {
     for (const call of calls) {
       try {
         await mcpTools.executeMCPCall(call);
+        await new Promise(resolve => setTimeout(resolve, 70));
       } catch (error) {
         console.error('Failed to execute MCP call:', error);
       }

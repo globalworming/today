@@ -48,7 +48,6 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, 'aria-labelledb
           id="login-form"
           method="post" 
           action="https://login-598109592614.europe-west1.run.app/login" 
-          target="_blank"
           className="space-y-6"
           aria-label="hast du das passwort?"
         >
