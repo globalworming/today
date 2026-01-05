@@ -6201,7 +6201,58 @@ const ChatSection = forwardRef&lt;ChatSectionRef, ChatSectionProps&gt;(({ onLoad
 
 ChatSection.displayName = &apos;ChatSection&apos;;
 
-export default ChatSection;</file><file path="src/hooks/useChat.ts">import {useEffect, useState} from &apos;react&apos;;
+export default ChatSection;</file><file path=".github/workflows/gh-pages.yml">name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]  
+
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: &quot;pages&quot;
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: &apos;18&apos;
+      - name: Install dependencies
+        run: npm ci
+      - name: Build project
+        # run: VITE_BASE_PATH=&quot;/${GITHUB_REPOSITORY#*/}/&quot; npm run build
+        # new domain
+        run: npm run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist/
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy artifact
+        id: deployment
+        uses: actions/deploy-pages@v4</file><file path="src/hooks/useChat.ts">import {useEffect, useState} from &apos;react&apos;;
 import {chatTranslations, Message} from &apos;../types/chat&apos;;
 import mcpTools from &apos;../utils/mcpTools&apos;;
 // The API endpoint URL
@@ -6404,58 +6455,7 @@ const mcpTools: MCPToolsHandler = {
   }
 };
 
-export default mcpTools;</file><file path=".github/workflows/gh-pages.yml">name: Deploy to GitHub Pages
-
-on:
-  push:
-    branches: [ main ]  
-
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: &quot;pages&quot;
-  cancel-in-progress: false
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: &apos;18&apos;
-      - name: Install dependencies
-        run: npm ci
-      - name: Build project
-        # run: VITE_BASE_PATH=&quot;/${GITHUB_REPOSITORY#*/}/&quot; npm run build
-        # new domain
-        run: npm run build
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist/
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy artifact
-        id: deployment
-        uses: actions/deploy-pages@v4</file><file path="src/components/PasswordForm.tsx">import React, { useState } from &apos;react&apos;;
+export default mcpTools;</file><file path="src/components/PasswordForm.tsx">import React, { useState } from &apos;react&apos;;
 
 interface PasswordFormProps {
   language: &apos;de&apos; | &apos;en&apos;;
@@ -6504,6 +6504,7 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, &apos;aria-labe
           id=&quot;login-form&quot;
           method=&quot;post&quot; 
           action=&quot;https://login-598109592614.europe-west1.run.app/login&quot; 
+          target=&quot;_blank&quot;
           className=&quot;space-y-6&quot;
           aria-label=&quot;hast du das passwort?&quot;
         &gt;
