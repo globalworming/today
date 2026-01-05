@@ -5991,7 +5991,58 @@ if (document.readyState === &apos;complete&apos;) {
     // Add a small delay to ensure it happens after critical rendering
     setTimeout(() =&gt; prefetchChat(), 100);
   });
-}</file><file path="src/components/chat/ChatInput.tsx">import React, { useState, useRef } from &apos;react&apos;;
+}</file><file path=".github/workflows/gh-pages.yml">name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]  
+
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: &quot;pages&quot;
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: &apos;18&apos;
+      - name: Install dependencies
+        run: npm ci
+      - name: Build project
+        # run: VITE_BASE_PATH=&quot;/${GITHUB_REPOSITORY#*/}/&quot; npm run build
+        # new domain
+        run: npm run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist/
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy artifact
+        id: deployment
+        uses: actions/deploy-pages@v4</file><file path="src/components/chat/ChatInput.tsx">import React, { useState, useRef } from &apos;react&apos;;
 import { Send } from &apos;lucide-react&apos;;
 import { chatTranslations } from &apos;../../types/chat&apos;;
 
@@ -6201,58 +6252,88 @@ const ChatSection = forwardRef&lt;ChatSectionRef, ChatSectionProps&gt;(({ onLoad
 
 ChatSection.displayName = &apos;ChatSection&apos;;
 
-export default ChatSection;</file><file path=".github/workflows/gh-pages.yml">name: Deploy to GitHub Pages
+export default ChatSection;</file><file path="src/utils/mcpTools.ts">interface MCPCall {
+  tool: string;
+  parameters: Record&lt;string, any&gt;;
+}
 
-on:
-  push:
-    branches: [ main ]  
+interface MCPToolsHandler {
+  extractMCPCalls: (text: string) =&gt; { calls: MCPCall[], cleanText: string };
+  executeMCPCall: (call: MCPCall) =&gt; Promise&lt;any&gt;;
+}
+
+const mcpTools: MCPToolsHandler = {
+  extractMCPCalls: (text: string) =&gt; {
+    //console.log(&apos;Extracting MCP calls from text:&apos;, text);
+    let hasCalls = false;
+    // if text contains &lt;mcp:browser_js_env_call or &lt;mcp:page_inner_html_base64
+    if (text.includes(&apos;&lt;mcp:&apos;)) {
+      hasCalls = true;
+    }
 
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+    // Look for MCP tool calls in the format: &lt;mcp:tool_name param1=&quot;value1&quot; param2=&quot;value2&quot; /&gt;
+    const mcpRegex = /&lt;mcp:(\w+)(?: (.*?))? \/&gt;/g;
+    const calls: MCPCall[] = [];
+    let cleanText = text;
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: &quot;pages&quot;
-  cancel-in-progress: false
+    let match;
+    while ((match = mcpRegex.exec(text)) !== null) {
+      const toolName = match[1];
+      const paramString = match[2];
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: &apos;18&apos;
-      - name: Install dependencies
-        run: npm ci
-      - name: Build project
-        # run: VITE_BASE_PATH=&quot;/${GITHUB_REPOSITORY#*/}/&quot; npm run build
-        # new domain
-        run: npm run build
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist/
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy artifact
-        id: deployment
-        uses: actions/deploy-pages@v4</file><file path="src/hooks/useChat.ts">import {useEffect, useState} from &apos;react&apos;;
+      // Parse parameters from the attribute string
+      const parameters: Record&lt;string, any&gt; = {};
+      // Using a regex with the &apos;s&apos; flag to handle multi-line parameter values
+      const paramRegex = /(\w+)=&quot;([\s\S]*?)&quot;/g;
+      let paramMatch;
+      while ((paramMatch = paramRegex.exec(paramString)) !== null) {
+        parameters[paramMatch[1]] = paramMatch[2];
+      }
+
+      calls.push({
+        tool: toolName,
+        parameters
+      });
+
+      // Remove the MCP call from the text
+      //cleanText = cleanText.replace(match[0], &apos;🏗️&apos;).trim();
+      cleanText = cleanText.replace(match[0], &apos;&apos;).trim();
+    }
+
+    //console.log(&apos;Extracted MCP calls:&apos;, calls);
+    if (hasCalls &amp;&amp; calls.length &lt;= 0) {
+      throw new Error(&apos;No MCP calls found&apos;);
+    }
+
+    return { calls, cleanText };
+  },
+
+  executeMCPCall: async (call: MCPCall) =&gt; {
+    //console.log(&apos;Executing MCP call:&apos;, call);
+
+    switch (call.tool) {
+      case &apos;browser_js_env_call&apos;:
+        return eval(call.parameters.script);
+
+      case &apos;page_outer_html_base64&apos;:
+        if (typeof window !== &apos;undefined&apos; &amp;&amp; typeof window.__triggerChatMessage === &apos;function&apos;) {
+          setTimeout(() =&gt; {
+            window.__triggerChatMessage(&apos;&apos;, &apos;model&apos;);
+          }, 700); // Trigger Chat sendMessage after a delay to ensure it appears after the agent&apos;s response
+
+        }
+        return null;
+
+      default:
+        console.warn(`Unknown MCP tool: ${call.tool}`);
+        return null;
+    }
+  }
+};
+
+export default mcpTools;</file><file path="src/hooks/useChat.ts">import {useEffect, useState} from &apos;react&apos;;
 import {chatTranslations, Message} from &apos;../types/chat&apos;;
 import mcpTools from &apos;../utils/mcpTools&apos;;
 // The API endpoint URL
@@ -6287,6 +6368,7 @@ export const useChat = () =&gt; {
     for (const call of calls) {
       try {
         await mcpTools.executeMCPCall(call);
+        await new Promise(resolve =&gt; setTimeout(resolve, 70));
       } catch (error) {
         console.error(&apos;Failed to execute MCP call:&apos;, error);
       }
@@ -6374,88 +6456,7 @@ export const useChat = () =&gt; {
     isLoading,
     sendMessage
   };
-};</file><file path="src/utils/mcpTools.ts">interface MCPCall {
-  tool: string;
-  parameters: Record&lt;string, any&gt;;
-}
-
-interface MCPToolsHandler {
-  extractMCPCalls: (text: string) =&gt; { calls: MCPCall[], cleanText: string };
-  executeMCPCall: (call: MCPCall) =&gt; Promise&lt;any&gt;;
-}
-
-const mcpTools: MCPToolsHandler = {
-  extractMCPCalls: (text: string) =&gt; {
-    //console.log(&apos;Extracting MCP calls from text:&apos;, text);
-    let hasCalls = false;
-    // if text contains &lt;mcp:browser_js_env_call or &lt;mcp:page_inner_html_base64
-    if (text.includes(&apos;&lt;mcp:&apos;)) {
-      hasCalls = true;
-    }
-
-
-
-    // Look for MCP tool calls in the format: &lt;mcp:tool_name param1=&quot;value1&quot; param2=&quot;value2&quot; /&gt;
-    const mcpRegex = /&lt;mcp:(\w+)(?: (.*?))? \/&gt;/g;
-    const calls: MCPCall[] = [];
-    let cleanText = text;
-
-    let match;
-    while ((match = mcpRegex.exec(text)) !== null) {
-      const toolName = match[1];
-      const paramString = match[2];
-
-      // Parse parameters from the attribute string
-      const parameters: Record&lt;string, any&gt; = {};
-      // Using a regex with the &apos;s&apos; flag to handle multi-line parameter values
-      const paramRegex = /(\w+)=&quot;([\s\S]*?)&quot;/g;
-      let paramMatch;
-      while ((paramMatch = paramRegex.exec(paramString)) !== null) {
-        parameters[paramMatch[1]] = paramMatch[2];
-      }
-
-      calls.push({
-        tool: toolName,
-        parameters
-      });
-
-      // Remove the MCP call from the text
-      //cleanText = cleanText.replace(match[0], &apos;🏗️&apos;).trim();
-      cleanText = cleanText.replace(match[0], &apos;&apos;).trim();
-    }
-
-    //console.log(&apos;Extracted MCP calls:&apos;, calls);
-    if (hasCalls &amp;&amp; calls.length &lt;= 0) {
-      throw new Error(&apos;No MCP calls found&apos;);
-    }
-
-    return { calls, cleanText };
-  },
-
-  executeMCPCall: async (call: MCPCall) =&gt; {
-    //console.log(&apos;Executing MCP call:&apos;, call);
-
-    switch (call.tool) {
-      case &apos;browser_js_env_call&apos;:
-        return eval(call.parameters.script);
-
-      case &apos;page_outer_html_base64&apos;:
-        if (typeof window !== &apos;undefined&apos; &amp;&amp; typeof window.__triggerChatMessage === &apos;function&apos;) {
-          setTimeout(() =&gt; {
-            window.__triggerChatMessage(&apos;&apos;, &apos;model&apos;);
-          }, 700); // Trigger Chat sendMessage after a delay to ensure it appears after the agent&apos;s response
-
-        }
-        return null;
-
-      default:
-        console.warn(`Unknown MCP tool: ${call.tool}`);
-        return null;
-    }
-  }
-};
-
-export default mcpTools;</file><file path="src/components/PasswordForm.tsx">import React, { useState } from &apos;react&apos;;
+};</file><file path="src/components/PasswordForm.tsx">import React, { useState } from &apos;react&apos;;
 
 interface PasswordFormProps {
   language: &apos;de&apos; | &apos;en&apos;;
@@ -6504,7 +6505,6 @@ const PasswordForm = ({ language, onHintClick, onLanguageToggle, &apos;aria-labe
           id=&quot;login-form&quot;
           method=&quot;post&quot; 
           action=&quot;https://login-598109592614.europe-west1.run.app/login&quot; 
-          target=&quot;_blank&quot;
           className=&quot;space-y-6&quot;
           aria-label=&quot;hast du das passwort?&quot;
         &gt;
